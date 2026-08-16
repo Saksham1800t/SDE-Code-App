@@ -51,3 +51,9 @@ jobs:
         run: pnpm exec electron-builder --publish always
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # There's no code-signing certificate for either platform yet. Without this,
+          # electron-builder tries to auto-discover a signing identity/tooling on both
+          # platforms — on Windows that's exactly what caused a symlink-privilege failure
+          # fetching its signing-tool cache (winCodeSign) during local testing earlier this
+          # session, unrelated to whether --win or --mac is actually being built.
+          CSC_IDENTITY_AUTO_DISCOVERY: false
