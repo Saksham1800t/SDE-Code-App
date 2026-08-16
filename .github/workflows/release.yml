@@ -33,6 +33,12 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      # @sde-code/sdk's package.json points "main"/"types" at dist/ (not src/), so its compiled
+      # output has to exist before anything that imports it — protocol, then desktop — can
+      # resolve its types. dist/ is correctly gitignored, so this has to be a real build step,
+      # not something already sitting in the checkout.
+      - run: pnpm --filter @sde-code/sdk build
+
       - run: pnpm --filter @sde-code/desktop exec tsc
       - run: pnpm --filter @sde-code/desktop exec vite build
 
