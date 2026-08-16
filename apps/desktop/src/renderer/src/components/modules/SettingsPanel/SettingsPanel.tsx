@@ -23,7 +23,8 @@ import { Input } from '../../common/Input';
 import { Button } from '../../common/Button';
 import { useExtensionsStore } from '../../../store/extensions';
 import { getDefaultModelForProvider } from '../../../utils/aiModels';
-import { CheckCircle2, XCircle, Loader2 } from 'lucide-react';
+import { notify } from '../../../store/notifications';
+import { Loader2 } from 'lucide-react';
 
 const ALL_CATEGORIES: SettingsCategory[] = [
   { id: 'feature-toggles', label: 'Feature Toggles' },
@@ -44,6 +45,16 @@ const WORKSPACE_CATEGORIES: SettingsCategory[] = [
   { id: 'toolchain', label: 'Toolchain' },
 ];
 
+const CREDENTIAL_FIELDS = [
+  { key: 'gemini-key', label: 'Gemini API Key', placeholder: 'AIzaSy...', type: 'password', provider: 'gemini' },
+  { key: 'openai-key', label: 'OpenAI API Key', placeholder: 'sk-proj-...', type: 'password', provider: 'openai' },
+  { key: 'anthropic-key', label: 'Anthropic API Key', placeholder: 'sk-ant-...', type: 'password', provider: 'anthropic' },
+  { key: 'ollama-url', label: 'Ollama Endpoint URL', placeholder: 'http://localhost:11434/v1/chat/completions', type: 'text', provider: 'ollama' },
+  { key: 'lm-studio-url', label: 'LM Studio Endpoint URL', placeholder: 'http://localhost:1234/v1/chat/completions', type: 'text', provider: 'lm-studio' },
+  { key: 'custom-openai-url', label: 'Custom OpenAI Endpoint URL', placeholder: 'http://my-endpoint/v1/chat/completions', type: 'text', provider: 'custom-openai' },
+  { key: 'custom-openai-key', label: 'Custom OpenAI API Key', placeholder: 'key...', type: 'password', provider: null },
+] as const;
+
 const AGENT_TOOL_LABELS: Record<AgentPolicyToolName, { title: string; description: string }> = {
   read_file: { title: 'Read File', description: 'Read the contents of a file in the workspace.' },
   list_directory: { title: 'List Directory', description: 'List files and subdirectories in the workspace.' },
@@ -56,6 +67,11 @@ const AGENT_TOOL_LABELS: Record<AgentPolicyToolName, { title: string; descriptio
 
 const matches = (query: string, ...texts: string[]) =>
   !query || texts.some((t) => t.toLowerCase().includes(query.toLowerCase()));
+
+/** Shown in place of a category's rows when a search query matches none of them — previously the category just rendered its heading with nothing below it. */
+const NoSettingsFound: React.FC<{ query: string }> = ({ query }) => (
+  <p className="sde-settings-empty">No settings found for &quot;{query}&quot;.</p>
+);
 
 export const SettingsPanel: React.FC = () => {
   const [settings, setSettings] = useState<Record<string, string>>({});
@@ -104,33 +120,34 @@ export const SettingsPanel: React.FC = () => {
   const activeEditorTab = openTabs.find((t) => t.path === activeTabPath);
   const isShortcutsTab = activeEditorTab?.isSettings && activeEditorTab.settingsType === 'shortcuts';
 
-  const { user, isAuthenticated, login, register, logout, deleteAccount, error: authError, clearError, initialize: initAuth } = useAuthStore();
-  const { isSyncEnabled, toggleSyncEnabled, pushSettings, pullSettings, lastSyncedAt, syncing, error: syncError, initializeSync } = useSyncStore();
+  const { user, isAuthenticated, login, register, logout, deleteAccount, initialize: initAuth } = useAuthStore();
+  const { isSyncEnabled, toggleSyncEnabled, pushSettings, pullSettings, lastSyncedAt, syncing, initializeSync } = useSyncStore();
 
   const [usernameInput, setUsernameInput] = useState('');
   const [emailInput, setEmailInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
   const [isRegisterMode, setIsRegisterMode] = useState(false);
-  const [statusMsg, setStatusMsg] = useState<{ type: 'error' | 'success'; text: string } | null>(null);
 
-  type ConnectionTestState = { status: 'testing' | 'success' | 'error'; message?: string };
-  const [connectionTests, setConnectionTests] = useState<Record<string, ConnectionTestState>>({});
+  // Only the in-flight state stays local (drives the button's disabled/label state) —
+  // the result itself is a one-off event, so it goes to a toast rather than living in
+  // state that would otherwise show it inline, permanently, next to the field.
+  const [testingProvider, setTestingProvider] = useState<string | null>(null);
 
   const handleTestConnection = async (provider: string) => {
     const api = window.api;
     if (!api?.testAIConnection) return;
-    setConnectionTests((prev) => ({ ...prev, [provider]: { status: 'testing' } }));
+    setTestingProvider(provider);
     try {
       const result = await api.testAIConnection(provider);
-      setConnectionTests((prev) => ({
-        ...prev,
-        [provider]: { status: result.success ? 'success' : 'error', message: result.message },
-      }));
+      if (result.success) {
+        notify.success(result.message || 'Connected successfully.');
+      } else {
+        notify.error(result.message || 'Connection failed.');
+      }
     } catch (err) {
-      setConnectionTests((prev) => ({
-        ...prev,
-        [provider]: { status: 'error', message: err instanceof Error ? err.message : 'Unknown error.' },
-      }));
+      notify.error(err instanceof Error ? err.message : 'Unknown error.');
+    } finally {
+      setTestingProvider(null);
     }
   };
 
@@ -220,6 +237,9 @@ export const SettingsPanel: React.FC = () => {
           {effectiveCategory === 'feature-toggles' && (
             <div className="sde-settings-category">
               <h2 className="sde-settings-category-title">Feature Toggles</h2>
+              {searchQuery && !featureFlags.some((flag) => matches(searchQuery, flag.name.replace(/-/g, ' '), flag.description)) && (
+                <NoSettingsFound query={searchQuery} />
+              )}
               {featureFlags
                 .filter((flag) => matches(searchQuery, flag.name.replace(/-/g, ' '), flag.description))
                 .map((flag) => {
@@ -249,6 +269,9 @@ export const SettingsPanel: React.FC = () => {
               <p className="sde-settings-scope-note">
                 Stored in <code>.sde/toolchain.json</code> at the project root — travels with the project (safe to commit), not tied to your user account. Prepended to new terminals' PATH, so <code>python</code>/<code>node</code> (and any task or agent command that runs one) resolve to the interpreter picked here.
               </p>
+              {searchQuery && !matches(searchQuery, 'python interpreter path') && !matches(searchQuery, 'node.js interpreter path') && (
+                <NoSettingsFound query={searchQuery} />
+              )}
               {matches(searchQuery, 'python interpreter path') && (
                 <SettingRow title="Python Interpreter" description="Full path to the python(.exe) binary this project should use.">
                   <Input
@@ -275,6 +298,16 @@ export const SettingsPanel: React.FC = () => {
           {effectiveCategory === 'text-editor' && (
             <div className="sde-settings-category">
               <h2 className="sde-settings-category-title">Text Editor</h2>
+              {searchQuery && ![
+                matches(searchQuery, 'font size'),
+                matches(searchQuery, 'tab size'),
+                matches(searchQuery, 'word wrap'),
+                matches(searchQuery, 'minimap'),
+                matches(searchQuery, 'line numbers'),
+                matches(searchQuery, 'breadcrumbs'),
+                matches(searchQuery, 'inlay hints parameter names types'),
+                matches(searchQuery, 'vim mode modal editing keybindings'),
+              ].some(Boolean) && <NoSettingsFound query={searchQuery} />}
               {matches(searchQuery, 'font size') && (
                 <SettingRow title="Font Size">
                   <Input
@@ -340,6 +373,12 @@ export const SettingsPanel: React.FC = () => {
           {effectiveCategory === 'terminal' && (
             <div className="sde-settings-category">
               <h2 className="sde-settings-category-title">Terminal</h2>
+              {searchQuery && ![
+                matches(searchQuery, 'font size'),
+                matches(searchQuery, 'cursor style'),
+                matches(searchQuery, 'cursor blink'),
+                matches(searchQuery, 'scrollback'),
+              ].some(Boolean) && <NoSettingsFound query={searchQuery} />}
               {matches(searchQuery, 'font size') && (
                 <SettingRow title="Font Size">
                   <Input
@@ -379,6 +418,7 @@ export const SettingsPanel: React.FC = () => {
           {effectiveCategory === 'appearance' && (
             <div className="sde-settings-category">
               <h2 className="sde-settings-category-title">Appearance</h2>
+              {searchQuery && !matches(searchQuery, 'color theme') && <NoSettingsFound query={searchQuery} />}
               {matches(searchQuery, 'color theme') && (
                 <SettingRow title="Color Theme">
                   <Select value={currentTheme} onChange={(e) => setTheme(e.target.value)}>
@@ -394,6 +434,9 @@ export const SettingsPanel: React.FC = () => {
           {effectiveCategory === 'ai-provider' && (
             <div className="sde-settings-category">
               <h2 className="sde-settings-category-title">Active AI Provider</h2>
+              {searchQuery && !matches(searchQuery, 'model engine provider') && !matches(searchQuery, 'inline completion', 'ai-suggested ghost text') && (
+                <NoSettingsFound query={searchQuery} />
+              )}
               {matches(searchQuery, 'model engine provider') && (
                 <SettingRow title="Model Engine Provider">
                   <Select
@@ -425,6 +468,11 @@ export const SettingsPanel: React.FC = () => {
           {effectiveCategory === 'agent-profiles' && (
             <div className="sde-settings-category">
               <h2 className="sde-settings-category-title">Agent Profiles</h2>
+              {searchQuery &&
+                !matches(searchQuery, 'preset read-only full access') &&
+                !AGENT_POLICY_TOOL_NAMES.some((name) => matches(searchQuery, AGENT_TOOL_LABELS[name].title, AGENT_TOOL_LABELS[name].description)) && (
+                  <NoSettingsFound query={searchQuery} />
+              )}
               {matches(searchQuery, 'preset read-only full access') && (
                 <SettingRow
                   title="Preset"
@@ -461,16 +509,11 @@ export const SettingsPanel: React.FC = () => {
           {effectiveCategory === 'credentials' && (
             <div className="sde-settings-category">
               <h2 className="sde-settings-category-title">AI Provider Credentials</h2>
-              {[
-                { key: 'gemini-key', label: 'Gemini API Key', placeholder: 'AIzaSy...', type: 'password', provider: 'gemini' },
-                { key: 'openai-key', label: 'OpenAI API Key', placeholder: 'sk-proj-...', type: 'password', provider: 'openai' },
-                { key: 'anthropic-key', label: 'Anthropic API Key', placeholder: 'sk-ant-...', type: 'password', provider: 'anthropic' },
-                { key: 'ollama-url', label: 'Ollama Endpoint URL', placeholder: 'http://localhost:11434/v1/chat/completions', type: 'text', provider: 'ollama' },
-                { key: 'lm-studio-url', label: 'LM Studio Endpoint URL', placeholder: 'http://localhost:1234/v1/chat/completions', type: 'text', provider: 'lm-studio' },
-                { key: 'custom-openai-url', label: 'Custom OpenAI Endpoint URL', placeholder: 'http://my-endpoint/v1/chat/completions', type: 'text', provider: 'custom-openai' },
-                { key: 'custom-openai-key', label: 'Custom OpenAI API Key', placeholder: 'key...', type: 'password', provider: null }
-              ].filter((field) => matches(searchQuery, field.label)).map((field) => {
-                const test = field.provider ? connectionTests[field.provider] : undefined;
+              {searchQuery && !CREDENTIAL_FIELDS.some((field) => matches(searchQuery, field.label)) && (
+                <NoSettingsFound query={searchQuery} />
+              )}
+              {CREDENTIAL_FIELDS.filter((field) => matches(searchQuery, field.label)).map((field) => {
+                const isTesting = field.provider === testingProvider;
                 return (
                   <SettingRow key={field.key} title={field.label}>
                     <Input
@@ -484,23 +527,13 @@ export const SettingsPanel: React.FC = () => {
                         <Button
                           size="sm"
                           variant="secondary"
-                          disabled={test?.status === 'testing'}
+                          disabled={isTesting}
                           onClick={() => handleTestConnection(field.provider as string)}
                         >
-                          {test?.status === 'testing' ? 'Testing…' : 'Test Connection'}
+                          {isTesting ? 'Testing…' : 'Test Connection'}
                         </Button>
-                        {test?.status === 'testing' && (
+                        {isTesting && (
                           <Loader2 size={14} className="sde-spin" style={{ color: 'var(--text-secondary)' }} />
-                        )}
-                        {test?.status === 'success' && (
-                          <span style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '12px', color: 'var(--color-success)' }}>
-                            <CheckCircle2 size={14} /> {test.message}
-                          </span>
-                        )}
-                        {test?.status === 'error' && (
-                          <span style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '12px', color: 'var(--color-danger)' }}>
-                            <XCircle size={14} /> {test.message}
-                          </span>
                         )}
                       </div>
                     )}
@@ -520,15 +553,12 @@ export const SettingsPanel: React.FC = () => {
                 register={register}
                 logout={logout}
                 deleteAccount={deleteAccount}
-                authError={authError}
-                clearError={clearError}
                 isSyncEnabled={isSyncEnabled}
                 toggleSyncEnabled={toggleSyncEnabled}
                 pushSettings={pushSettings}
                 pullSettings={pullSettings}
                 lastSyncedAt={lastSyncedAt}
                 syncing={syncing}
-                syncError={syncError}
                 usernameInput={usernameInput}
                 setUsernameInput={setUsernameInput}
                 emailInput={emailInput}
@@ -537,8 +567,6 @@ export const SettingsPanel: React.FC = () => {
                 setPasswordInput={setPasswordInput}
                 isRegisterMode={isRegisterMode}
                 setIsRegisterMode={setIsRegisterMode}
-                statusMsg={statusMsg}
-                setStatusMsg={setStatusMsg}
               />
             </div>
           )}

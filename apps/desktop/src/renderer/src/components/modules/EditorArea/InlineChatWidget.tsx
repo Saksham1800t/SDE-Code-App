@@ -4,6 +4,7 @@ import { useWorkspaceStore } from '../../../store/workspace';
 import { useAgentStore } from '../../../store/agent';
 import { extractCodeBlock } from '../AssistantPanel/utils';
 import { buildInlineChatPrompt, applyInlineChatEdit } from '../../../utils/inlineChatPrompt';
+import { notify } from '../../../store/notifications';
 import { Sparkles, Loader2 } from 'lucide-react';
 
 interface InlineChatWidgetProps {
@@ -16,8 +17,7 @@ interface InlineChatWidgetProps {
 export const InlineChatWidget: React.FC<InlineChatWidgetProps> = ({ editor, groupId, onClose }) => {
   const { activeAIProvider, activeAIModel } = useAgentStore();
   const [instruction, setInstruction] = useState('');
-  const [status, setStatus] = useState<'idle' | 'loading' | 'error'>('idle');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading'>('idle');
   const [position, setPosition] = useState<{ top: number; left: number } | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -75,7 +75,6 @@ export const InlineChatWidget: React.FC<InlineChatWidgetProps> = ({ editor, grou
     const { startOffset, endOffset, selectedText } = targetRef.current;
 
     setStatus('loading');
-    setErrorMessage('');
 
     let accumulated = '';
     let hadError = false;
@@ -86,8 +85,7 @@ export const InlineChatWidget: React.FC<InlineChatWidgetProps> = ({ editor, grou
     const removeErr = api.onAIErr((errSessionId: string, err: string) => {
       if (errSessionId !== sessionId) return;
       hadError = true;
-      setStatus('error');
-      setErrorMessage(err);
+      notify.error(err);
     });
 
     const prompt = buildInlineChatPrompt({ fileContent, languageId, instruction: trimmed, selectedText, cursorOffset: startOffset });
@@ -96,19 +94,18 @@ export const InlineChatWidget: React.FC<InlineChatWidgetProps> = ({ editor, grou
       await api.queryAI(activeAIProvider, activeAIModel, prompt, { sessionId });
     } catch (err: any) {
       hadError = true;
-      setStatus('error');
-      setErrorMessage(err?.message || 'Failed to generate edit.');
+      notify.error(err?.message || 'Failed to generate edit.');
     } finally {
       removeChunk();
       removeErr();
+      setStatus('idle');
     }
 
     if (hadError) return;
 
     const replacement = extractCodeBlock(accumulated).trim();
     if (!replacement) {
-      setStatus('error');
-      setErrorMessage('The AI returned an empty response.');
+      notify.error('The AI returned an empty response.');
       return;
     }
 
@@ -161,7 +158,6 @@ export const InlineChatWidget: React.FC<InlineChatWidgetProps> = ({ editor, grou
         />
         {status === 'loading' && <Loader2 size={14} className="sde-inline-chat-spinner" />}
       </div>
-      {status === 'error' && <div className="sde-inline-chat-error">{errorMessage}</div>}
       <div className="sde-inline-chat-hint">
         <kbd>Enter</kbd> submit <kbd>Esc</kbd> cancel
       </div>

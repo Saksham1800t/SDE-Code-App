@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { useWorkspaceStore } from './workspace';
 import { useAgentStore } from './agent';
+import { notify } from './notifications';
 
 export type ThreadStatus = 'starting' | 'running' | 'done' | 'error' | 'stopped';
 
@@ -67,11 +68,13 @@ export const useThreadsStore = create<ThreadsState>((set, get) => ({
     try {
       worktreePath = await api.gitCreateWorktree(repoRoot, branchName);
     } catch (err: any) {
+      const message = err?.message || 'Failed to create an isolated worktree for this thread.';
       const failed: AgentThread = {
         id: threadId, sessionId, title: prompt.slice(0, 40), prompt, status: 'error',
-        error: err?.message || 'Failed to create an isolated worktree for this thread.',
+        error: message,
         repoRoot, branchName, worktreePath: '', messages: [],
       };
+      notify.error(message, 'Agent Thread');
       set((state) => ({ threads: { ...state.threads, [threadId]: failed }, order: [threadId, ...state.order], activeThreadId: threadId }));
       return;
     }
@@ -117,6 +120,7 @@ export const useThreadsStore = create<ThreadsState>((set, get) => ({
     });
     const offErr = api.onAgentErr((sid, message) => {
       if (sid !== sessionId) return;
+      notify.error(message, 'Agent Thread');
       update((t) => ({ ...t, status: 'error', error: message }));
     });
     const offDone = api.onAgentDone((sid) => {
@@ -134,6 +138,11 @@ export const useThreadsStore = create<ThreadsState>((set, get) => ({
         sessionId,
       });
     } catch (err: any) {
+      // Guarded the same way as the status update below it — onAgentErr above may have
+      // already reported (and toasted) this exact failure; avoid a duplicate toast for one error.
+      if (get().threads[threadId]?.status !== 'error') {
+        notify.error(err?.message || 'Thread failed.', 'Agent Thread');
+      }
       update((t) => (t.status === 'error' ? t : { ...t, status: 'error', error: err?.message || 'Thread failed.' }));
     } finally {
       offChunk(); offToolCall(); offWorkingSet(); offApproval(); offErr(); offDone();

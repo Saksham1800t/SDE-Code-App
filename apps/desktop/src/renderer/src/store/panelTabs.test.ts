@@ -81,17 +81,34 @@ describe('usePanelTabsStore', () => {
     expect(usePanelTabsStore.getState().getVisibleOrderedTabIds()).toEqual(['c', 'a', 'b']);
   });
 
-  it('setShowLabels/setShowIcons persist independently', () => {
+  it('setShowLabels/setShowIcons persist independently as long as at least one stays on', () => {
     const setSetting = vi.fn(async () => {});
     installFakeDesktopApi({ setSetting: setSetting as any });
 
     usePanelTabsStore.getState().setShowLabels(false);
+
+    expect(usePanelTabsStore.getState().showLabels).toBe(false);
+    expect(usePanelTabsStore.getState().showIcons).toBe(true);
+    expect(setSetting).toHaveBeenCalledWith('ide-panel-show-labels', '0');
+
+    usePanelTabsStore.getState().setShowIcons(true);
+    expect(usePanelTabsStore.getState().showIcons).toBe(true);
+    expect(setSetting).toHaveBeenCalledWith('ide-panel-show-icons', '1');
+  });
+
+  it('refuses to turn off the second of showLabels/showIcons, leaving both untouched', () => {
+    const setSetting = vi.fn(async () => {});
+    installFakeDesktopApi({ setSetting: setSetting as any });
+
+    usePanelTabsStore.getState().setShowLabels(false);
+    setSetting.mockClear();
+
+    // Icons is the only one left on — turning it off too would leave the tab strip blank.
     usePanelTabsStore.getState().setShowIcons(false);
 
     expect(usePanelTabsStore.getState().showLabels).toBe(false);
-    expect(usePanelTabsStore.getState().showIcons).toBe(false);
-    expect(setSetting).toHaveBeenCalledWith('ide-panel-show-labels', '0');
-    expect(setSetting).toHaveBeenCalledWith('ide-panel-show-icons', '0');
+    expect(usePanelTabsStore.getState().showIcons).toBe(true);
+    expect(setSetting).not.toHaveBeenCalled();
   });
 
   it('initializePanelTabs reads persisted layout from settings', async () => {

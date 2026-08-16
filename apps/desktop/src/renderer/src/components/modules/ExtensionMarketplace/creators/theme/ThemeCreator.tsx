@@ -3,7 +3,9 @@ import '../../ExtensionMarketplace.css';
 import { WizardSkeleton } from '../WizardSkeleton';
 import { Input, TextArea } from '../../../../common/Input';
 import { Button } from '../../../../common/Button';
-import { Palette, Check, Folder, Settings, Plug } from 'lucide-react';
+import { useExtensionIdAvailability } from '../useExtensionIdAvailability';
+import { notify } from '../../../../../store/notifications';
+import { Palette, Check, Folder, Settings, Plug, AlertTriangle } from 'lucide-react';
 
 interface ThemeCreatorProps {
   token: string | null;
@@ -36,7 +38,8 @@ export const ThemeCreator: React.FC<ThemeCreatorProps> = ({ token, user, onSucce
   const [aiPrompt, setAiPrompt] = useState('');
   const [isAiGenerating, setIsAiGenerating] = useState(false);
   const [publishing, setPublishing] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
+
+  const { taken: idTaken } = useExtensionIdAvailability(themeId);
 
   const applyBasePreset = (preset: 'dark' | 'light' | 'neon' | 'monokai') => {
     setBaseStyle(preset);
@@ -120,15 +123,14 @@ export const ThemeCreator: React.FC<ThemeCreatorProps> = ({ token, user, onSucce
 
   const handlePublish = async () => {
     setPublishing(true);
-    setErrorMsg('');
     const api = window.api;
     if (!api || !api.scaffoldAndPublishExtension) {
-      setErrorMsg('Extension developer SDK IPC bridge is missing.');
+      notify.error('Extension developer SDK IPC bridge is missing.');
       setPublishing(false);
       return;
     }
     if (!token) {
-      setErrorMsg('You must be logged in to publish an extension.');
+      notify.error('You must be logged in to publish an extension.');
       setPublishing(false);
       return;
     }
@@ -159,7 +161,7 @@ export const ThemeCreator: React.FC<ThemeCreatorProps> = ({ token, user, onSucce
 
       onSuccess(`Theme extension "${displayName}" generated and published successfully!`);
     } catch (err: any) {
-      setErrorMsg(err.message || 'Compiler packaging failed.');
+      notify.error(err.message || 'Compiler packaging failed.');
     } finally {
       setPublishing(false);
     }
@@ -238,7 +240,14 @@ export const ThemeCreator: React.FC<ThemeCreatorProps> = ({ token, user, onSucce
       renderForm: () => (
         <div className="sde-flex-col" style={{ gap: '12px' }}>
           <div className="sde-theme-creator-grid">
-            <Input label="Extension ID" value={themeId} onChange={(e) => setThemeId(e.target.value.replace(/\s+/g, '-').toLowerCase())} />
+            <div>
+              <Input label="Extension ID" value={themeId} onChange={(e) => setThemeId(e.target.value.replace(/\s+/g, '-').toLowerCase())} />
+              {idTaken && (
+                <p className="sde-wizard-id-warning">
+                  <AlertTriangle size={12} /> This ID is already taken in the marketplace — pick a different one.
+                </p>
+              )}
+            </div>
             <Input label="Display Name" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
           </div>
           <div className="sde-theme-creator-grid">
@@ -330,8 +339,8 @@ export const ThemeCreator: React.FC<ThemeCreatorProps> = ({ token, user, onSucce
         <div className="sde-flex-col" style={{ gap: '16px' }}>
           <div className="sde-theme-publish-grid">
             <div>
-              <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>Target Directory</div>
-              <div style={{ fontSize: '11px', color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)', marginTop: '2px' }}>extensions/temp-publish</div>
+              <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>Extension ID</div>
+              <div style={{ fontSize: '11px', color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)', marginTop: '2px' }}>{themeId}</div>
             </div>
             <div>
               <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>Capability</div>
@@ -351,10 +360,13 @@ export const ThemeCreator: React.FC<ThemeCreatorProps> = ({ token, user, onSucce
               <div className="sde-theme-checklist-row">
                 <Check size={12} /> Sandbox settings verified (No system permissions required)
               </div>
+              <div className={`sde-theme-checklist-row${idTaken ? ' sde-theme-checklist-row--warning' : ''}`}>
+                {idTaken ? <AlertTriangle size={12} /> : <Check size={12} />} Extension ID is unique
+              </div>
             </div>
           </div>
 
-          <Button onClick={handlePublish} disabled={publishing} variant="primary" fullWidth style={{ height: '36px' }}>
+          <Button onClick={handlePublish} disabled={publishing || idTaken} variant="primary" fullWidth style={{ height: '36px' }}>
             {publishing ? 'Generating & Publishing Theme...' : 'Compile & Publish Theme'}
           </Button>
         </div>
@@ -514,8 +526,6 @@ export const ThemeCreator: React.FC<ThemeCreatorProps> = ({ token, user, onSucce
       setActiveStep={setActiveStep}
       onPublish={handlePublish}
       publishing={publishing}
-      errorMsg={errorMsg}
-      setErrorMsg={setErrorMsg}
       previewTitle="Theme Live Preview"
       renderPreview={renderPreview}
       renderCode={renderCode}

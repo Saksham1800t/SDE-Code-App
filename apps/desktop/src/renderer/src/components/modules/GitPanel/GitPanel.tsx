@@ -11,10 +11,10 @@ import { EmbeddedGitGraphSection } from './EmbeddedGitGraphSection';
 import { GitStashPanel } from './GitStashPanel';
 import { EditSessionsPanel } from './EditSessionsPanel';
 import { GitHeatmap } from './GitHeatmap';
-import { AlertBanner } from '../../common/AlertBanner';
 import { Button } from '../../common/Button';
 import { customConfirm } from '../../../store/confirm';
 import { DIALOG_MESSAGES } from '../../../utils/dialogMessages';
+import { notify } from '../../../store/notifications';
 import { oneShotAIQuery } from '../../../utils/oneShotAIQuery';
 import { resolveConflictMarkers, type ConflictResolution } from '../../../utils/resolveConflictMarkers';
 import { AlertTriangle, Undo2 } from 'lucide-react';
@@ -65,8 +65,6 @@ export const GitPanel: React.FC = () => {
   const [commitMessage, setCommitMessage] = useState('');
   const [amendMode, setAmendMode] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
-  const [successMsg, setSuccessMsg] = useState('');
   const [generatingAI, setGeneratingAI] = useState(false);
   const [stagedCollapsed, setStagedCollapsed] = useState(false);
   const [changesCollapsed, setChangesCollapsed] = useState(false);
@@ -75,11 +73,11 @@ export const GitPanel: React.FC = () => {
   const effectiveDir = selectedRepoDir ?? workspacePath ?? undefined;
   const isMultiRepo = repoSummaries.length > 1;
 
-  const showSuccess = (msg: string) => { setSuccessMsg(msg); setTimeout(() => setSuccessMsg(''), 3500); };
-  const showError = (msg: string) => { setErrorMsg(msg); setTimeout(() => setErrorMsg(''), 5000); };
+  const showSuccess = (msg: string) => notify.success(msg);
+  const showError = (msg: string) => notify.error(msg);
 
   const withLoading = async (fn: () => Promise<any>, successText?: string) => {
-    setLoading(true); setErrorMsg('');
+    setLoading(true);
     try {
       await fn();
       if (successText) showSuccess(successText);
@@ -207,7 +205,6 @@ export const GitPanel: React.FC = () => {
               {loading ? 'Initializing…' : 'Initialize Git Repository'}
             </Button>
           </div>
-          {errorMsg && <AlertBanner type="error" message={errorMsg} onClose={() => setErrorMsg('')} />}
         </div>
         {/* The workspace root itself isn't a repo, but may still contain nested ones — surface those instead of hiding behind "not a repo". */}
         <div className="sde-panel-scroll">
@@ -308,16 +305,6 @@ export const GitPanel: React.FC = () => {
         onOpenBranchComparison={openBranchComparisonTab}
         onOpenGitGraph={openGitGraphTab}
       />
-
-      {/* Alerts */}
-      {successMsg && (
-        <AlertBanner type="success" message={successMsg} onClose={() => setSuccessMsg('')}
-          style={{ borderBottom: '1px solid rgba(63,185,80,0.15)', borderRadius: 0 }} />
-      )}
-      {errorMsg && (
-        <AlertBanner type="error" message={errorMsg} onClose={() => setErrorMsg('')}
-          style={{ borderBottom: '1px solid rgba(255,107,107,0.12)', borderRadius: 0 }} />
-      )}
 
       {/* Scrollable middle */}
       <div className="sde-panel-scroll">

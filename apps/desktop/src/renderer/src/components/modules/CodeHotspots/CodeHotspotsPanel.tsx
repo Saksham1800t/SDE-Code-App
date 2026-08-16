@@ -6,6 +6,7 @@ import { useAgentStore } from '../../../store/agent';
 import { intensityColor } from '../../../utils/heatmapColors';
 import { oneShotAIQuery } from '../../../utils/oneShotAIQuery';
 import { Button } from '../../common/Button';
+import { notify } from '../../../store/notifications';
 import { Sparkles } from 'lucide-react';
 
 export const CodeHotspotsPanel: React.FC = () => {
@@ -15,7 +16,6 @@ export const CodeHotspotsPanel: React.FC = () => {
   const { activeAIProvider, activeAIModel } = useAgentStore();
   const [aiInsight, setAiInsight] = useState<string | null>(null);
   const [analyzing, setAnalyzing] = useState(false);
-  const [analyzeError, setAnalyzeError] = useState<string | null>(null);
 
   useEffect(() => {
     gitLoadFileHotspots();
@@ -26,14 +26,13 @@ export const CodeHotspotsPanel: React.FC = () => {
   const handleAnalyze = async () => {
     if (!fileHotspots || fileHotspots.length === 0) return;
     setAnalyzing(true);
-    setAnalyzeError(null);
     try {
       const list = fileHotspots.slice(0, 20).map((h) => `${h.path}: ${h.changeCount} changes`).join('\n');
       const prompt = `Here are the most frequently-changed files in a git repository, ranked by change count:\n\n${list}\n\nIdentify likely risk areas, refactoring candidates, or notable patterns in this churn data. Keep it to 3-5 sentences.`;
       const insight = await oneShotAIQuery(activeAIProvider, activeAIModel, prompt);
       setAiInsight(insight);
     } catch (err: any) {
-      setAnalyzeError(err.message || 'Failed to generate insight.');
+      notify.error(err.message || 'Failed to generate insight.');
     } finally {
       setAnalyzing(false);
     }
@@ -57,7 +56,6 @@ export const CodeHotspotsPanel: React.FC = () => {
                 {analyzing ? 'Analyzing…' : <><Sparkles size={13} /> Analyze with AI</>}
               </Button>
             )}
-            {analyzeError && <div className="sde-code-hotspots-empty">{analyzeError}</div>}
           </div>
         )}
 

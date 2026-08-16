@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import type { DapConnection } from '../debug/dapConnection';
+import { notify } from './notifications';
 
 export type DebugSessionStatus = 'starting' | 'running' | 'paused' | 'terminated' | 'error';
 
@@ -72,6 +73,10 @@ export const useDebugStore = create<DebugState>((set, get) => ({
   },
 
   setSessionStatus: (sessionId, status, error) => {
+    // The status dot + inline "Terminated: <reason>" text (DebugPanel.tsx) is the right home
+    // for ongoing session state; the toast is just for the moment it actually happens, since
+    // that's easy to miss if the Debug panel isn't the active bottom-panel tab right now.
+    if (status === 'error' && error) notify.error(error, 'Debugger');
     set((state) => {
       const session = state.sessions[sessionId];
       if (!session) return state;

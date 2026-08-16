@@ -5,6 +5,7 @@ import { Button } from '../../common/Button';
 import { Switch } from '../../common/Switch';
 import { customConfirm } from '../../../store/confirm';
 import { DIALOG_MESSAGES } from '../../../utils/dialogMessages';
+import { notify } from '../../../store/notifications';
 import type { McpServerConfig, McpServerState } from '@sde-code/protocol';
 import { Plus, Trash2, RefreshCw, CheckCircle2, XCircle, Loader2, Circle } from 'lucide-react';
 
@@ -33,7 +34,18 @@ export const McpServersTab: React.FC = () => {
     if (!api?.mcpGetServers) return;
     const [serverList, stateList] = await Promise.all([api.mcpGetServers(), api.mcpGetServerStates()]);
     setServers(serverList);
-    setStates(Object.fromEntries(stateList.map((s) => [s.id, s])));
+    setStates((prev) => {
+      const next = Object.fromEntries(stateList.map((s) => [s.id, s]));
+      // Toast only on the transition into 'error' (a real event), not every re-render while
+      // it stays that way — the row's own status text is the right place for ongoing state.
+      for (const s of stateList) {
+        if (s.status === 'error' && prev[s.id]?.status !== 'error') {
+          const name = serverList.find((srv) => srv.id === s.id)?.name ?? s.id;
+          notify.error(s.error || `MCP server "${name}" failed to connect.`, name);
+        }
+      }
+      return next;
+    });
   };
 
   useEffect(() => {

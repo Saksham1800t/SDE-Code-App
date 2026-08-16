@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { resolveServerBaseUrl } from '../../../shared/serverConfig';
+import { notify } from './notifications';
 
 interface AuthState {
   token: string | null;
@@ -7,14 +8,12 @@ interface AuthState {
   user: { username: string; email: string } | null;
   isAuthenticated: boolean;
   loading: boolean;
-  error: string | null;
 
   initialize: () => Promise<void>;
   register: (username: string, email: string, password: string) => Promise<boolean>;
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
   deleteAccount: () => Promise<boolean>;
-  clearError: () => void;
   refreshSession: () => Promise<string | null>;
 }
 
@@ -29,7 +28,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   isAuthenticated: false,
   loading: false,
-  error: null,
 
   initialize: async () => {
     // Tokens live in the encrypted secure store (Electron safeStorage); only
@@ -56,7 +54,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   register: async (username, email, password) => {
-    set({ loading: true, error: null });
+    set({ loading: true });
     try {
       const response = await fetch(`${API_BASE}/register`, {
         method: 'POST',
@@ -82,13 +80,14 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       });
       return true;
     } catch (err: any) {
-      set({ error: err.message, loading: false });
+      notify.error(err.message);
+      set({ loading: false });
       return false;
     }
   },
 
   login: async (email, password) => {
-    set({ loading: true, error: null });
+    set({ loading: true });
     try {
       const response = await fetch(`${API_BASE}/login`, {
         method: 'POST',
@@ -114,7 +113,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       });
       return true;
     } catch (err: any) {
-      set({ error: err.message, loading: false });
+      notify.error(err.message);
+      set({ loading: false });
       return false;
     }
   },
@@ -138,8 +138,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       token: null,
       refreshToken: null,
       user: null,
-      isAuthenticated: false,
-      error: null
+      isAuthenticated: false
     });
   },
 
@@ -147,10 +146,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   deleteAccount: async () => {
     const token = get().token;
     if (!token) {
-      set({ error: 'You must be logged in to delete your account.' });
+      notify.error('You must be logged in to delete your account.');
       return false;
     }
-    set({ loading: true, error: null });
+    set({ loading: true });
     try {
       const response = await fetch(`${API_BASE}/me`, {
         method: 'DELETE',
@@ -171,17 +170,15 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         refreshToken: null,
         user: null,
         isAuthenticated: false,
-        loading: false,
-        error: null
+        loading: false
       });
       return true;
     } catch (err: any) {
-      set({ error: err.message, loading: false });
+      notify.error(err.message);
+      set({ loading: false });
       return false;
     }
   },
-
-  clearError: () => set({ error: null }),
 
   refreshSession: async () => {
     if (inFlightRefresh) return inFlightRefresh;

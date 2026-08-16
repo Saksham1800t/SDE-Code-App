@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Check } from 'lucide-react';
 import { getPanelTabRegistry } from '../../../panel/panelTabRegistry';
 import { usePanelTabsStore } from '../../../store/panelTabs';
@@ -6,6 +7,8 @@ import { usePanelLayoutStore, type PanelPosition } from '../../../store/panelLay
 import { useTerminalStore } from '../../../store/terminal';
 
 interface PanelOverflowMenuProps {
+  /** The "..." button's own rect, used to position the portalled menu relative to it. */
+  anchorRect: DOMRect;
   onClose: () => void;
 }
 
@@ -17,12 +20,25 @@ const POSITIONS: Array<{ id: PanelPosition; label: string }> = [
 ];
 
 // Flat list with section headers, not true flyout submenus — no flyout primitive exists in this codebase yet.
-export const PanelOverflowMenu: React.FC<PanelOverflowMenuProps> = ({ onClose }) => {
+export const PanelOverflowMenu: React.FC<PanelOverflowMenuProps> = ({ anchorRect, onClose }) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const registry = getPanelTabRegistry();
   const { hiddenIds, toggleTabHidden, showLabels, showIcons, setShowLabels, setShowIcons } = usePanelTabsStore();
   const { panelPosition } = usePanelLayoutStore();
   const { toggleTerminalPanel } = useTerminalStore();
+
+  // Rendered "below the button" first, then flipped to "above the button" after mount if there
+  // isn't enough room below — the same problem this menu previously had when the whole panel
+  // (and this dropdown along with it) got clipped by a short bottom panel's overflow boundary.
+  // Portalling to document.body fixes the clipping; the flip logic below keeps it fully visible.
+  const [flipUp, setFlipUp] = useState(false);
+
+  useLayoutEffect(() => {
+    const menu = menuRef.current;
+    if (!menu) return;
+    const rect = menu.getBoundingClientRect();
+    if (rect.bottom > window.innerHeight) setFlipUp(true);
+  }, []);
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
@@ -39,8 +55,16 @@ export const PanelOverflowMenu: React.FC<PanelOverflowMenuProps> = ({ onClose })
     };
   }, [onClose]);
 
-  return (
-    <div ref={menuRef} className="sde-tabbar-context-menu sde-panel-overflow-menu">
+  const style: React.CSSProperties = {
+    position: 'fixed',
+    right: window.innerWidth - anchorRect.right,
+    ...(flipUp
+      ? { bottom: window.innerHeight - anchorRect.top + 4 }
+      : { top: anchorRect.bottom + 4 }),
+  };
+
+  return createPortal(
+    <div ref={menuRef} className="sde-tabbar-context-menu sde-panel-overflow-menu" style={style}>
       <div className="sde-context-menu-header">Panel Tabs</div>
       {registry.map((tab) => (
         <button
@@ -85,6 +109,7 @@ export const PanelOverflowMenu: React.FC<PanelOverflowMenuProps> = ({ onClose })
       <button className="sde-menu-item" onClick={() => { toggleTerminalPanel(false); onClose(); }}>
         Hide Panel
       </button>
-    </div>
+    </div>,
+    document.body,
   );
 };

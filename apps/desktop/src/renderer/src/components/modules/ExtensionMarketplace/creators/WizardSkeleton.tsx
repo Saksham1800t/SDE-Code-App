@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import '../ExtensionMarketplace.css';
 import { Button } from '../../../common/Button';
-import { AlertBanner } from '../../../common/AlertBanner';
 
 interface WizardStep {
   title: string;
@@ -16,8 +15,6 @@ interface WizardSkeletonProps {
   onNext?: () => void;
   onPublish: () => void;
   publishing: boolean;
-  errorMsg: string;
-  setErrorMsg: (msg: string) => void;
   previewTitle: string;
   renderPreview: () => React.ReactNode;
   renderCode: () => React.ReactNode;
@@ -31,8 +28,6 @@ export const WizardSkeleton: React.FC<WizardSkeletonProps> = ({
   onNext,
   onPublish,
   publishing,
-  errorMsg,
-  setErrorMsg,
   previewTitle,
   renderPreview,
   renderCode,
@@ -42,15 +37,6 @@ export const WizardSkeleton: React.FC<WizardSkeletonProps> = ({
   return (
     <div className="sde-wizard">
       <div className="sde-wizard-left">
-        {errorMsg && (
-          <AlertBanner
-            type="error"
-            message={errorMsg}
-            onClose={() => setErrorMsg('')}
-            style={{ marginBottom: '16px' }}
-          />
-        )}
-
         <div className="sde-wizard-header">
           <div className="sde-wizard-step-info">
             <span className="sde-wizard-step-sub">

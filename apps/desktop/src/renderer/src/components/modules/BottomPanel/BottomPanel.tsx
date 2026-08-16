@@ -162,6 +162,7 @@ export const BottomPanel: React.FC = () => {
 
   // ── Overflow menu ────────────────────────────────────────────────────
   const [overflowOpen, setOverflowOpen] = useState(false);
+  const overflowBtnRef = useRef<HTMLButtonElement>(null);
 
   return (
     <div className="sde-bottom-panel">
@@ -206,13 +207,16 @@ export const BottomPanel: React.FC = () => {
             </button>
             <div className="sde-bottom-panel-overflow-anchor">
               <button
+                ref={overflowBtnRef}
                 className="sde-icon-btn"
                 title="More Actions..."
                 onClick={() => setOverflowOpen((v) => !v)}
               >
                 <MoreHorizontal size={14} />
               </button>
-              {overflowOpen && <PanelOverflowMenu onClose={() => setOverflowOpen(false)} />}
+              {overflowOpen && overflowBtnRef.current && (
+                <PanelOverflowMenu anchorRect={overflowBtnRef.current.getBoundingClientRect()} onClose={() => setOverflowOpen(false)} />
+              )}
             </div>
             <button className="sde-icon-btn" title="Hide Panel" onClick={() => toggleTerminalPanel(false)}>
               <X size={14} />

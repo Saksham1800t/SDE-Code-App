@@ -10,6 +10,7 @@ import {
   applyWriteBackToFileContent,
   type MultibufferExcerptRange,
 } from '../../../utils/multibuffer';
+import { notify } from '../../../store/notifications';
 import { Save } from 'lucide-react';
 
 interface MultibufferPanelProps {
@@ -28,8 +29,6 @@ export const MultibufferPanel: React.FC<MultibufferPanelProps> = ({ tabPath }) =
   const [initialText, setInitialText] = useState<string | null>(null);
   const [initialLanguagePath, setInitialLanguagePath] = useState<string>('multibuffer.txt');
   const [saving, setSaving] = useState(false);
-  const [saveError, setSaveError] = useState<string | null>(null);
-  const [saveSuccessAt, setSaveSuccessAt] = useState<number | null>(null);
 
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const excerptsRef = useRef<MultibufferExcerptRange[]>([]);
@@ -102,7 +101,6 @@ export const MultibufferPanel: React.FC<MultibufferPanelProps> = ({ tabPath }) =
     if (!editor || !api || !model) return;
 
     setSaving(true);
-    setSaveError(null);
     try {
       const excerptsWithContent = excerptsRef.current.map((excerpt, i) => {
         // Excerpt content decorations sit at odd indices (header, content, header, content, ...).
@@ -118,9 +116,9 @@ export const MultibufferPanel: React.FC<MultibufferPanelProps> = ({ tabPath }) =
         const newContent = applyWriteBackToFileContent(currentContent, writeBack.edits);
         await api.writeFile(writeBack.filePath, newContent);
       }
-      setSaveSuccessAt(Date.now());
+      notify.success('Multibuffer changes saved.');
     } catch (err) {
-      setSaveError(err instanceof Error ? err.message : 'Failed to save multibuffer changes.');
+      notify.error(err instanceof Error ? err.message : 'Failed to save multibuffer changes.');
     } finally {
       setSaving(false);
     }
@@ -132,8 +130,6 @@ export const MultibufferPanel: React.FC<MultibufferPanelProps> = ({ tabPath }) =
         <button className="sde-btn sde-btn--primary sde-btn--sm" onClick={handleSaveAll} disabled={saving || initialText === null}>
           <Save size={13} /> {saving ? 'Saving…' : 'Save All'}
         </button>
-        {saveError && <span className="sde-multibuffer-status sde-multibuffer-status--error">{saveError}</span>}
-        {!saveError && saveSuccessAt && <span className="sde-multibuffer-status sde-multibuffer-status--success">Saved</span>}
       </div>
       <div className="sde-multibuffer-editor">
         {initialText !== null && (

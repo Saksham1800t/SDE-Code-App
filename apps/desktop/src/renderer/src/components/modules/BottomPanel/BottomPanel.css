@@ -124,15 +124,11 @@
   display: flex;
 }
 
-/* Overrides .sde-tabbar-context-menu's position:fixed (that class was built
-   for the coordinate-computed portal pattern) — this menu isn't portalled,
-   it's anchored via its position:relative parent (.sde-bottom-panel-overflow-anchor). */
+/* Now genuinely portalled to document.body (see PanelOverflowMenu.tsx) — position:fixed comes
+   from .sde-tabbar-context-menu; top/bottom/right are set inline per-instance from the anchor
+   button's own rect, computed there rather than in CSS since it needs to flip above the button
+   when there isn't room below (e.g. a short bottom panel). This class only adds sizing on top. */
 .sde-panel-overflow-menu {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  left: auto;
-  margin-top: var(--space-2);
   min-width: 190px;
   max-height: min(70vh, 420px);
   overflow-y: auto;

@@ -6,9 +6,10 @@ import { Input, TextArea } from '../../../../common/Input';
 import { Select } from '../../../../common/Select';
 import { Switch } from '../../../../common/Switch';
 import { Button } from '../../../../common/Button';
-import { AlertBanner } from '../../../../common/AlertBanner';
 import { EXTENSION_CATEGORIES, ExtensionCategory } from '../../extensionCategories';
-import { Check, X } from 'lucide-react';
+import { useExtensionIdAvailability } from '../useExtensionIdAvailability';
+import { notify } from '../../../../../store/notifications';
+import { Check, X, AlertTriangle } from 'lucide-react';
 import { getPlaceholderIcon } from '../../../../../utils/extensionIcon';
 
 interface SnippetsCreatorProps {
@@ -34,7 +35,6 @@ export const SnippetsCreator: React.FC<SnippetsCreatorProps> = ({ token, user, o
   // Source snippet loading — one-way copy, this never writes back to the
   // original personal snippet file.
   const [loadingSource, setLoadingSource] = useState(true);
-  const [loadWarning, setLoadWarning] = useState('');
   const [snippets, setSnippets] = useState<SnippetEntry[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [previewEntryId, setPreviewEntryId] = useState<string | null>(null);
@@ -53,7 +53,8 @@ export const SnippetsCreator: React.FC<SnippetsCreatorProps> = ({ token, user, o
   const [tagsInput, setTagsInput] = useState('');
 
   const [publishing, setPublishing] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
+
+  const { taken: idTaken } = useExtensionIdAvailability(extensionId);
 
   useEffect(() => {
     let cancelled = false;
@@ -66,7 +67,7 @@ export const SnippetsCreator: React.FC<SnippetsCreatorProps> = ({ token, user, o
         const parsed = parseJsonc(raw, errors, { allowTrailingComma: true });
         if (cancelled) return;
         if (errors.length > 0) {
-          setLoadWarning(`Your personal ${languageId} snippet file has ${errors.length} syntax issue(s); loaded as much as possible.`);
+          notify.warning(`Your personal ${languageId} snippet file has ${errors.length} syntax issue(s); loaded as much as possible.`);
         }
         const entries: SnippetEntry[] = Object.entries(parsed && typeof parsed === 'object' ? parsed : {}).map(([name, def]: [string, any]) => ({
           id: genId(),
@@ -78,7 +79,7 @@ export const SnippetsCreator: React.FC<SnippetsCreatorProps> = ({ token, user, o
         setSnippets(entries);
         setPreviewEntryId(entries[0]?.id ?? null);
       } catch (err: any) {
-        if (!cancelled) setErrorMsg(`Could not load your personal ${languageId} snippets: ${err.message || err}`);
+        if (!cancelled) notify.error(`Could not load your personal ${languageId} snippets: ${err.message || err}`);
       } finally {
         if (!cancelled) setLoadingSource(false);
       }
@@ -135,19 +136,18 @@ export const SnippetsCreator: React.FC<SnippetsCreatorProps> = ({ token, user, o
 
   const handlePublish = async () => {
     if (!canPublish) {
-      setErrorMsg('Add at least one snippet, and make sure every snippet has a name and a prefix.');
+      notify.error('Add at least one snippet, and make sure every snippet has a name and a prefix.');
       return;
     }
     setPublishing(true);
-    setErrorMsg('');
     const api = window.api;
     if (!api || !api.scaffoldAndPublishExtension) {
-      setErrorMsg('Extension developer SDK IPC bridge is missing.');
+      notify.error('Extension developer SDK IPC bridge is missing.');
       setPublishing(false);
       return;
     }
     if (!token) {
-      setErrorMsg('You must be logged in to publish an extension.');
+      notify.error('You must be logged in to publish an extension.');
       setPublishing(false);
       return;
     }
@@ -174,7 +174,7 @@ export const SnippetsCreator: React.FC<SnippetsCreatorProps> = ({ token, user, o
 
       onSuccess(`Snippets extension "${displayName}" generated and published successfully!`);
     } catch (err: any) {
-      setErrorMsg(err.message || 'Compiler packaging failed.');
+      notify.error(err.message || 'Compiler packaging failed.');
     } finally {
       setPublishing(false);
     }
@@ -188,7 +188,6 @@ export const SnippetsCreator: React.FC<SnippetsCreatorProps> = ({ token, user, o
       title: 'Review Your Snippets',
       renderForm: () => (
         <div className="sde-flex-col" style={{ gap: '12px' }}>
-          {loadWarning && <AlertBanner type="error" message={loadWarning} onClose={() => setLoadWarning('')} />}
           {loadingSource ? (
             <p style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Loading your personal {languageId} snippets…</p>
           ) : snippets.length === 0 ? (
@@ -238,7 +237,14 @@ export const SnippetsCreator: React.FC<SnippetsCreatorProps> = ({ token, user, o
       renderForm: () => (
         <div className="sde-flex-col" style={{ gap: '12px' }}>
           <div className="sde-theme-creator-grid">
-            <Input label="Extension ID" value={extensionId} onChange={(e) => setExtensionId(e.target.value.replace(/\s+/g, '-').toLowerCase())} />
+            <div>
+              <Input label="Extension ID" value={extensionId} onChange={(e) => setExtensionId(e.target.value.replace(/\s+/g, '-').toLowerCase())} />
+              {idTaken && (
+                <p className="sde-wizard-id-warning">
+                  <AlertTriangle size={12} /> This ID is already taken in the marketplace — pick a different one.
+                </p>
+              )}
+            </div>
             <Input label="Display Name" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
           </div>
           <div className="sde-theme-creator-grid">
@@ -273,8 +279,8 @@ export const SnippetsCreator: React.FC<SnippetsCreatorProps> = ({ token, user, o
         <div className="sde-flex-col" style={{ gap: '16px' }}>
           <div className="sde-theme-publish-grid">
             <div>
-              <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>Target Directory</div>
-              <div style={{ fontSize: '11px', color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)', marginTop: '2px' }}>extensions/temp-publish</div>
+              <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>Extension ID</div>
+              <div style={{ fontSize: '11px', color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)', marginTop: '2px' }}>{extensionId}</div>
             </div>
             <div>
               <div style={{ fontSize: '10px', color: 'var(--text-muted)' }}>Capability</div>
@@ -294,10 +300,13 @@ export const SnippetsCreator: React.FC<SnippetsCreatorProps> = ({ token, user, o
               <div className="sde-theme-checklist-row">
                 <Check size={12} /> Your original personal snippet file will not be modified
               </div>
+              <div className={`sde-theme-checklist-row${idTaken ? ' sde-theme-checklist-row--warning' : ''}`}>
+                {idTaken ? <AlertTriangle size={12} /> : <Check size={12} />} Extension ID is unique
+              </div>
             </div>
           </div>
 
-          <Button onClick={handlePublish} disabled={publishing || !canPublish} variant="primary" fullWidth style={{ height: '36px' }}>
+          <Button onClick={handlePublish} disabled={publishing || !canPublish || idTaken} variant="primary" fullWidth style={{ height: '36px' }}>
             {publishing ? 'Generating & Publishing Extension...' : 'Compile & Publish Extension'}
           </Button>
         </div>
@@ -376,8 +385,6 @@ export const SnippetsCreator: React.FC<SnippetsCreatorProps> = ({ token, user, o
       setActiveStep={setActiveStep}
       onPublish={handlePublish}
       publishing={publishing}
-      errorMsg={errorMsg}
-      setErrorMsg={setErrorMsg}
       previewTitle="Snippet Live Preview"
       renderPreview={renderPreview}
       renderCode={renderCode}

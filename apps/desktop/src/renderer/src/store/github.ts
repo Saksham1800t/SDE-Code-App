@@ -35,14 +35,12 @@ interface GitHubState {
   comments: GitHubComment[];
   loadingDetail: boolean;
   postingComment: boolean;
-  commentError: string | null;
 
   /** Line-anchored review comments already posted on the active PR (from any past review). */
   reviewComments: GitHubReviewComment[];
   /** Comments composed locally, not yet submitted — cleared on submit or on closing/switching PRs. */
   draftComments: GitHubReviewDraftComment[];
   submittingReview: boolean;
-  reviewSubmitError: string | null;
 
   /** Checks for an already-stored token (from a previous session) — call once on app mount. */
   initialize: () => Promise<void>;
@@ -88,12 +86,10 @@ export const useGitHubStore = create<GitHubState>((set, get) => ({
   comments: [],
   loadingDetail: false,
   postingComment: false,
-  commentError: null,
 
   reviewComments: [],
   draftComments: [],
   submittingReview: false,
-  reviewSubmitError: null,
 
   initialize: async () => {
     const api = window.api;
@@ -227,7 +223,7 @@ export const useGitHubStore = create<GitHubState>((set, get) => ({
     if (!api || !repo) return;
     set({
       loadingDetail: true, activePullRequest: null, activePullRequestFiles: [], activeIssue: null,
-      comments: [], commentError: null, reviewComments: [], draftComments: [], reviewSubmitError: null,
+      comments: [], reviewComments: [], draftComments: [],
     });
     try {
       const [detail, files, comments, reviewComments] = await Promise.all([
@@ -250,7 +246,7 @@ export const useGitHubStore = create<GitHubState>((set, get) => ({
     if (!api || !repo) return;
     set({
       loadingDetail: true, activePullRequest: null, activePullRequestFiles: [], activeIssue: null,
-      comments: [], commentError: null, reviewComments: [], draftComments: [], reviewSubmitError: null,
+      comments: [], reviewComments: [], draftComments: [],
     });
     try {
       // No dedicated issue-detail endpoint — reuse the summary loadIssues() already fetched, falling back to whatever's cached.
@@ -266,8 +262,8 @@ export const useGitHubStore = create<GitHubState>((set, get) => ({
 
   closePullRequest: () => {
     set({
-      activePullRequest: null, activePullRequestFiles: [], activeIssue: null, comments: [], commentError: null,
-      reviewComments: [], draftComments: [], reviewSubmitError: null,
+      activePullRequest: null, activePullRequestFiles: [], activeIssue: null, comments: [],
+      reviewComments: [], draftComments: [],
     });
   },
 
@@ -276,13 +272,13 @@ export const useGitHubStore = create<GitHubState>((set, get) => ({
     const repo = get().repo;
     const trimmed = body.trim();
     if (!api || !repo || !trimmed) return false;
-    set({ postingComment: true, commentError: null });
+    set({ postingComment: true });
     try {
       const comment = await api.githubPostComment(repo.owner, repo.repo, number, trimmed);
       set({ comments: [...get().comments, comment] });
       return true;
     } catch (err: any) {
-      set({ commentError: err?.message || 'Failed to post comment.' });
+      notify.error(err?.message || 'Failed to post comment.');
       return false;
     } finally {
       set({ postingComment: false });
@@ -306,18 +302,18 @@ export const useGitHubStore = create<GitHubState>((set, get) => ({
     const { draftComments } = get();
     if (!api || !repo || !pr) return false;
     if (draftComments.length === 0 && !body.trim() && event === 'COMMENT') {
-      set({ reviewSubmitError: 'Add at least one comment or a summary before submitting.' });
+      notify.error('Add at least one comment or a summary before submitting.');
       return false;
     }
 
-    set({ submittingReview: true, reviewSubmitError: null });
+    set({ submittingReview: true });
     try {
       await api.githubSubmitReview(repo.owner, repo.repo, pr.number, pr.headSha, event, body.trim(), draftComments);
       const reviewComments = await api.githubGetReviewComments(repo.owner, repo.repo, pr.number);
       set({ reviewComments, draftComments: [] });
       return true;
     } catch (err: any) {
-      set({ reviewSubmitError: err?.message || 'Failed to submit review.' });
+      notify.error(err?.message || 'Failed to submit review.');
       return false;
     } finally {
       set({ submittingReview: false });

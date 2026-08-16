@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { getPanelTabRegistry } from '../panel/panelTabRegistry';
+import { notify } from './notifications';
 
 interface PanelTabsState {
   /** Ids currently visible, in user order. Ids absent here fall back to registry default order, appended at the end. */
@@ -84,11 +85,20 @@ export const usePanelTabsStore = create<PanelTabsState>((set, get) => ({
   },
 
   setShowLabels: (v) => {
+    // At least one of labels/icons must stay on, or the tab strip renders nothing to click.
+    if (!v && !get().showIcons) {
+      notify.warning('Turn on icons first — labels and icons can\'t both be off.');
+      return;
+    }
     set({ showLabels: v });
     window.api?.setSetting?.('ide-panel-show-labels', v ? '1' : '0');
   },
 
   setShowIcons: (v) => {
+    if (!v && !get().showLabels) {
+      notify.warning('Turn on labels first — labels and icons can\'t both be off.');
+      return;
+    }
     set({ showIcons: v });
     window.api?.setSetting?.('ide-panel-show-icons', v ? '1' : '0');
   },

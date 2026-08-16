@@ -3,9 +3,9 @@ import './SettingsPanel.css';
 import { Input } from '../../common/Input';
 import { Button } from '../../common/Button';
 import { Switch } from '../../common/Switch';
-import { AlertBanner } from '../../common/AlertBanner';
 import { customConfirm } from '../../../store/confirm';
 import { DIALOG_MESSAGES } from '../../../utils/dialogMessages';
+import { notify } from '../../../store/notifications';
 
 interface SyncTabProps {
   user: any;
@@ -14,15 +14,12 @@ interface SyncTabProps {
   register: (user: string, email: string, pass: string) => Promise<boolean>;
   logout: () => void;
   deleteAccount: () => Promise<boolean>;
-  authError: string | null;
-  clearError: () => void;
   isSyncEnabled: boolean;
   toggleSyncEnabled: (val: boolean) => void;
   pushSettings: () => Promise<boolean>;
   pullSettings: () => Promise<boolean>;
   lastSyncedAt: string | null;
   syncing: boolean;
-  syncError: string | null;
   usernameInput: string;
   setUsernameInput: (val: string) => void;
   emailInput: string;
@@ -31,20 +28,16 @@ interface SyncTabProps {
   setPasswordInput: (val: string) => void;
   isRegisterMode: boolean;
   setIsRegisterMode: (val: boolean) => void;
-  statusMsg: { type: 'error' | 'success'; text: string } | null;
-  setStatusMsg: (val: any) => void;
 }
 
 export const SyncTab: React.FC<SyncTabProps> = ({
   user, isAuthenticated, login, register, logout, deleteAccount,
-  authError, clearError,
   isSyncEnabled, toggleSyncEnabled, pushSettings, pullSettings,
-  lastSyncedAt, syncing, syncError,
+  lastSyncedAt, syncing,
   usernameInput, setUsernameInput,
   emailInput, setEmailInput,
   passwordInput, setPasswordInput,
   isRegisterMode, setIsRegisterMode,
-  statusMsg, setStatusMsg,
 }) => {
   return (
     <div className="sde-sync-tab">
@@ -57,13 +50,6 @@ export const SyncTab: React.FC<SyncTabProps> = ({
             Access Settings Sync and publish private/public extensions to SDE Marketplace.
           </p>
 
-          {(authError || statusMsg?.type === 'error') && (
-            <AlertBanner type="error" message={authError || statusMsg?.text || ''} onClose={() => { clearError(); setStatusMsg(null); }} />
-          )}
-          {statusMsg?.type === 'success' && (
-            <AlertBanner type="success" message={statusMsg.text} onClose={() => setStatusMsg(null)} />
-          )}
-
           <div className="sde-sync-form-fields">
             {isRegisterMode && (
               <Input label="Username" type="text" value={usernameInput} onChange={(e) => setUsernameInput(e.target.value)} placeholder="sde_dev" />
@@ -73,13 +59,12 @@ export const SyncTab: React.FC<SyncTabProps> = ({
 
             <Button
               onClick={async () => {
-                setStatusMsg(null); clearError();
                 if (isRegisterMode) {
                   const ok = await register(usernameInput, emailInput, passwordInput);
-                  if (ok) setStatusMsg({ type: 'success', text: 'Account created! Welcome.' });
+                  if (ok) notify.success('Account created! Welcome.');
                 } else {
                   const ok = await login(emailInput, passwordInput);
-                  if (ok) setStatusMsg({ type: 'success', text: 'Logged in successfully.' });
+                  if (ok) notify.success('Logged in successfully.');
                 }
               }}
               variant="primary"
@@ -90,7 +75,7 @@ export const SyncTab: React.FC<SyncTabProps> = ({
 
             <span
               className="sde-sync-toggle-link"
-              onClick={() => { setIsRegisterMode(!isRegisterMode); setStatusMsg(null); clearError(); }}
+              onClick={() => setIsRegisterMode(!isRegisterMode)}
             >
               {isRegisterMode ? 'Already have an account? Sign In' : "Don't have an account? Sign Up"}
             </span>
@@ -104,9 +89,8 @@ export const SyncTab: React.FC<SyncTabProps> = ({
               <span className="sde-tag">Developer</span>
             </div>
             <span className="sde-sync-email">{user?.email}</span>
-            {authError && <AlertBanner type="error" message={authError} onClose={clearError} />}
             <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
-              <Button onClick={() => { logout(); setStatusMsg(null); }} variant="danger" size="sm">
+              <Button onClick={() => logout()} variant="danger" size="sm">
                 Log Out
               </Button>
               <Button
@@ -117,7 +101,6 @@ export const SyncTab: React.FC<SyncTabProps> = ({
                     danger: true,
                   });
                   if (!confirmed) return;
-                  setStatusMsg(null);
                   await deleteAccount();
                 }}
                 variant="danger"
@@ -131,9 +114,6 @@ export const SyncTab: React.FC<SyncTabProps> = ({
           <div className="sde-sync-prefs-card">
             <h3 className="sde-sync-prefs-title">Sync Preferences</h3>
 
-            {syncError && <AlertBanner type="error" message={syncError} onClose={() => {}} />}
-            {statusMsg && <AlertBanner type={statusMsg.type} message={statusMsg.text} onClose={() => setStatusMsg(null)} />}
-
             <div className="sde-sync-toggle-row">
               <div className="sde-sync-toggle-label">
                 <span className="sde-sync-toggle-name">Settings Cloud Sync</span>
@@ -143,10 +123,10 @@ export const SyncTab: React.FC<SyncTabProps> = ({
             </div>
 
             <div className="sde-sync-action-row">
-              <Button onClick={async () => { setStatusMsg(null); const ok = await pushSettings(); if (ok) setStatusMsg({ type: 'success', text: 'Backup uploaded successfully!' }); }} disabled={syncing} style={{ flex: 1, height: '36px' }}>
+              <Button onClick={async () => { const ok = await pushSettings(); if (ok) notify.success('Backup uploaded successfully!'); }} disabled={syncing} style={{ flex: 1, height: '36px' }}>
                 {syncing ? 'Syncing...' : 'Backup Settings'}
               </Button>
-              <Button onClick={async () => { setStatusMsg(null); const ok = await pullSettings(); if (ok) setStatusMsg({ type: 'success', text: 'Settings restored successfully! Reloading configuration...' }); }} disabled={syncing} style={{ flex: 1, height: '36px' }}>
+              <Button onClick={async () => { const ok = await pullSettings(); if (ok) notify.success('Settings restored successfully! Reloading configuration...'); }} disabled={syncing} style={{ flex: 1, height: '36px' }}>
                 {syncing ? 'Syncing...' : 'Restore Settings'}
               </Button>
             </div>

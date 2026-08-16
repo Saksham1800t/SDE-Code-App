@@ -7,6 +7,7 @@ import { MultiFileDiffView } from './MultiFileDiffView';
 import { relativeTime } from '../../../utils/relativeTime';
 import { oneShotAIQuery } from '../../../utils/oneShotAIQuery';
 import { Button } from '../../common/Button';
+import { notify } from '../../../store/notifications';
 import { Sparkles, Rows3, List } from 'lucide-react';
 
 interface CommitDetailsPanelProps {
@@ -22,26 +23,23 @@ export const CommitDetailsPanel: React.FC<CommitDetailsPanelProps> = ({ hash, sh
   const { activeAIProvider, activeAIModel } = useAgentStore();
   const [aiSummary, setAiSummary] = useState<string | null>(null);
   const [generatingSummary, setGeneratingSummary] = useState(false);
-  const [summaryError, setSummaryError] = useState<string | null>(null);
   const [viewAllChanges, setViewAllChanges] = useState(false);
 
   useEffect(() => {
     gitLoadCommitFiles(hash);
     setAiSummary(null);
-    setSummaryError(null);
     setViewAllChanges(false);
   }, [hash]);
 
   const handleSummarize = async () => {
     setGeneratingSummary(true);
-    setSummaryError(null);
     try {
       const patch = await gitGetCommitPatch(hash);
       const prompt = `Summarize what this commit changes in plain English, focusing on intent and impact rather than mechanical line-by-line detail. Keep it to 2-4 sentences.\n\nCommit message: ${message}\n\n${patch.slice(0, 8000)}`;
       const summary = await oneShotAIQuery(activeAIProvider, activeAIModel, prompt);
       setAiSummary(summary);
     } catch (err: any) {
-      setSummaryError(err.message || 'Failed to generate summary.');
+      notify.error(err.message || 'Failed to generate summary.');
     } finally {
       setGeneratingSummary(false);
     }
@@ -66,7 +64,6 @@ export const CommitDetailsPanel: React.FC<CommitDetailsPanelProps> = ({ hash, sh
             {generatingSummary ? 'Summarizing…' : <><Sparkles size={13} /> Summarize with AI</>}
           </Button>
         )}
-        {summaryError && <div className="sde-commit-details-empty">{summaryError}</div>}
 
         <div className="sde-commit-details-files-header">
           <div className="sde-commit-details-section-label">

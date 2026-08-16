@@ -17,8 +17,8 @@ interface GitHubItemDetailPanelProps {
 export const GitHubItemDetailPanel: React.FC<GitHubItemDetailPanelProps> = ({ number, isPR }) => {
   const {
     repo, activePullRequest, activePullRequestFiles, activeIssue, comments,
-    loadingDetail, postingComment, commentError,
-    draftComments, submittingReview, reviewSubmitError,
+    loadingDetail, postingComment,
+    draftComments, submittingReview,
     openPullRequest, openIssue, postComment, submitReview,
   } = useGitHubStore();
   const [commentBody, setCommentBody] = useState('');
@@ -97,7 +97,6 @@ export const GitHubItemDetailPanel: React.FC<GitHubItemDetailPanelProps> = ({ nu
                 onChange={(e) => setReviewBody(e.target.value)}
                 rows={2}
               />
-              {reviewSubmitError && <div className="sde-github-auth-error">{reviewSubmitError}</div>}
               <div className="sde-github-review-toolbar-actions">
                 <Button variant="secondary" size="sm" disabled={submittingReview} onClick={() => handleSubmitReview('COMMENT')}>
                   {submittingReview ? 'Submitting…' : 'Comment'}
@@ -138,7 +137,6 @@ export const GitHubItemDetailPanel: React.FC<GitHubItemDetailPanelProps> = ({ nu
             onChange={(e) => setCommentBody(e.target.value)}
             rows={3}
           />
-          {commentError && <div className="sde-github-auth-error">{commentError}</div>}
           <Button
             variant="primary"
             size="sm"

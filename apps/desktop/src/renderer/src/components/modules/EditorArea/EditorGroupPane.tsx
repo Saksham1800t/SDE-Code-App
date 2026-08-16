@@ -31,6 +31,7 @@ import { MultibufferPanel } from './MultibufferPanel';
 import { NotebookPanel } from './NotebookPanel';
 import { useAuthStore } from '../../../store/auth';
 import { customAlert } from '../../../store/alerts';
+import { notify } from '../../../store/notifications';
 import { customConfirm } from '../../../store/confirm';
 import { DIALOG_MESSAGES } from '../../../utils/dialogMessages';
 import { parseModelines } from '../../../utils/modelines';
@@ -598,7 +599,7 @@ export const EditorGroupPane: React.FC<EditorGroupPaneProps> = ({ group, isActiv
                 templateType={activeTab.createExtensionTemplateType}
                 sourceLanguageId={activeTab.createExtensionSourceLanguageId}
                 onSuccess={(message) => {
-                  customAlert(message);
+                  notify.success(message);
                   closeFile(activeTab.path, { groupId: group.id });
                 }}
               />

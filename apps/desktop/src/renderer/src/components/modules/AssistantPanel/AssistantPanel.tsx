@@ -10,10 +10,10 @@ import { ToolRunGroup } from './ToolRunGroup';
 import { InputArea, AssistantMode } from './InputArea';
 import { MemoryPanel } from './MemoryPanel';
 import { AgentWorkingSetPanel } from './AgentWorkingSetPanel';
-import { AlertBanner } from '../../common/AlertBanner';
 import { extractCodeBlock } from './utils';
 import { getModelsForProvider } from '../../../utils/aiModels';
 import { markAIStreamStart, markAIStreamEnd } from '../../../utils/aiStreamLock';
+import { notify } from '../../../store/notifications';
 import { Sparkles, Brain, MessageSquare, Bot, Plus, X } from 'lucide-react';
 
 interface SavedConversation {
@@ -51,7 +51,6 @@ export const AssistantPanel: React.FC = () => {
   const [mode, setMode] = useState<AssistantMode>('ask');
   const [conversations, setConversations] = useState<SavedConversation[]>([]);
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [customModelName, setCustomModelName] = useState('');
   const [view, setView] = useState<'chat' | 'memory'>('chat');
 
@@ -92,7 +91,6 @@ export const AssistantPanel: React.FC = () => {
     if (isGenerating) handleAbort();
     setMessages([]);
     setActiveChatId(null);
-    setErrorMessage(null);
   };
 
   const handleLoadChat = (chatId: string) => {
@@ -103,7 +101,6 @@ export const AssistantPanel: React.FC = () => {
       const loadedMessages = JSON.parse(chat.messages);
       setMessages(loadedMessages);
       setActiveChatId(chatId);
-      setErrorMessage(null);
     } catch (e) {
       console.error('Failed to parse chat messages:', e);
     }
@@ -129,11 +126,10 @@ export const AssistantPanel: React.FC = () => {
 
     const api = window.api;
     if (!api) {
-      setErrorMessage('Bridge API is not available.');
+      notify.error('Bridge API is not available.');
       return;
     }
 
-    setErrorMessage(null);
     setIsGenerating(true);
 
     const userPrompt = inputValue.trim();
@@ -142,7 +138,7 @@ export const AssistantPanel: React.FC = () => {
     let finalPrompt = userPrompt;
     if (mode === 'edit') {
       if (!activeTab || activeTab.isSettings || activeTab.isDiff) {
-        setErrorMessage('Please select a valid open file to edit.');
+        notify.error('Please select a valid open file to edit.');
         setIsGenerating(false);
         return;
       }
@@ -178,7 +174,7 @@ Please output the FULL, updated contents of the file. Surround the code block wi
 
     const removeErrListener = api.onAIErr((sessionId: string, err: string) => {
       if (sessionId !== sessionIdRef.current) return;
-      setErrorMessage(err);
+      notify.error(err);
       setIsGenerating(false);
       setMessages((prev) => prev.filter((m) => !m.isStreaming || m.content !== ''));
     });
@@ -237,7 +233,7 @@ Please output the FULL, updated contents of the file. Surround the code block wi
 
     } catch (err: any) {
       console.error(err);
-      setErrorMessage(err.message || 'AI request failed.');
+      notify.error(err.message || 'AI request failed.');
       setIsGenerating(false);
     } finally {
       removeChunkListener();
@@ -253,15 +249,14 @@ Please output the FULL, updated contents of the file. Surround the code block wi
 
     const api = window.api;
     if (!api) {
-      setErrorMessage('Bridge API is not available.');
+      notify.error('Bridge API is not available.');
       return;
     }
     if (!workspacePath) {
-      setErrorMessage(mode === 'repo' ? 'Open a folder to use Ask Repository.' : 'Open a folder to use Agent Mode.');
+      notify.error(mode === 'repo' ? 'Open a folder to use Ask Repository.' : 'Open a folder to use Agent Mode.');
       return;
     }
 
-    setErrorMessage(null);
     setIsGenerating(true);
 
     const userPrompt = inputValue.trim();
@@ -311,7 +306,7 @@ Please output the FULL, updated contents of the file. Surround the code block wi
 
     const removeErrListener = api.onAgentErr((sessionId: string, err: string) => {
       if (sessionId !== sessionIdRef.current) return;
-      setErrorMessage(err);
+      notify.error(err);
     });
 
     const removeDoneListener = api.onAgentDone((sessionId: string) => {
@@ -347,7 +342,7 @@ Please output the FULL, updated contents of the file. Surround the code block wi
       }
     } catch (err: any) {
       console.error(err);
-      setErrorMessage(err.message || 'Agent request failed.');
+      notify.error(err.message || 'Agent request failed.');
       setIsGenerating(false);
     } finally {
       removeChunkListener();
@@ -369,19 +364,18 @@ Please output the FULL, updated contents of the file. Surround the code block wi
 
     const api = window.api;
     if (!api) {
-      setErrorMessage('Bridge API is not available.');
+      notify.error('Bridge API is not available.');
       return;
     }
     if (!workspacePath) {
-      setErrorMessage('Open a folder to use an External Agent.');
+      notify.error('Open a folder to use an External Agent.');
       return;
     }
     if (!selectedExternalAgentId) {
-      setErrorMessage('Configure an external agent first (Settings > External Agents).');
+      notify.error('Configure an external agent first (Settings > External Agents).');
       return;
     }
 
-    setErrorMessage(null);
     setIsGenerating(true);
 
     const userPrompt = inputValue.trim();
@@ -435,7 +429,7 @@ Please output the FULL, updated contents of the file. Surround the code block wi
       }
     } catch (err: any) {
       console.error(err);
-      setErrorMessage(err.message || 'External agent run failed.');
+      notify.error(err.message || 'External agent run failed.');
     } finally {
       removeChunkListener?.();
       removeDoneListener?.();
@@ -572,13 +566,6 @@ Please output the FULL, updated contents of the file. Surround the code block wi
               )
             )}
 
-            {errorMessage && (
-              <AlertBanner
-                type="error"
-                message={errorMessage}
-                onClose={() => setErrorMessage(null)}
-              />
-            )}
             <div ref={messageEndRef} />
           </div>
 

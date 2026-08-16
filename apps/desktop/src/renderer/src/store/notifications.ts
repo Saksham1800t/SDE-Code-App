@@ -5,9 +5,9 @@ const AUTO_DISMISS_MS: Record<NotificationLevel, number | null> = {
   info: 5000,
   success: 5000,
   warning: 8000,
-  // Errors stay as an active toast until the user dismisses them —
-  // auto-hiding a failure the user hasn't seen yet defeats the point.
-  error: null,
+  // Longer than warning, not indefinite — error text tends to be denser/more technical
+  // (stack traces, API error bodies), so it gets more time to be read before it clears itself.
+  error: 12000,
 };
 const MAX_HISTORY = 100;
 

@@ -13,7 +13,7 @@ interface EditSessionsPanelProps {
 export const EditSessionsPanel: React.FC<EditSessionsPanelProps> = ({ workspacePath }) => {
   const token = useAuthStore((s) => s.token);
   const {
-    pendingChangesAvailable, pushingPendingChanges, applyingPendingChanges, error,
+    pendingChangesAvailable, pushingPendingChanges, applyingPendingChanges,
     checkPendingChanges, pushPendingChanges, applyPendingChanges, dismissPendingChanges,
   } = useSyncStore();
 
@@ -60,7 +60,6 @@ export const EditSessionsPanel: React.FC<EditSessionsPanelProps> = ({ workspaceP
       >
         <CloudUpload size={13} /> {pushingPendingChanges ? 'Syncing…' : 'Backup Uncommitted Changes'}
       </button>
-      {error && <div className="sde-edit-sessions-error">{error}</div>}
     </div>
   );
 };

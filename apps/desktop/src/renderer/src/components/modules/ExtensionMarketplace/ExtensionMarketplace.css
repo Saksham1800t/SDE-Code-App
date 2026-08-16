@@ -596,6 +596,19 @@
   color: var(--text-muted);
 }
 
+.sde-theme-checklist-row--warning {
+  color: var(--color-warning);
+}
+
+.sde-wizard-id-warning {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: var(--space-2) 0 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-warning);
+}
+
 /* ── SnippetsCreator ──────────────────────────────────────── */
 .sde-snippet-entry-row {
   display: flex;

@@ -3,6 +3,7 @@ import { useAuthStore, authenticatedFetch } from './auth';
 import { useFeatureFlagsStore } from './featureFlags';
 import { useExtensionsStore } from './extensions';
 import { resolveServerBaseUrl } from '../../../shared/serverConfig';
+import { notify } from './notifications';
 
 /** ~500KB — over this, the user is asked to commit or stash first rather than syncing an ever-growing diff. Mirrors the server's own MAX_PENDING_DIFF_SIZE (apps/server/src/routes/sync.ts). */
 const MAX_PENDING_DIFF_SIZE = 500_000;
@@ -17,7 +18,6 @@ interface SyncState {
   lastSyncedAt: string | null;
   syncing: boolean;
   isSyncEnabled: boolean;
-  error: string | null;
 
   /** A pending-changes snapshot found on the server for the CURRENT workspace, offered via a "Pending changes available" banner — never applied automatically. */
   pendingChangesAvailable: PendingChanges | null;
@@ -43,7 +43,6 @@ export const useSyncStore = create<SyncState>((set, get) => ({
   lastSyncedAt: null,
   syncing: false,
   isSyncEnabled: false,
-  error: null,
 
   pendingChangesAvailable: null,
   pushingPendingChanges: false,
@@ -63,14 +62,14 @@ export const useSyncStore = create<SyncState>((set, get) => ({
   pushSettings: async () => {
     const authStore = useAuthStore.getState();
     if (!authStore.token) {
-      set({ error: 'You must be logged in to sync settings.' });
+      notify.error('You must be logged in to sync settings.');
       return false;
     }
 
     const api = window.api;
     if (!api) return false;
 
-    set({ syncing: true, error: null });
+    set({ syncing: true });
 
     try {
       // 1. Gather all settings, keybindings, and preferences from SQLite
@@ -116,7 +115,8 @@ export const useSyncStore = create<SyncState>((set, get) => ({
       return true;
 
     } catch (err: any) {
-      set({ error: err.message, syncing: false });
+      notify.error(err.message);
+      set({ syncing: false });
       return false;
     }
   },
@@ -124,14 +124,14 @@ export const useSyncStore = create<SyncState>((set, get) => ({
   pullSettings: async () => {
     const authStore = useAuthStore.getState();
     if (!authStore.token) {
-      set({ error: 'You must be logged in to pull settings.' });
+      notify.error('You must be logged in to pull settings.');
       return false;
     }
 
     const api = window.api;
     if (!api) return false;
 
-    set({ syncing: true, error: null });
+    set({ syncing: true });
 
     try {
       // 1. Download sync profile from server
@@ -196,7 +196,8 @@ export const useSyncStore = create<SyncState>((set, get) => ({
       return true;
 
     } catch (err: any) {
-      set({ error: err.message, syncing: false });
+      notify.error(err.message);
+      set({ syncing: false });
       return false;
     }
   },
@@ -204,21 +205,23 @@ export const useSyncStore = create<SyncState>((set, get) => ({
   pushPendingChanges: async (workspacePath) => {
     const authStore = useAuthStore.getState();
     if (!authStore.token) {
-      set({ error: 'You must be logged in to sync pending changes.' });
+      notify.error('You must be logged in to sync pending changes.');
       return false;
     }
     const api = window.api;
     if (!api?.gitGetWorkingTreeDiff) return false;
 
-    set({ pushingPendingChanges: true, error: null });
+    set({ pushingPendingChanges: true });
     try {
       const diff = await api.gitGetWorkingTreeDiff(workspacePath);
       if (!diff.trim()) {
-        set({ pushingPendingChanges: false, error: 'No uncommitted changes to sync.' });
+        notify.error('No uncommitted changes to sync.');
+        set({ pushingPendingChanges: false });
         return false;
       }
       if (diff.length > MAX_PENDING_DIFF_SIZE) {
-        set({ pushingPendingChanges: false, error: 'Too large to sync (over 500KB) — commit or stash your changes first.' });
+        notify.error('Too large to sync (over 500KB) — commit or stash your changes first.');
+        set({ pushingPendingChanges: false });
         return false;
       }
 
@@ -235,7 +238,8 @@ export const useSyncStore = create<SyncState>((set, get) => ({
       set({ pushingPendingChanges: false });
       return true;
     } catch (err: any) {
-      set({ error: err.message, pushingPendingChanges: false });
+      notify.error(err.message);
+      set({ pushingPendingChanges: false });
       return false;
     }
   },
@@ -269,7 +273,7 @@ export const useSyncStore = create<SyncState>((set, get) => ({
     const pending = get().pendingChangesAvailable;
     if (!api?.gitApplyWorkingTreeDiff || !pending || pending.folderKey !== workspacePath) return false;
 
-    set({ applyingPendingChanges: true, error: null });
+    set({ applyingPendingChanges: true });
     try {
       const applied = await api.gitApplyWorkingTreeDiff(workspacePath, pending.diff);
       if (!applied) {
@@ -280,7 +284,8 @@ export const useSyncStore = create<SyncState>((set, get) => ({
       get().dismissPendingChanges(workspacePath).catch(() => {});
       return true;
     } catch (err: any) {
-      set({ error: err.message, applyingPendingChanges: false });
+      notify.error(err.message);
+      set({ applyingPendingChanges: false });
       return false;
     }
   },
