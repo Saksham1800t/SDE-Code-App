@@ -15,7 +15,7 @@ import { parseGitHubRemoteUrl, type GitHubRepoRef } from '../utils/gitHubRepo';
 import { notify } from './notifications';
 
 // Device-flow client ids aren't secret (no client_secret needed) — swap for your own GitHub OAuth App's client id if you fork this project.
-const GITHUB_CLIENT_ID = 'REPLACE_WITH_YOUR_GITHUB_OAUTH_CLIENT_ID';
+const GITHUB_CLIENT_ID: string = 'Ov23liCr9ZYCUGZfVobE';
 const GITHUB_CLIENT_ID_IS_PLACEHOLDER = GITHUB_CLIENT_ID === 'REPLACE_WITH_YOUR_GITHUB_OAUTH_CLIENT_ID';
 
 interface GitHubState {
