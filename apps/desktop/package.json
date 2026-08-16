@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "description": "AI-First Desktop IDE",
   "main": "dist-electron/main/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Saksham1800t/SDE-Code-App.git"
+  },
+  "author": "Saksham Agarwal",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && electron-builder",
