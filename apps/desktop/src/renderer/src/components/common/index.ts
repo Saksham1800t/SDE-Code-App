@@ -10,3 +10,4 @@ export * from './PromptDialog';
 export * from './UnsavedChangesDialog';
 export * from './ToastContainer';
 
+export * from './UpdateBanner';

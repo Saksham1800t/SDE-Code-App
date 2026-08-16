@@ -4,6 +4,7 @@ import { createTerminalSession, writeTerminalInput, resizeTerminalSession, close
 import { getPathExecutables } from '../main/services/pathExecutables';
 import { indexWorkspace, reindexFile } from '../main/services/indexer';
 import { listPorts, addManualPort, removePort, setPortLabel, startTunnel, stopTunnel } from '../main/services/ports';
+import { checkForUpdates, quitAndInstall } from '../main/services/updater';
 import { createIpcHandlerRegistrar } from '../platform/ipc';
 import type { GitIpcContract, FsIpcContract, DbIpcContract, ExtensionContributionsIpcContract, AiIpcContract, ClipboardIpcContract, SnippetsIpcContract, ExtensionMarketplaceIpcContract, SearchIpcContract, PortsIpcContract, TerminalIpcContract, GitHubIpcContract, McpIpcContract, ProjectIndexerIpcContract, CodeMapIpcContract, SecureStoreIpcContract, LspIpcContract, LspRpcMessage, DapIpcContract, DapMessage, ExternalAgentIpcContract, NotebookIpcContract } from '@sde-code/protocol';
 import { gitService, fileSystemService, databaseService, aiService, searchService, commandRegistry, statusBarRegistry, themeRegistry, snippetsService, snippetsRegistry, walkthroughsRegistry, extensionMarketplaceService, githubService, mcpService, impactAnalysisService, lspService, languageServerRegistry, dapService, debugAdapterRegistry, languageDefinitionRegistry, externalAgentService, notebookKernelService } from './services';
@@ -475,5 +476,9 @@ export function registerIPCHandlers() {
     if (!/^https?:\/\//i.test(url)) return;
     await shell.openExternal(url);
   });
+
+  // Auto-update — updater:status is a push event via setUpdaterBroadcastWindow, same pattern as ports:detected/closed above.
+  ipcMain.handle('updater:check', () => checkForUpdates());
+  ipcMain.on('updater:quitAndInstall', () => quitAndInstall());
 }
 

@@ -1,0 +1,65 @@
+.sde-update-banner {
+  position: fixed;
+  bottom: var(--space-12);
+  left: var(--space-12);
+  z-index: 100000;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-6);
+  width: 340px;
+  max-width: calc(100vw - 32px);
+  padding: var(--space-8) var(--space-10);
+  border-radius: var(--radius-md);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-left: 3px solid var(--accent-cyan);
+  box-shadow: var(--glass-shadow);
+  animation: sdeUpdateBannerIn 0.15s ease;
+}
+
+@keyframes sdeUpdateBannerIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.sde-update-banner-icon {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: var(--accent-cyan);
+}
+
+.sde-update-banner-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.sde-update-banner-title {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.sde-update-banner-message {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.sde-update-banner-close {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.sde-update-banner-close:hover {
+  color: var(--text-secondary);
+  background: color-mix(in srgb, var(--text-primary) 8%, transparent);
+}

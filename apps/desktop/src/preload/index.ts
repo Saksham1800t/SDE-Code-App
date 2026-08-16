@@ -1,6 +1,7 @@
 import { contextBridge, ipcRenderer } from 'electron';
 import { createIpcInvokerFactory } from '../platform/ipc';
 import type { GitIpcContract, FsIpcContract, DbIpcContract, AiIpcContract, AgentIpcContract, ExtensionContributionsIpcContract, ClipboardIpcContract, AgentToolCallEvent, AgentFileChange, AgentApprovalRequest, SnippetsIpcContract, ExtensionMarketplaceIpcContract, SearchIpcContract, PortsIpcContract, PortEntry, TerminalIpcContract, GitHubIpcContract, McpIpcContract, ProjectIndexerIpcContract, CodeMapIpcContract, SecureStoreIpcContract, LspIpcContract, LspMessageEvent, LspRpcMessage, DapIpcContract, DapMessageEvent, DapMessage, ExternalAgentIpcContract, NotebookIpcContract, NotebookKernelStatus } from '@sde-code/protocol';
+import type { UpdaterStatus } from '../shared/updaterTypes';
 
 const gitInvoker = createIpcInvokerFactory<GitIpcContract>();
 const fsInvoker = createIpcInvokerFactory<FsIpcContract>();
@@ -363,6 +364,15 @@ const api = {
     const listener = (_event: any, line: string) => callback(line);
     ipcRenderer.on('log:entry', listener);
     return () => { ipcRenderer.off('log:entry', listener); };
+  },
+
+  // Auto-update — updater:status is a push event, same pattern as onPortDetected above.
+  checkForUpdates: () => ipcRenderer.invoke('updater:check'),
+  quitAndInstallUpdate: () => ipcRenderer.send('updater:quitAndInstall'),
+  onUpdaterStatus: (callback: (status: UpdaterStatus) => void) => {
+    const listener = (_event: any, status: UpdaterStatus) => callback(status);
+    ipcRenderer.on('updater:status', listener);
+    return () => { ipcRenderer.off('updater:status', listener); };
   },
 
   // OS Platform

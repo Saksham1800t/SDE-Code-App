@@ -6,6 +6,7 @@ import { databaseService, extensionHostService, logService, snippetsService, mcp
 import { registerIPCHandlers } from './ipc';
 import { setPortsBroadcastWindow, startPortPolling } from '../main/services/ports';
 import { closeAllTerminalSessions } from '../main/services/terminal';
+import { setUpdaterBroadcastWindow, checkForUpdates } from '../main/services/updater';
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -53,9 +54,12 @@ async function createWindow() {
 
   mainWindow.once('ready-to-show', () => {
     mainWindow?.show();
+    // Delayed so the update check doesn't compete with startup indexing/LSP work for I/O and CPU.
+    setTimeout(() => checkForUpdates(), 3000);
   });
 
   setPortsBroadcastWindow(mainWindow);
+  setUpdaterBroadcastWindow(mainWindow);
   startPortPolling();
   lspService.setBroadcastWindow(mainWindow);
   dapService.setBroadcastWindow(mainWindow);

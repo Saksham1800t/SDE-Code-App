@@ -25,7 +25,8 @@ import { LanguagePickerDialog } from './components/modules/SettingsPanel/Languag
 import { TaskPickerDialog } from './components/modules/TaskRunner/TaskPickerDialog';
 import { ensureTasksLoadedThenAlertIfEmpty } from './store/tasks';
 import { useExtensionsStore } from './store/extensions';
-import { AlertDialog, ConfirmDialog, PromptDialog, UnsavedChangesDialog, ToastContainer } from './components/common';
+import { AlertDialog, ConfirmDialog, PromptDialog, UnsavedChangesDialog, ToastContainer, UpdateBanner } from './components/common';
+import { useUpdaterStore } from './store/updater';
 import { customAlert } from './store/alerts';
 import { DIALOG_MESSAGES } from './utils/dialogMessages';
 import { FolderOpen, FolderPlus } from 'lucide-react';
@@ -222,6 +223,7 @@ export const App: React.FC = () => {
     useAgentProfilesStore.getState().initialize();
     useToolchainStore.getState().loadToolchain();
     useGitHubStore.getState().initialize();
+    useUpdaterStore.getState().initialize();
   }, [initializeTheme, loadFeatureFlags, initializeCommands, initializePanelTabs, initializePanelLayout]);
 
   useEffect(() => {
@@ -1125,6 +1127,7 @@ export const App: React.FC = () => {
       <PromptDialog />
       <UnsavedChangesDialog />
       <ToastContainer />
+      <UpdateBanner />
     </div>
   );
 };
