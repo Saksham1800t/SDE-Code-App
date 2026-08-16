@@ -1,0 +1,162 @@
+/* ============================================================
+   BottomPanel.css — Problems/Terminal/Ports tab host
+   ============================================================ */
+
+.sde-bottom-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--bg-chrome);
+}
+
+.sde-bottom-panel-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px 0 10px;
+  height: 28px;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-chrome);
+}
+
+.sde-bottom-panel-tabs-left {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  gap: var(--space-1);
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.sde-bottom-panel-tabs-left::-webkit-scrollbar {
+  display: none;
+}
+
+/* VS Code's own panel tabs are unbold, regular-weight, icon+label — not
+   the chunky all-caps look this had before restyling. */
+.sde-bottom-panel-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0 10px;
+  height: 100%;
+  font-size: var(--font-size-base);
+  font-weight: 400;
+  color: var(--text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.sde-bottom-panel-tab svg {
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.sde-bottom-panel-tab:hover {
+  color: var(--text-secondary);
+}
+
+.sde-bottom-panel-tab.active {
+  color: var(--text-primary);
+  border-bottom-color: var(--accent-cyan);
+}
+
+.sde-bottom-panel-tab.active svg {
+  opacity: 1;
+}
+
+.sde-bottom-panel-tab--dragging {
+  opacity: 0.5;
+}
+
+.sde-bottom-panel-tab--drag-over {
+  border-left: 2px solid var(--accent-cyan);
+}
+
+.sde-bottom-panel-badge {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  border-radius: var(--radius-lg);
+  padding: 0 var(--space-3);
+  min-width: 16px;
+  text-align: center;
+  line-height: 16px;
+}
+
+.sde-bottom-panel-badge--error {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
+.sde-bottom-panel-badge--warning {
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+}
+
+.sde-bottom-panel-badge--info {
+  background: var(--color-info-bg);
+  color: var(--color-info);
+}
+
+.sde-bottom-panel-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+.sde-bottom-panel-actions-view,
+.sde-bottom-panel-actions-global {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.sde-bottom-panel-overflow-anchor {
+  position: relative;
+  display: flex;
+}
+
+/* Overrides .sde-tabbar-context-menu's position:fixed (that class was built
+   for the coordinate-computed portal pattern) — this menu isn't portalled,
+   it's anchored via its position:relative parent (.sde-bottom-panel-overflow-anchor). */
+.sde-panel-overflow-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: auto;
+  margin-top: var(--space-2);
+  min-width: 190px;
+  max-height: min(70vh, 420px);
+  overflow-y: auto;
+}
+
+.sde-menu-item-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  flex-shrink: 0;
+  color: var(--accent-cyan);
+}
+
+.sde-bottom-panel-body {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.sde-bottom-panel-pane {
+  height: 100%;
+}
+
+.sde-bottom-panel-pane--hidden {
+  display: none;
+}

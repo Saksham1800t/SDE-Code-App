@@ -1,0 +1,36 @@
+{
+  "id": "demo.walkthrough",
+  "name": "Demo Walkthrough",
+  "version": "1.0.0",
+  "description": "Example extension demonstrating declarative contributes.walkthroughs.",
+  "publisher": "sde-code",
+  "contributes": {
+    "walkthroughs": [
+      {
+        "id": "demo-tour",
+        "title": "Demo Extension Tour",
+        "description": "A short tour contributed by an extension, shown alongside the built-in checklist.",
+        "steps": [
+          {
+            "id": "open-terminal",
+            "title": "Open a terminal",
+            "description": "Launch an integrated terminal session.",
+            "command": "terminal.new"
+          },
+          {
+            "id": "open-source-control",
+            "title": "Check Source Control",
+            "description": "Open the Git panel to see your working tree status.",
+            "command": "view.git"
+          },
+          {
+            "id": "run-a-task",
+            "title": "Run a task",
+            "description": "Open the task runner to execute a command defined in .sde/tasks.json.",
+            "command": "tasks.runTask"
+          }
+        ]
+      }
+    ]
+  }
+}

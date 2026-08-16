@@ -1,0 +1,154 @@
+/* ============================================================
+   CodeMapPanel.css — spatial Code Map canvas (Phase 41)
+   ============================================================ */
+
+.sde-codemap-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: var(--space-8);
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+.sde-codemap-canvas {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+/* ── ReactFlow chrome, re-themed to the app's own tokens instead of its
+   built-in light/dark colorMode — same "override via CSS custom
+   properties" approach EditorGroupPane.tsx already uses for Monaco's find
+   widget/context menu. ── */
+.sde-codemap-canvas .react-flow {
+  background: var(--bg-secondary);
+}
+
+.sde-codemap-canvas .react-flow__controls {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--glass-shadow);
+  overflow: hidden;
+}
+
+.sde-codemap-canvas .react-flow__controls-button {
+  background: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.sde-codemap-canvas .react-flow__controls-button:hover {
+  background: var(--bg-chrome);
+}
+
+.sde-codemap-canvas .react-flow__controls-button svg {
+  fill: var(--text-primary);
+}
+
+.sde-codemap-canvas .react-flow__minimap {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+}
+
+.sde-codemap-canvas .react-flow__attribution {
+  background: transparent;
+  color: var(--text-muted);
+}
+
+/* ── Nodes, colored per kind ── */
+.sde-codemap-node {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  padding: var(--space-3) var(--space-4);
+  cursor: pointer;
+}
+
+.sde-codemap-node--frontend-caller {
+  border-color: color-mix(in srgb, var(--accent-cyan) 55%, var(--border-color));
+}
+
+.sde-codemap-node--route-handler {
+  border-color: color-mix(in srgb, var(--accent-purple) 55%, var(--border-color));
+}
+
+.sde-codemap-node--module {
+  border-color: var(--border-color);
+}
+
+.sde-codemap-canvas .react-flow__edge-path {
+  stroke: var(--text-muted);
+}
+
+.sde-codemap-canvas .react-flow__edge.sde-codemap-edge--calls-route .react-flow__edge-path {
+  stroke: var(--accent-purple);
+}
+
+.sde-codemap-canvas .react-flow__edge.sde-codemap-edge--imports .react-flow__edge-path {
+  stroke: var(--accent-cyan);
+  opacity: 0.6;
+}
+
+/* ── Legend / hint bar ── */
+.sde-codemap-legend {
+  position: absolute;
+  bottom: var(--space-6);
+  left: var(--space-6);
+  right: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-6);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-2xs);
+  z-index: 10;
+}
+
+.sde-codemap-legend-hint {
+  color: var(--text-muted);
+}
+
+.sde-codemap-legend-items {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.sde-codemap-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-secondary);
+}
+
+.sde-codemap-legend-item::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-color);
+}
+
+.sde-codemap-legend-item--frontend-caller::before {
+  border-color: var(--accent-cyan);
+}
+
+.sde-codemap-legend-item--route-handler::before {
+  border-color: var(--accent-purple);
+}
+
+.sde-codemap-legend-item--module::before {
+  border-color: var(--text-muted);
+}

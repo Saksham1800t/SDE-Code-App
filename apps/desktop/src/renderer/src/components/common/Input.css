@@ -1,0 +1,81 @@
+/* ============================================================
+   Input.css — Input and TextArea component styles
+   ============================================================ */
+
+.sde-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.sde-input-label {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.sde-input,
+.sde-textarea {
+  width: 100%;
+  padding: var(--space-4) var(--space-6);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  outline: none;
+  font-family: var(--font-sans);
+  transition: var(--transition-smooth);
+  box-sizing: border-box;
+}
+
+/* ── Focus states ─────────────────────────────────────────── */
+/* Uses --focus-ring-* (never disabled by applyThemeVariables()), not the
+   decorative --accent-*-glow tokens — this is keyboard/click focus
+   indication, not ambient glow, and must stay visible on every theme. */
+.sde-input--focus-cyan:focus,
+.sde-textarea--focus-cyan:focus {
+  border-color: var(--accent-cyan);
+  box-shadow: var(--focus-ring-cyan);
+}
+
+.sde-input--focus-purple:focus,
+.sde-textarea--focus-purple:focus {
+  border-color: var(--accent-purple);
+  box-shadow: var(--focus-ring-purple);
+}
+
+/* ── Password reveal toggle ───────────────────────────────── */
+.sde-input-reveal-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.sde-input--has-reveal {
+  padding-right: 34px;
+}
+
+.sde-input-reveal-btn {
+  position: absolute;
+  right: var(--space-4);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 2px;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+}
+
+.sde-input-reveal-btn:hover {
+  color: var(--text-secondary);
+}
+
+/* ── Textarea specific ────────────────────────────────────── */
+.sde-textarea {
+  resize: none;
+}

@@ -1,0 +1,109 @@
+/* ============================================================
+   CommandPalette.css — Modal Command Palette Styles
+   ============================================================ */
+
+.sde-palette-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 80px;
+  z-index: 99999;
+}
+
+.sde-palette-container {
+  width: 600px;
+  background: var(--bg-secondary);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--radius-xl);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sde-palette-search-row {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sde-palette-search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: var(--font-size-lg);
+  font-family: var(--font-sans);
+}
+
+.sde-palette-list {
+  max-height: 320px;
+  overflow-y: auto;
+  padding: var(--space-3) 0;
+}
+
+.sde-palette-empty {
+  padding: var(--space-8);
+  text-align: center;
+  color: var(--text-muted);
+  font-size: var(--font-size-md);
+}
+
+/* ── Item row ─────────────────────────────────────────────── */
+.sde-palette-item {
+  padding: var(--space-4) var(--space-8);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  background: transparent;
+  border-left: 3px solid transparent;
+  transition: background 0.1s ease;
+}
+
+.sde-palette-item.active {
+  background: color-mix(in srgb, var(--accent-cyan) 8%, transparent);
+  border-left-color: var(--accent-cyan);
+}
+
+.sde-palette-item-category {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sde-palette-item.active .sde-palette-item-category {
+  color: var(--accent-cyan);
+}
+
+.sde-palette-item-name {
+  font-size: var(--font-size-md);
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.sde-palette-item-kb {
+  font-size: var(--font-size-xs);
+  background: color-mix(in srgb, var(--text-primary) 5%, transparent);
+  padding: 3px 6px;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+  font-family: var(--font-mono);
+}
+
+.sde-palette-item.active .sde-palette-item-kb {
+  color: var(--accent-cyan);
+}

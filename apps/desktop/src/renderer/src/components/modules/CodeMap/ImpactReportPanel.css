@@ -1,0 +1,128 @@
+/* ============================================================
+   ImpactReportPanel.css — Code Map + AI Impact Analysis (Phase 37)
+   ============================================================ */
+
+.sde-impact-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  background: var(--bg-chrome);
+  color: var(--text-primary);
+  padding: var(--space-6);
+  gap: var(--space-6);
+}
+
+.sde-impact-placeholder {
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+  padding: var(--space-8);
+  text-align: center;
+}
+
+.sde-impact-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--text-primary);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sde-impact-target-path {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.sde-impact-view-in-map-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: none;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: 400;
+  padding: var(--space-2) var(--space-4);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.sde-impact-view-in-map-btn:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.sde-impact-disclaimer {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.sde-impact-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sde-impact-group-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.sde-impact-group-count {
+  font-size: var(--font-size-2xs);
+  color: var(--text-muted);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-pill);
+  padding: 0 var(--space-3);
+}
+
+.sde-impact-empty {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  padding: var(--space-2) 0;
+}
+
+.sde-impact-entry {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-align: left;
+}
+
+.sde-impact-entry:hover {
+  background: var(--bg-tertiary);
+}
+
+.sde-impact-entry-path {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sde-impact-run-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: fit-content;
+  margin-top: var(--space-2);
+}

@@ -1,0 +1,163 @@
+/* ============================================================
+   TerminalArea.css — Terminal area & terminal tab styles
+   ============================================================ */
+
+/* ── Outer terminal container ─────────────────────────────── */
+/* Row, not column: VS Code shows multiple terminal instances as a vertical
+   list beside the terminal content, not as tabs stacked above it. */
+.sde-terminal-area {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  background: var(--bg-chrome);
+}
+
+/* ── Terminal viewport wrapper ────────────────────────────── */
+.sde-terminal-viewport {
+  flex: 1;
+  padding: var(--space-4);
+  overflow: hidden;
+  background: var(--bg-chrome);
+  position: relative;
+}
+
+/* ── Per-terminal xterm container ─────────────────────────── */
+.sde-terminal-instance {
+  width: 100%;
+  height: 100%;
+}
+
+.sde-terminal-instance--hidden {
+  display: none;
+}
+
+/* ── Command-safety-gate overlay (floats above the buffer) ── */
+.sde-terminal-safety-overlay {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  z-index: 5;
+  background: var(--bg-chrome);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-6);
+  font-size: var(--font-size-base);
+  box-shadow: var(--glass-shadow);
+}
+
+.sde-terminal-safety-checking {
+  color: var(--text-muted);
+}
+
+.sde-terminal-safety-confirm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sde-terminal-safety-title {
+  color: var(--color-warning);
+  font-weight: 600;
+}
+
+.sde-terminal-safety-explanation {
+  color: var(--text-secondary);
+}
+
+.sde-terminal-safety-hint {
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.sde-terminal-safety-answer {
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+}
+
+/* ── Terminal sessions sidebar (right side, VS Code style) ── */
+.sde-terminal-sessions-sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 140px;
+  flex-shrink: 0;
+  border-left: 1px solid var(--border-color);
+  background: var(--bg-chrome);
+  overflow-y: auto;
+}
+
+.sde-terminal-session-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  height: 22px;
+  padding: 0 var(--space-4);
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+  border-left: 2px solid transparent;
+  transition: background 0.1s ease, color 0.1s ease;
+}
+
+.sde-terminal-session-icon {
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.sde-terminal-session-item.active .sde-terminal-session-icon {
+  opacity: 1;
+}
+
+.sde-terminal-session-rename-input {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--font-size-sm);
+  padding: 0 var(--space-2);
+}
+
+.sde-terminal-session-item:hover {
+  background: color-mix(in srgb, var(--text-primary) 4%, transparent);
+}
+
+.sde-terminal-session-item.active {
+  background: color-mix(in srgb, var(--accent-cyan) 8%, transparent);
+  border-left-color: var(--accent-cyan);
+  color: var(--text-primary);
+}
+
+.sde-terminal-session-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1;
+}
+
+.sde-terminal-history-list {
+  display: flex;
+  flex-direction: column;
+  max-height: 320px;
+  overflow-y: auto;
+  gap: 2px;
+}
+
+.sde-terminal-history-item {
+  text-align: left;
+  padding: var(--space-6) var(--space-8);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sde-terminal-history-item:hover {
+  background: color-mix(in srgb, var(--text-primary) 8%, transparent);
+  color: var(--text-primary);
+}

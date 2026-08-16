@@ -1,0 +1,154 @@
+.sde-branch-comparison-panel {
+  height: 100%;
+  background: var(--bg-secondary);
+  overflow-y: auto;
+  padding: var(--space-12) var(--space-15);
+}
+
+.sde-branch-comparison-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.sde-branch-comparison-title {
+  font-size: var(--font-size-xl);
+  font-weight: 650;
+  color: var(--accent-cyan);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sde-branch-comparison-picker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.sde-branch-comparison-select {
+  flex: 1;
+  min-width: 0;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 8px 10px;
+  color: var(--text-primary);
+  font-size: var(--font-size-md);
+  font-family: var(--font-mono);
+}
+
+.sde-branch-comparison-arrow {
+  color: var(--text-muted);
+  font-size: var(--font-size-md);
+  font-family: var(--font-mono);
+  flex-shrink: 0;
+}
+
+.sde-branch-comparison-compare-btn {
+  background: var(--accent-cyan);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-8);
+  color: var(--color-on-accent);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.sde-branch-comparison-compare-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.sde-branch-comparison-section-label {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 20px 0 10px;
+}
+
+.sde-branch-comparison-loading,
+.sde-branch-comparison-empty {
+  color: var(--text-muted);
+  font-size: var(--font-size-md);
+  padding: var(--space-6) 0;
+}
+
+.sde-branch-comparison-file-list {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.sde-branch-comparison-file-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: var(--space-4) var(--space-6);
+  cursor: pointer;
+  border-bottom: 1px solid var(--border-color);
+  transition: background 0.1s;
+}
+
+.sde-branch-comparison-file-row:last-child {
+  border-bottom: none;
+}
+
+.sde-branch-comparison-file-row:hover {
+  background: color-mix(in srgb, var(--text-primary) 3%, transparent);
+}
+
+.sde-branch-comparison-file-status {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  font-family: var(--font-mono);
+  width: 14px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.sde-branch-comparison-file-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.sde-branch-comparison-file-name {
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sde-branch-comparison-file-path {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sde-branch-comparison-file-stats {
+  display: flex;
+  gap: var(--space-4);
+  font-size: var(--font-size-sm);
+  font-family: var(--font-mono);
+  flex-shrink: 0;
+}
+
+.sde-branch-comparison-file-ins {
+  color: var(--color-success);
+}
+
+.sde-branch-comparison-file-del {
+  color: var(--color-danger);
+}

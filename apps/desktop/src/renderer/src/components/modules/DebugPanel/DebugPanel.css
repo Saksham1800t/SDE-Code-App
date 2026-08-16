@@ -1,0 +1,104 @@
+.sde-debug-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--bg-chrome);
+  color: var(--text-primary);
+}
+
+.sde-debug-empty {
+  padding: 24px 16px;
+  font-size: var(--font-size-base);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.sde-debug-status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-6);
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+  font-size: var(--font-size-sm);
+}
+
+.sde-debug-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.sde-debug-status-dot--running { background: var(--status-success, #3fb950); }
+.sde-debug-status-dot--paused { background: var(--status-warning, #d29922); }
+.sde-debug-status-dot--terminated { background: var(--text-muted); }
+.sde-debug-status-dot--error { background: var(--status-error, #f85149); }
+
+.sde-debug-body {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.sde-debug-section {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sde-debug-section-header {
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.sde-debug-frame {
+  padding: var(--space-2) var(--space-6);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  color: var(--text-secondary);
+}
+.sde-debug-frame:hover {
+  background: color-mix(in srgb, var(--text-primary) 5%, transparent);
+}
+.sde-debug-frame--top {
+  color: var(--text-primary);
+}
+.sde-debug-frame-location {
+  color: var(--text-muted);
+  margin-left: var(--space-3);
+}
+
+.sde-debug-scope-name {
+  padding: var(--space-2) var(--space-6);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.sde-debug-var {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-1) var(--space-6) var(--space-1) calc(var(--space-6) + 10px);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+}
+.sde-debug-var-name { color: var(--accent-cyan, var(--text-primary)); }
+.sde-debug-var-value { color: var(--text-secondary); white-space: pre-wrap; word-break: break-word; }
+
+.sde-debug-console {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-3) var(--space-6);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+}
+.sde-debug-console-line {
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.5;
+}
+.sde-debug-console-line--stderr { color: var(--status-error, #f85149); }

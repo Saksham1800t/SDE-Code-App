@@ -1,0 +1,49 @@
+/* ============================================================
+   AlertBanner.css — Common AlertBanner component styles
+   ============================================================ */
+
+.sde-alert-banner {
+  padding: var(--space-4) var(--space-6);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ── Error type ───────────────────────────────────────────── */
+.sde-alert-banner--error {
+  background: var(--color-danger-bg);
+  border: 1px solid color-mix(in srgb, var(--color-danger) 25%, transparent);
+  color: var(--color-danger);
+}
+
+/* ── Success type ─────────────────────────────────────────── */
+.sde-alert-banner--success {
+  background: var(--color-success-bg);
+  border: 1px solid color-mix(in srgb, var(--color-success) 20%, transparent);
+  color: var(--color-success);
+}
+
+.sde-alert-banner-text {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex: 1;
+}
+
+.sde-alert-banner-close {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: var(--font-size-xs);
+  padding: 2px 4px;
+  margin-left: var(--space-4);
+  display: flex;
+  align-items: center;
+  outline: none;
+}

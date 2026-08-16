@@ -1,0 +1,484 @@
+/* ============================================================
+   SettingsPanel.css — Settings panel styles
+   ============================================================ */
+
+/* ── Outer container ──────────────────────────────────────── */
+.sde-settings-panel {
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-secondary);
+  backdrop-filter: var(--glass-blur);
+  overflow: hidden;
+}
+
+/* ── Search bar ───────────────────────────────────────────── */
+.sde-settings-search-bar {
+  position: relative;
+  flex-shrink: 0;
+  margin: var(--space-8) var(--space-12) 0;
+}
+
+.sde-settings-search-input {
+  width: 100%;
+  height: 32px;
+  padding: 0 var(--space-10) 0 var(--space-6);
+  background: color-mix(in srgb, var(--text-primary) 3%, transparent);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  outline: none;
+}
+
+.sde-settings-search-input:focus {
+  border-color: var(--accent-cyan);
+  box-shadow: var(--focus-ring-cyan);
+}
+
+.sde-settings-search-input::placeholder {
+  color: var(--text-muted);
+}
+
+.sde-settings-search-clear {
+  position: absolute;
+  right: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.sde-settings-search-clear:hover {
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--text-primary) 6%, transparent);
+}
+
+/* ── User / Workspace scope tabs ──────────────────────────── */
+.sde-settings-scope-tabs {
+  display: flex;
+  gap: var(--space-8);
+  flex-shrink: 0;
+  margin: var(--space-6) var(--space-12) 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sde-settings-scope-tab {
+  background: transparent;
+  border: none;
+  padding: var(--space-3) var(--space-2) var(--space-4);
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+
+.sde-settings-scope-tab:hover {
+  color: var(--text-primary);
+}
+
+.sde-settings-scope-tab.active {
+  color: var(--text-primary);
+  border-bottom-color: var(--accent-cyan);
+  font-weight: 600;
+}
+
+.sde-settings-scope-note {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  margin: 0 0 var(--space-8);
+}
+
+/* ── Two-pane split (TOC + content) ───────────────────────── */
+.sde-settings-body-split {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.sde-settings-toc {
+  width: 200px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  padding: var(--space-8) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  border-right: 1px solid var(--border-color);
+}
+
+.sde-settings-toc-item {
+  text-align: left;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.sde-settings-toc-item:hover {
+  color: var(--text-primary);
+}
+
+.sde-settings-toc-item.active {
+  color: var(--accent-cyan);
+  font-weight: 600;
+  border-color: var(--accent-cyan);
+  background: color-mix(in srgb, var(--accent-cyan) 6%, transparent);
+}
+
+.sde-settings-toc-divider {
+  height: 1px;
+  background: var(--border-color);
+  margin: var(--space-2) var(--space-4);
+}
+
+.sde-settings-toc-item--nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.sde-settings-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-8) var(--space-12) var(--space-12);
+}
+
+.sde-settings-category-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-8);
+}
+
+/* ── Setting row ───────────────────────────────────────────── */
+.sde-setting-row-wrap {
+  margin-bottom: var(--space-8);
+}
+
+.sde-setting-row {
+  padding: var(--space-4) 0 var(--space-4) var(--space-6);
+  border-left: 2px solid transparent;
+}
+
+.sde-setting-row--modified {
+  border-left-color: var(--color-warning);
+}
+
+.sde-setting-row-title {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  text-transform: capitalize;
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.sde-setting-row-description {
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+}
+
+.sde-setting-row-description--clickable {
+  cursor: pointer;
+}
+
+.sde-setting-row-bool-line {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.sde-setting-row-control {
+  margin-top: var(--space-4);
+  max-width: 420px;
+}
+
+.sde-setting-inherit-link {
+  background: transparent;
+  border: none;
+  color: var(--accent-cyan);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  padding: 0 0 0 var(--space-6);
+  text-decoration: underline;
+}
+
+/* ── Checkbox control (boolean settings only — see SettingCheckbox.tsx) ── */
+.sde-setting-checkbox {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--text-primary) 3%, transparent);
+  border: 1px solid var(--text-muted);
+  border-radius: var(--radius-xs);
+  color: var(--bg-primary);
+  cursor: pointer;
+  padding: 0;
+}
+
+.sde-setting-checkbox:hover {
+  border-color: var(--accent-cyan);
+}
+
+.sde-setting-checkbox--checked {
+  background: var(--accent-cyan);
+  border-color: var(--accent-cyan);
+}
+
+.sde-setting-checkbox:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* ── Loading state ────────────────────────────────────────── */
+.sde-settings-loading {
+  padding: var(--space-12);
+  color: var(--text-secondary);
+  font-size: var(--font-size-md);
+}
+
+/* ── SyncTab ──────────────────────────────────────────────── */
+.sde-sync-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.sde-sync-auth-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding: var(--space-8);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--text-primary) 1%, transparent);
+  border: 1px solid var(--border-color);
+}
+
+.sde-sync-auth-title {
+  font-size: var(--font-size-lg);
+  font-weight: 650;
+  color: var(--accent-cyan);
+  margin: 0;
+}
+
+.sde-sync-auth-description {
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.sde-sync-form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.sde-sync-toggle-link {
+  font-size: var(--font-size-sm);
+  color: var(--accent-cyan);
+  cursor: pointer;
+  text-decoration: underline;
+  text-align: center;
+  margin-top: var(--space-2);
+}
+
+.sde-sync-user-card {
+  padding: var(--space-8);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--text-primary) 1%, transparent);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.sde-sync-username {
+  font-size: var(--font-size-lg);
+  font-weight: 650;
+  color: var(--text-primary);
+}
+
+.sde-sync-email {
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+}
+
+.sde-sync-prefs-card {
+  padding: var(--space-8);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--text-primary) 1%, transparent);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.sde-sync-prefs-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.sde-sync-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sde-sync-toggle-label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sde-sync-toggle-name {
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.sde-sync-toggle-desc {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.sde-sync-action-row {
+  display: flex;
+  gap: var(--space-6);
+  margin-top: var(--space-2);
+}
+
+.sde-sync-last-synced {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.sde-user-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ── MCP Servers tab ──────────────────────────────────────── */
+
+.sde-settings-category-description {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0 0 var(--space-8);
+  max-width: 640px;
+}
+
+.sde-mcp-server-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.sde-mcp-server-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-6);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-6);
+}
+
+.sde-mcp-server-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.sde-mcp-server-name-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.sde-mcp-server-name {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.sde-mcp-server-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+}
+
+.sde-mcp-spin {
+  animation: sde-spin 1s linear infinite;
+}
+
+@keyframes sde-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.sde-mcp-server-command {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  margin-top: var(--space-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sde-mcp-server-error {
+  font-size: var(--font-size-xs);
+  color: var(--color-danger);
+  margin-top: var(--space-2);
+}
+
+.sde-mcp-server-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+.sde-mcp-add-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-width: 420px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+
+.sde-mcp-add-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}

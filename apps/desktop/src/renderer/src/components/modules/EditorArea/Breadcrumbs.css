@@ -1,0 +1,149 @@
+/* ============================================================
+   Breadcrumbs.css — Editor path trail
+   ============================================================ */
+
+.sde-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 24px;
+  padding: 0 var(--space-6);
+  flex-shrink: 0;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+  background: var(--bg-chrome);
+  border-bottom: 1px solid var(--border-color);
+  font-size: var(--font-size-base);
+}
+
+.sde-breadcrumbs::-webkit-scrollbar {
+  display: none;
+}
+
+.sde-breadcrumb-sep {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+.sde-breadcrumb-segment {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  padding: 2px 4px;
+  border-radius: var(--radius-xs);
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  font-family: inherit;
+  transition: background 0.1s ease, color 0.1s ease;
+}
+
+.sde-breadcrumb-segment:hover {
+  background: color-mix(in srgb, var(--text-primary) 6%, transparent);
+  color: var(--text-secondary);
+}
+
+.sde-breadcrumb-segment--current {
+  color: var(--text-primary);
+  cursor: default;
+  font-weight: 500;
+}
+
+.sde-breadcrumb-segment--current:hover {
+  background: transparent;
+}
+
+/* Trailing "current symbol" segment (TS/JS files only) — unlike the plain
+   filename segment above, this one is interactive (opens the symbol
+   dropdown), so it needs its own hover/cursor, not --current's disabled look. */
+.sde-breadcrumb-symbol-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.sde-breadcrumb-symbol-btn {
+  cursor: pointer;
+}
+
+.sde-breadcrumb-symbol-btn:hover {
+  background: color-mix(in srgb, var(--text-primary) 6%, transparent);
+  color: var(--accent-cyan);
+}
+
+.sde-breadcrumb-symbol-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: var(--space-1);
+  min-width: 220px;
+  max-width: 360px;
+  max-height: 320px;
+  overflow-y: auto;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--glass-shadow);
+  z-index: 50;
+  padding: var(--space-1);
+}
+
+.sde-breadcrumb-symbol-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-xs);
+  padding: 4px var(--space-3);
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+}
+
+.sde-breadcrumb-symbol-item:hover,
+.sde-breadcrumb-symbol-item.active {
+  background: color-mix(in srgb, var(--accent-cyan) 8%, transparent);
+}
+
+.sde-breadcrumb-symbol-name {
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sde-breadcrumb-symbol-kind {
+  font-size: var(--font-size-2xs);
+  color: var(--text-muted);
+  flex-shrink: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.sde-breadcrumb-preview-btn {
+  flex-shrink: 0;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 3px;
+  border-radius: var(--radius-xs);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.1s ease, color 0.1s ease;
+}
+
+.sde-breadcrumb-preview-btn:hover {
+  background: color-mix(in srgb, var(--text-primary) 6%, transparent);
+  color: var(--accent-cyan);
+}

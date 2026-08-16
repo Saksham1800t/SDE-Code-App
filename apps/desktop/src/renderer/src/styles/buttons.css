@@ -1,0 +1,203 @@
+/* ============================================================
+   buttons.css — Shared button styles (sde- prefix)
+   ============================================================ */
+
+/* ── Base icon button ─────────────────────────────────────── */
+.sde-icon-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.1s ease, color 0.1s ease;
+  outline: none;
+  flex-shrink: 0;
+}
+
+.sde-icon-btn:hover {
+  background: color-mix(in srgb, var(--text-primary) 6%, transparent);
+  color: var(--text-primary);
+}
+
+.sde-icon-btn:active {
+  background: color-mix(in srgb, var(--text-primary) 10%, transparent);
+}
+
+/* ── Danger hover variant ─────────────────────────────────── */
+.sde-icon-btn--danger:hover {
+  color: var(--color-danger);
+  background: var(--color-danger-bg);
+}
+
+/* ── Success hover variant ────────────────────────────────── */
+.sde-icon-btn--success:hover {
+  color: var(--color-success);
+  background: var(--color-success-bg);
+}
+
+/* ── Warning hover variant ────────────────────────────────── */
+.sde-icon-btn--warn:hover {
+  color: var(--color-warning);
+  background: var(--color-warning-bg);
+}
+
+/* ── Tab close button ─────────────────────────────────────── */
+.sde-tab-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: var(--space-1);
+  border-radius: var(--radius-xs);
+  transition: color 0.1s ease;
+  outline: none;
+}
+
+.sde-tab-close-btn:hover {
+  color: var(--color-danger);
+}
+
+/* ── Ghost text button ────────────────────────────────────── */
+.sde-ghost-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  padding: 3px var(--space-4);
+  border-radius: var(--radius-sm);
+  transition: background 0.1s ease, color 0.1s ease;
+  outline: none;
+}
+
+.sde-ghost-btn:hover {
+  background: color-mix(in srgb, var(--text-primary) 6%, transparent);
+  color: var(--text-primary);
+}
+
+/* ── Context menu item ────────────────────────────────────── */
+.sde-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) 14px;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+  transition: background 0.08s ease;
+  outline: none;
+}
+
+.sde-menu-item:hover {
+  background: color-mix(in srgb, var(--text-primary) 6%, transparent);
+}
+
+.sde-menu-item:disabled,
+.sde-menu-item[disabled] {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.sde-menu-item--danger:hover {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
+/* ── Settings tab / underline button ─────────────────────── */
+.sde-tab-nav-btn {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding-bottom: var(--space-4);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  outline: none;
+  transition: color 0.2s ease, border-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.sde-tab-nav-btn:hover {
+  color: var(--text-primary);
+}
+
+.sde-tab-nav-btn.active {
+  color: var(--accent-cyan);
+  border-bottom-color: var(--accent-cyan);
+}
+
+/* ── Toggle mode button (AI edit mode, etc.) ──────────────── */
+.sde-mode-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  /* Matches the AssistantPanel model-selector chip's fixed height, so a
+     segmented mode button and the model chip next to it line up exactly. */
+  height: 20px;
+  box-sizing: border-box;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  padding: 0 var(--space-4);
+  cursor: pointer;
+  font-weight: 600;
+  transition: var(--transition-smooth);
+  outline: none;
+}
+
+.sde-mode-btn.active {
+  /* var(--accent-cyan) is this app's primary theme accent (it's what
+     "active/selected" already means everywhere else — active tab border,
+     send button, etc.) — --accent-purple is the secondary AI-branding
+     accent and looked out of place standing alone as "the selected mode". */
+  background: var(--accent-cyan);
+  border-color: transparent;
+  color: var(--color-on-accent);
+}
+
+.sde-mode-segmented {
+  display: flex;
+  gap: var(--space-2);
+}
+
+/* ── Search icon toggle button ────────────────────────────── */
+.sde-search-toggle-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: var(--space-1) 5px;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  transition: all 0.15s;
+  outline: none;
+}
+
+.sde-search-toggle-btn:hover {
+  background: color-mix(in srgb, var(--accent-cyan) 15%, transparent);
+  border-color: color-mix(in srgb, var(--accent-cyan) 40%, transparent);
+  color: var(--accent-cyan);
+}
+
+.sde-search-toggle-btn.active {
+  background: color-mix(in srgb, var(--accent-cyan) 15%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent-cyan) 40%, transparent);
+  color: var(--accent-cyan);
+}

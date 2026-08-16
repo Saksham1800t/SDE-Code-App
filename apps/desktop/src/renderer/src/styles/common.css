@@ -1,0 +1,188 @@
+/* ============================================================
+   common.css — Shared layout utilities (sde- prefix)
+   ============================================================ */
+
+/* ── Flex helpers ─────────────────────────────────────────── */
+.sde-flex-row          { display: flex; align-items: center; }
+.sde-flex-col          { display: flex; flex-direction: column; }
+.sde-flex-center       { display: flex; align-items: center; justify-content: center; }
+.sde-flex-between      { display: flex; align-items: center; justify-content: space-between; }
+.sde-flex-1            { flex: 1; }
+
+/* ── Panel wrappers ───────────────────────────────────────── */
+.sde-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg-secondary);
+  backdrop-filter: var(--glass-blur);
+  color: var(--text-primary);
+}
+
+.sde-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-6) var(--space-4) var(--space-8);
+  border-bottom: 1px solid var(--border-color);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.sde-panel-scroll {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* ── Glass card ───────────────────────────────────────────── */
+.sde-card {
+  background: color-mix(in srgb, var(--text-primary) 1%, transparent);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+}
+
+.sde-card--elevated {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--glass-shadow);
+}
+
+/* ── Overlay backdrop ─────────────────────────────────────── */
+.sde-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999999;
+}
+
+/* ── Section headers ──────────────────────────────────────── */
+.sde-section-label {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+.sde-section-title {
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-8);
+}
+
+/* ── Form field wrapper ───────────────────────────────────── */
+.sde-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.sde-form-label {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+/* ── Separator ────────────────────────────────────────────── */
+.sde-separator {
+  height: 1px;
+  background: color-mix(in srgb, var(--text-primary) 7%, transparent);
+  margin: 3px 0;
+}
+
+/* ── Empty state ──────────────────────────────────────────── */
+.sde-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: var(--space-10);
+  text-align: center;
+  color: var(--text-muted);
+  gap: var(--space-6);
+}
+
+.sde-empty-state p {
+  font-size: var(--font-size-md);
+  color: var(--text-muted);
+}
+
+/* ── Context / dropdown menu ──────────────────────────────── */
+.sde-context-menu {
+  position: fixed;
+  z-index: 99999;
+  background: var(--bg-secondary);
+  border: 1px solid color-mix(in srgb, var(--text-primary) 10%, transparent);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--glass-shadow);
+  min-width: 210px;
+  padding: var(--space-2) 0;
+  animation: sdeContextMenuIn 0.1s ease;
+}
+
+.sde-context-menu-header {
+  font-size: var(--font-size-2xs);
+  font-weight: 700;
+  color: var(--text-muted);
+  padding: var(--space-2) var(--space-6) var(--space-3);
+  border-bottom: 1px solid var(--border-color);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: var(--space-2);
+}
+
+/* ── Match / highlight badge ──────────────────────────────── */
+.sde-badge {
+  font-size: var(--font-size-xs);
+  background: color-mix(in srgb, var(--accent-cyan) 15%, transparent);
+  color: var(--accent-cyan);
+  border-radius: var(--radius-xl);
+  padding: 0 var(--space-3);
+  min-width: 18px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* ── Accent pill / tag ────────────────────────────────────── */
+.sde-tag {
+  font-size: var(--font-size-2xs);
+  color: var(--accent-cyan);
+  border: 1px solid var(--accent-cyan);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+}
+
+/* ── Inline text input (file tree, etc.) ─────────────────── */
+.sde-inline-input {
+  flex: 1;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--accent-cyan);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: var(--font-size-md);
+  padding: var(--space-1) var(--space-3);
+  outline: none;
+  font-family: var(--font-sans);
+}
+
+/* ── Muted italic note ────────────────────────────────────── */
+.sde-muted-note {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  font-style: italic;
+  padding: var(--space-3) var(--space-8) var(--space-4);
+}

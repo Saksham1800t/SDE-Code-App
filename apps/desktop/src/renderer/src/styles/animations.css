@@ -1,0 +1,77 @@
+/* ============================================================
+   animations.css — Shared keyframe animations (sde- prefix)
+   ============================================================ */
+
+/* ── Context menu / popover appear ───────────────────────── */
+@keyframes sdeContextMenuIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ── Panel / sidebar slide in from bottom ─────────────────── */
+@keyframes sdeSlideInBottom {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Fade in ──────────────────────────────────────────────── */
+@keyframes sdeFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Cursor blink (streaming indicator) ──────────────────── */
+@keyframes sdePulse {
+  from { opacity: 1; }
+  to   { opacity: 0.2; }
+}
+
+/* ── Skeleton shimmer (loading states) ───────────────────── */
+@keyframes sdeShimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+.sde-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-tertiary) 25%,
+    color-mix(in srgb, var(--text-primary) 4%, transparent) 50%,
+    var(--bg-tertiary) 75%
+  );
+  background-size: 200% 100%;
+  animation: sdeShimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+/* ── Dot spinner ──────────────────────────────────────────── */
+@keyframes sdeSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.sde-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--border-color);
+  border-top-color: var(--accent-cyan);
+  border-radius: 50%;
+  animation: sdeSpin 0.7s linear infinite;
+}
+
+/* ── Spinning icon utility (e.g. lucide-react's Loader2) ──── */
+.sde-spin {
+  animation: sdeSpin 0.8s linear infinite;
+}

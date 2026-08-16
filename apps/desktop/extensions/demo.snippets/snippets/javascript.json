@@ -1,0 +1,8 @@
+{
+  // Logs a labeled value to the console.
+  "Console Log With Label": {
+    "prefix": "clg",
+    "body": ["console.log('${1:label}:', ${2:value});", "$0"],
+    "description": "Log a labeled value to the console"
+  }
+}

@@ -1,0 +1,937 @@
+/* ============================================================
+   AssistantPanel.css — AI assistant chat panel styles
+   ============================================================ */
+
+/* ── Outer panel ──────────────────────────────────────────── */
+.sde-assistant-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--bg-secondary);
+  backdrop-filter: var(--glass-blur);
+  color: var(--text-primary);
+  overflow: hidden;
+  border-left: 1px solid var(--border-color);
+  border-top-right-radius: 12px;
+}
+
+/* ── Top controls header ──────────────────────────────────── */
+.sde-assistant-header {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  background: rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+}
+
+.sde-assistant-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Understated title, matching the reference's plain header text instead of
+   the previous glowing brand-mark treatment. */
+.sde-assistant-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.6px;
+  flex-shrink: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.sde-assistant-title .sde-header-btn-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Shared icon-only header button (Memory, New Chat, History) ──── */
+.sde-header-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  /* Themed accent by default (not just on hover) — a muted-gray icon on a
+     near-black header was hard to even notice as clickable. */
+  color: var(--accent-cyan);
+  opacity: 0.75;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  flex-shrink: 0;
+}
+
+.sde-header-icon-btn:hover {
+  background: color-mix(in srgb, var(--text-primary) 6%, transparent);
+  opacity: 1;
+}
+
+/* ── Messages area ────────────────────────────────────────── */
+.sde-assistant-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* ── Empty state ──────────────────────────────────────────── */
+.sde-assistant-empty {
+  margin: auto 0;
+  text-align: center;
+  padding: var(--space-8);
+  color: var(--text-muted);
+}
+
+.sde-assistant-empty-icon {
+  display: flex;
+  justify-content: center;
+  color: var(--text-muted);
+  margin-bottom: var(--space-4);
+}
+
+.sde-assistant-empty h4 {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.sde-assistant-empty p {
+  font-size: var(--font-size-sm);
+  line-height: 1.4;
+}
+
+/* ── Message bubble ───────────────────────────────────────── */
+.sde-msg-bubble {
+  max-width: 85%;
+  padding: var(--space-4) var(--space-6);
+  font-size: var(--font-size-base);
+}
+
+.sde-msg-bubble--user {
+  align-self: flex-end;
+  background: color-mix(in srgb, var(--accent-cyan) 5%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent-cyan) 15%, transparent);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 var(--radius-lg);
+  color: var(--text-primary);
+}
+
+.sde-msg-bubble--assistant {
+  align-self: flex-start;
+  background: color-mix(in srgb, var(--text-primary) 2%, transparent);
+  border: 1px solid var(--border-color);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) var(--radius-lg);
+  color: var(--text-secondary);
+}
+
+/* ── Assistant message wrapper (bubble + action row below it) ────── */
+.sde-msg-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-self: flex-start;
+  max-width: 85%;
+}
+
+.sde-msg-group .sde-msg-bubble--assistant {
+  max-width: 100%;
+}
+
+.sde-msg-actions {
+  display: flex;
+  gap: var(--space-1);
+  padding-left: 2px;
+}
+
+.sde-msg-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.sde-msg-action-btn:hover {
+  background: color-mix(in srgb, var(--text-primary) 6%, transparent);
+  color: var(--text-primary);
+}
+
+.sde-msg-action-btn.active {
+  color: var(--accent-cyan);
+}
+
+/* ── Message code block ───────────────────────────────────── */
+.sde-msg-code-block {
+  background: var(--bg-chrome);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  margin: 8px 0;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+}
+
+.sde-msg-code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-2) var(--space-4);
+  background: color-mix(in srgb, var(--text-primary) 2%, transparent);
+  border-bottom: 1px solid var(--border-color);
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
+.sde-msg-code-copy-btn {
+  background: transparent;
+  border: none;
+  color: var(--accent-cyan);
+  cursor: pointer;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  outline: none;
+}
+
+.sde-msg-code-pre {
+  margin: 0;
+  padding: var(--space-4);
+  overflow-x: auto;
+  white-space: pre;
+}
+
+/* ── Inline code span ─────────────────────────────────────── */
+.sde-msg-inline-code {
+  background: color-mix(in srgb, var(--text-primary) 8%, transparent);
+  color: var(--accent-cyan);
+  padding: 2px 4px;
+  border-radius: var(--radius-xs);
+  font-family: var(--font-mono);
+  font-size: 90%;
+}
+
+/* ── Agent Mode tool-progress pill ────────────────────────── */
+.sde-msg-tool-progress {
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--font-size-sm);
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  background: color-mix(in srgb, var(--text-primary) 3%, transparent);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-2xl);
+  padding: 4px 10px;
+  max-width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sde-msg-tool-progress-icon {
+  flex-shrink: 0;
+}
+
+/* ── Collapsible "Worked for Ns" tool-run summary ─────────── */
+.sde-tool-run {
+  align-self: flex-start;
+  max-width: 90%;
+}
+
+.sde-tool-run-header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: transparent;
+  border: none;
+  padding: 4px 2px;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.sde-tool-run-header:hover {
+  color: var(--text-secondary);
+}
+
+.sde-tool-run-chevron {
+  transition: transform 0.15s;
+  flex-shrink: 0;
+}
+
+.sde-tool-run-chevron.expanded {
+  transform: rotate(90deg);
+}
+
+.sde-tool-run-items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  padding-left: 6px;
+  border-left: 2px solid color-mix(in srgb, var(--text-primary) 6%, transparent);
+}
+
+/* ── Agent Mode terminal-command approval card ────────────── */
+.sde-msg-approval-request {
+  align-self: flex-start;
+  max-width: 95%;
+  background: rgba(248, 173, 73, 0.06);
+  border: 1px solid rgba(248, 173, 73, 0.3);
+  border-radius: var(--radius-lg);
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sde-msg-approval-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-warning);
+}
+
+.sde-msg-approval-command {
+  margin: 0;
+  padding: 6px 8px;
+  background: var(--bg-chrome);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.sde-msg-approval-actions {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.sde-msg-approval-resolved {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.sde-msg-approval-resolved--approved {
+  color: var(--color-success);
+}
+
+.sde-msg-approval-resolved--denied {
+  color: var(--color-danger);
+}
+
+/* ── Streaming cursor ─────────────────────────────────────── */
+.sde-msg-streaming-cursor {
+  display: inline-block;
+  width: 6px;
+  height: 12px;
+  background: var(--accent-purple);
+  margin-left: var(--space-2);
+  animation: sdePulse 1s infinite alternate;
+}
+
+/* ── Input area ───────────────────────────────────────────── */
+.sde-assistant-input-area {
+  padding: 10px 12px;
+  border-top: 1px solid var(--border-color);
+  background: rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* ── Rounded input card: textarea + bottom control row, all one
+   visually unified surface (matches the reference's input card). ── */
+.sde-assistant-input-card {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 8px 10px 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  transition: border-color 0.15s;
+}
+
+.sde-assistant-input-card:focus-within {
+  border-color: var(--accent-cyan);
+}
+
+.sde-input-card-textarea {
+  border: none !important;
+  padding: 2px 0 !important;
+  resize: none;
+}
+
+.sde-input-card-textarea:focus {
+  box-shadow: none !important;
+}
+
+.sde-input-card-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  container-type: inline-size;
+  container-name: sde-mode-toolbar;
+}
+
+.sde-send-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  margin-left: auto;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  background: var(--accent-cyan);
+  color: var(--color-on-accent);
+  transition: var(--transition-smooth);
+}
+
+.sde-send-btn:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+.sde-send-btn:disabled {
+  background: color-mix(in srgb, var(--text-primary) 8%, transparent);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.sde-send-btn--stop {
+  background: var(--color-danger);
+  color: #fff;
+}
+
+/* ── Mode switcher: segmented buttons on wide panels, a single
+   dropdown trigger on narrow ones (the 4 buttons + other controls
+   otherwise overflow the panel at narrow widths). ──────────── */
+.sde-mode-dropdown {
+  display: none;
+}
+
+/* Matches .sde-model-selector-trigger's neutral pill styling, not the old
+   solid-purple-fill treatment — the icon+label alone is enough to tell the
+   mode chip and model chip apart without giving one a louder fill. */
+.sde-mode-dropdown-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  /* Fixed height (not just align-items: center) — this button's icon+text
+     content is intrinsically a hair taller than .sde-model-selector-trigger's
+     text-only content, so content-driven sizing alone left the two chips
+     ~2px off-center from each other despite both being flex-centered. */
+  height: 20px;
+  box-sizing: border-box;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  padding: 0 var(--space-4);
+  cursor: pointer;
+  outline: none;
+  flex-shrink: 0;
+}
+
+.sde-mode-dropdown-trigger:hover {
+  border-color: var(--accent-cyan);
+  color: var(--text-primary);
+}
+
+/* ── Shared popover menu (mode switcher, history, model selector) ──
+   All portal-to-document.body popovers in this panel share this look —
+   see usePopoverPosition.ts for the positioning mechanics they all use. */
+.sde-popover-menu {
+  position: fixed;
+  z-index: 99999;
+  background: var(--bg-secondary);
+  border: 1px solid color-mix(in srgb, var(--text-primary) 10%, transparent);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--glass-shadow);
+  min-width: 150px;
+  padding: var(--space-2) 0;
+  animation: sdeContextMenuIn 0.1s ease;
+}
+
+.sde-popover-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 7px 12px;
+  cursor: pointer;
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  text-align: left;
+  transition: background 0.1s;
+}
+
+.sde-popover-item:hover {
+  background: color-mix(in srgb, var(--text-primary) 5%, transparent);
+}
+
+.sde-popover-item.active {
+  color: var(--accent-purple);
+}
+
+.sde-popover-check {
+  margin-left: auto;
+}
+
+.sde-popover-item--back {
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.sde-popover-divider {
+  height: 1px;
+  background: color-mix(in srgb, var(--text-primary) 6%, transparent);
+  margin: var(--space-2) 0;
+}
+
+/* ── Merged provider+model selector chip ──────────────────── */
+.sde-model-selector {
+  display: inline-flex;
+  min-width: 0;
+  flex-shrink: 1;
+}
+
+.sde-model-selector-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  /* Matches .sde-mode-dropdown-trigger's fixed height so the two chips'
+     centers line up exactly regardless of their differing content. */
+  height: 20px;
+  box-sizing: border-box;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  padding: 0 var(--space-4);
+  cursor: pointer;
+  outline: none;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.sde-model-selector-trigger:hover {
+  border-color: var(--accent-cyan);
+  color: var(--text-primary);
+}
+
+.sde-model-selector-provider {
+  flex-shrink: 0;
+}
+
+.sde-model-selector-sep {
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+.sde-model-selector-model {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.sde-model-selector-popover {
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.sde-model-selector-custom-input {
+  padding: var(--space-3) var(--space-6);
+}
+
+.sde-model-selector-custom-input input {
+  width: 100%;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+  padding: 5px 8px;
+  font-size: var(--font-size-sm);
+  outline: none;
+  box-sizing: border-box;
+}
+
+/* ── Chat history popover ─────────────────────────────────── */
+.sde-history-popover {
+  max-height: 320px;
+  overflow-y: auto;
+  min-width: 240px;
+}
+
+.sde-history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: 7px 12px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.sde-history-item:hover {
+  background: color-mix(in srgb, var(--text-primary) 5%, transparent);
+}
+
+.sde-history-item.active .sde-history-item-title {
+  color: var(--accent-purple);
+}
+
+.sde-history-item-text {
+  min-width: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.sde-history-item-title {
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sde-history-item-time {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
+.sde-history-item-delete {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 3px;
+  border-radius: var(--radius-xs);
+  opacity: 0;
+  transition: opacity 0.1s, color 0.1s;
+}
+
+.sde-history-item:hover .sde-history-item-delete {
+  opacity: 1;
+}
+
+.sde-history-item-delete:hover {
+  color: var(--color-danger);
+}
+
+@container sde-mode-toolbar (max-width: 440px) {
+  /* Scoped under .sde-input-card-controls so this reliably outranks
+     buttons.css's unconditional ".sde-mode-segmented { display: flex }" —
+     @container doesn't add specificity on its own, so equal-specificity
+     rules are otherwise won by whichever stylesheet loads later. */
+  .sde-input-card-controls .sde-mode-segmented {
+    display: none;
+  }
+
+  /* inline-flex, not block — a block wrapper around a single inline-flex
+     child sizes to its line box (font-size/line-height driven), not the
+     child's own height, which is what left this chip ~a few px taller
+     than its sibling and knocked their vertical centers out of alignment. */
+  .sde-input-card-controls .sde-mode-dropdown {
+    display: inline-flex;
+  }
+}
+
+/* ── Active context file pill ─────────────────────────────── */
+.sde-context-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+  padding: 2px 8px;
+  border-radius: var(--radius-2xl);
+  font-weight: 500;
+  max-width: 100%;
+  align-self: flex-start;
+}
+
+.sde-context-pill--active {
+  color: var(--accent-cyan);
+  background: color-mix(in srgb, var(--accent-cyan) 4%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent-cyan) 15%, transparent);
+}
+
+.sde-context-pill--inactive {
+  color: var(--text-muted);
+  background: color-mix(in srgb, var(--text-primary) 2%, transparent);
+  border: 1px solid var(--border-color);
+}
+
+.sde-context-pill-icon {
+  flex-shrink: 0;
+  display: inline-flex;
+}
+
+.sde-context-pill-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Project Memory & Rules panel ─────────────────────────── */
+.sde-memory-panel {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sde-memory-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.sde-memory-section-title {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--accent-cyan);
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.sde-memory-section-desc {
+  font-size: var(--font-size-sm);
+  line-height: 1.45;
+  color: var(--text-muted);
+  margin-bottom: var(--space-2);
+}
+
+.sde-memory-empty-hint {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  font-style: italic;
+  padding: var(--space-3) 0;
+}
+
+.sde-memory-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: 8px 10px;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+}
+
+.sde-memory-row.inactive .sde-memory-row-text {
+  opacity: 0.45;
+  text-decoration: line-through;
+}
+
+.sde-memory-row-text {
+  flex: 1;
+  font-size: var(--font-size-base);
+  line-height: 1.45;
+  color: var(--text-primary);
+  cursor: pointer;
+  word-break: break-word;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.sde-memory-key {
+  color: var(--accent-cyan);
+  font-size: var(--font-size-sm);
+}
+
+.sde-memory-val {
+  color: var(--text-secondary);
+}
+
+.sde-memory-delete-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  padding: 2px 4px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.sde-memory-delete-btn:hover {
+  color: var(--color-danger);
+  background: var(--color-danger-bg);
+}
+
+.sde-memory-add-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.sde-memory-add-row--kv {
+  flex-direction: column;
+}
+
+.sde-memory-add-input,
+.sde-memory-edit-input {
+  width: 100%;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  font-family: inherit;
+  padding: 7px 9px;
+  outline: none;
+  resize: vertical;
+}
+
+.sde-memory-add-input:focus,
+.sde-memory-edit-input:focus {
+  border-color: var(--accent-cyan);
+}
+
+/* ── Agent Mode working-set panel ─────────────────────────── */
+.sde-agent-working-set {
+  border-top: 1px solid var(--border-color);
+  background: rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+  max-height: 45%;
+  display: flex;
+  flex-direction: column;
+}
+
+.sde-agent-working-set-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.sde-agent-working-set-title {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--accent-cyan);
+  letter-spacing: 0.6px;
+}
+
+.sde-agent-working-set-header-actions {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.sde-agent-working-set-list {
+  overflow-y: auto;
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sde-agent-working-set-item {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  background: rgba(0, 0, 0, 0.18);
+  overflow: hidden;
+}
+
+.sde-agent-working-set-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: 7px 9px;
+  cursor: pointer;
+}
+
+.sde-agent-working-set-path {
+  flex: 1;
+  font-size: var(--font-size-sm);
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sde-agent-working-set-row-actions {
+  display: flex;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+.sde-agent-badge {
+  font-size: var(--font-size-2xs);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.sde-agent-badge--new {
+  color: var(--color-success);
+  background: var(--color-success-bg);
+}
+
+.sde-agent-badge--modified {
+  color: var(--accent-cyan);
+  background: color-mix(in srgb, var(--accent-cyan) 10%, transparent);
+}
+
+.sde-agent-badge--deleted {
+  color: var(--color-danger);
+  background: var(--color-danger-bg);
+}
+
+.sde-agent-working-set-diff {
+  border-top: 1px solid var(--border-color);
+}

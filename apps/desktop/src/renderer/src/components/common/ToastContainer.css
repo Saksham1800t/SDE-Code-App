@@ -1,0 +1,84 @@
+.sde-toast-container {
+  position: fixed;
+  bottom: var(--space-12);
+  right: var(--space-12);
+  z-index: 100000;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--space-6);
+  width: 340px;
+  max-width: calc(100vw - 32px);
+  pointer-events: none;
+}
+
+.sde-toast {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-6);
+  padding: var(--space-8) var(--space-10);
+  border-radius: var(--radius-md);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--glass-shadow);
+  pointer-events: auto;
+  animation: sdeToastIn 0.15s ease;
+}
+
+@keyframes sdeToastIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.sde-toast-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  margin-top: 1px;
+}
+
+.sde-toast--info .sde-toast-icon { color: var(--color-info); }
+.sde-toast--success .sde-toast-icon { color: var(--color-success); }
+.sde-toast--warning .sde-toast-icon { color: var(--color-warning); }
+.sde-toast--error .sde-toast-icon { color: var(--color-danger); }
+
+.sde-toast--info { border-left: 3px solid var(--color-info); }
+.sde-toast--success { border-left: 3px solid var(--color-success); }
+.sde-toast--warning { border-left: 3px solid var(--color-warning); }
+.sde-toast--error { border-left: 3px solid var(--color-danger); }
+
+.sde-toast-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.sde-toast-title {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.sde-toast-message {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.sde-toast-close {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.sde-toast-close:hover {
+  color: var(--text-secondary);
+  background: color-mix(in srgb, var(--text-primary) 8%, transparent);
+}

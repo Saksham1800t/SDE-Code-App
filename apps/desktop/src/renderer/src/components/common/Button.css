@@ -1,0 +1,117 @@
+/* ============================================================
+   Button.css — Common Button component styles
+   ============================================================ */
+
+.sde-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  outline: none;
+  font-family: var(--font-sans);
+  gap: var(--space-3);
+}
+
+/* ── Variants ─────────────────────────────────────────────── */
+/* Secondary (Default) */
+.sde-btn--secondary {
+  background: color-mix(in srgb, var(--text-primary) 2%, transparent);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.sde-btn--secondary:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--text-primary) 5%, transparent);
+  color: var(--text-primary);
+  border-color: var(--accent-cyan);
+}
+
+/* Primary */
+.sde-btn--primary {
+  background: var(--accent-cyan);
+  border: none;
+  color: var(--color-on-accent);
+  font-weight: 650;
+}
+
+.sde-btn--primary:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--accent-cyan) 90%, transparent);
+  box-shadow: var(--accent-cyan-glow);
+}
+
+/* Purple */
+.sde-btn--purple {
+  background: var(--accent-purple);
+  border: none;
+  color: #ffffff;
+  font-weight: 650;
+}
+
+.sde-btn--purple:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--accent-purple) 90%, transparent);
+  box-shadow: var(--accent-purple-glow);
+}
+
+/* Danger */
+.sde-btn--danger {
+  background: transparent;
+  border: 1px solid var(--color-danger);
+  color: var(--color-danger);
+  font-weight: 600;
+}
+
+.sde-btn--danger:hover:not(:disabled) {
+  background: var(--color-danger-bg);
+}
+
+/* Ghost */
+.sde-btn--ghost {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.sde-btn--ghost:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--text-primary) 5%, transparent);
+  color: var(--text-primary);
+}
+
+/* ── Sizes ────────────────────────────────────────────────── */
+.sde-btn--sm {
+  padding: 3px var(--space-4);
+  font-size: var(--font-size-xs);
+  border-radius: var(--radius-sm);
+}
+
+.sde-btn--md {
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--font-size-base);
+  border-radius: var(--radius-md);
+}
+
+.sde-btn--lg {
+  padding: 10px 18px;
+  font-size: var(--font-size-lg);
+  border-radius: var(--radius-lg);
+}
+
+/* ── Utilities ────────────────────────────────────────────── */
+.sde-btn--fullwidth {
+  width: 100%;
+}
+
+.sde-btn:disabled {
+  background: var(--bg-tertiary) !important;
+  color: var(--text-muted) !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: none !important;
+  cursor: not-allowed;
+}
+
+.sde-btn--primary:disabled,
+.sde-btn--purple:disabled {
+  border: none !important;
+}

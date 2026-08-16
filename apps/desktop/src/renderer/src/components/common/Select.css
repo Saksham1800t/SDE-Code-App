@@ -1,0 +1,46 @@
+/* ============================================================
+   Select.css — Common Select dropdown component styles
+   ============================================================ */
+
+.sde-select-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+  min-width: 0;
+}
+
+.sde-select-label {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.sde-select {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  outline: none;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: var(--transition-smooth);
+  width: 100%;
+}
+
+/* ── Sizes ────────────────────────────────────────────────── */
+.sde-select--sm {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--font-size-sm);
+  border-radius: var(--radius-sm);
+}
+
+.sde-select--md {
+  padding: var(--space-4) var(--space-6);
+  font-size: var(--font-size-base);
+  border-radius: var(--radius-md);
+}
+
+/* ── Hover ────────────────────────────────────────────────── */
+.sde-select:hover {
+  border-color: var(--accent-cyan);
+  color: var(--text-primary);
+}

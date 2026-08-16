@@ -1,0 +1,204 @@
+/* ============================================================
+   KeyboardShortcuts.css — Keyboard Shortcuts Panel styles
+   ============================================================ */
+
+/* This panel is mounted directly as tab content (SettingsPanel.tsx's
+   isShortcutsTab branch bypasses the normal .sde-settings-content wrapper
+   every other Settings category gets its outer inset from), so — matching
+   ExtensionMarketplace.css's .sde-extension-panel, the same situation —
+   it supplies its own outer padding rather than relying on a parent. */
+.sde-shortcuts-panel {
+  height: 100%;
+  padding: var(--space-8) var(--space-12) var(--space-12);
+}
+
+.sde-shortcuts-profile-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+  flex-shrink: 0;
+}
+
+.sde-shortcuts-profile-label {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sde-shortcuts-profile-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2);
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.sde-shortcuts-profile-btn:hover {
+  color: var(--accent-cyan);
+  border-color: color-mix(in srgb, var(--accent-cyan) 40%, transparent);
+}
+
+.sde-shortcuts-profile-btn--danger:hover {
+  color: var(--color-danger);
+  border-color: color-mix(in srgb, var(--color-danger) 40%, transparent);
+}
+
+.sde-shortcuts-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-8);
+  gap: var(--space-6);
+  flex-shrink: 0;
+}
+
+.sde-shortcuts-search-container {
+  flex: 1;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 2px 12px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.sde-shortcuts-search-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  width: 100%;
+  padding: var(--space-3) 0;
+}
+
+.sde-shortcuts-list-container {
+  flex: 1;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--text-primary) 1%, transparent);
+}
+
+.sde-shortcuts-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-base);
+  text-align: left;
+}
+
+.sde-shortcuts-thead {
+  border-bottom: 1px solid var(--border-color);
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--text-secondary);
+}
+
+.sde-shortcuts-th {
+  padding: 10px 14px;
+  font-weight: 600;
+}
+
+.sde-shortcuts-tr {
+  border-bottom: 1px solid color-mix(in srgb, var(--text-primary) 4%, transparent);
+  color: var(--text-primary);
+  transition: background 0.1s;
+}
+
+.sde-shortcuts-tr:hover {
+  background: color-mix(in srgb, var(--text-primary) 1%, transparent);
+}
+
+.sde-shortcuts-td {
+  padding: 10px 14px;
+}
+
+.sde-shortcuts-cmd-name {
+  font-weight: 500;
+}
+
+.sde-shortcuts-cmd-cat {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
+.sde-shortcuts-cmd-id {
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+}
+
+.sde-shortcuts-pill {
+  font-family: var(--font-mono);
+  background: color-mix(in srgb, var(--accent-cyan) 4%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent-cyan) 15%, transparent);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  color: var(--accent-cyan);
+  font-size: var(--font-size-sm);
+}
+
+.sde-shortcuts-edit-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  transition: color 0.1s;
+}
+
+.sde-shortcuts-edit-btn:hover {
+  color: var(--accent-cyan);
+}
+
+/* ── ShortcutCaptureModal ─────────────────────────────────── */
+.sde-captured-keys-box {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: var(--font-size-xl);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.sde-captured-keys-box.active {
+  color: var(--accent-cyan);
+  border-color: var(--accent-cyan);
+  box-shadow: var(--accent-cyan-glow);
+}
+
+.sde-conflict-banner {
+  background: var(--color-danger-bg);
+  border: 1px solid color-mix(in srgb, var(--color-danger) 20%, transparent);
+  padding: 10px;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  color: var(--color-danger);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sde-conflict-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 600;
+}

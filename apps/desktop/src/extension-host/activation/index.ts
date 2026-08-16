@@ -1,0 +1,1 @@
+export { matchesActivationEvent } from './activationEvents';

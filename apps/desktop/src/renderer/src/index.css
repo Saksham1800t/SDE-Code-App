@@ -1,0 +1,162 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap');
+
+/* ── Shared design-system utilities ── */
+@import './styles/animations.css';
+@import './styles/common.css';
+@import './styles/buttons.css';
+@import './styles/tabs.css';
+
+:root {
+  /* Colors — themeable (9-property ThemeConfig contract, see store/theme.ts.
+     Names/values here are the fallback/default theme; do not rename. */
+  --bg-primary: #08090c;
+  --bg-secondary: rgba(17, 20, 28, 0.75);
+  --bg-tertiary: #1b1f2b;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --border-glow: transparent;
+
+  --accent-cyan: #00ffcc;
+  --accent-purple: #8a2be2;
+  --accent-purple-glow: none;
+  --accent-cyan-glow: none;
+
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  /* Focus rings — separate from the glow tokens above (which
+     applyThemeVariables() always forces off): keyboard/click focus
+     indication must never depend on the decorative-glow state. */
+  --focus-ring-cyan: 0 0 0 2px color-mix(in srgb, var(--accent-cyan) 45%, transparent);
+  --focus-ring-purple: 0 0 0 2px color-mix(in srgb, var(--accent-purple) 45%, transparent);
+
+  /* Semantic status colors — fixed, deliberately NOT themeable (git-diff-
+     style added/deleted/warning states should stay legible regardless of
+     the user's chosen accent color). Not part of the ThemeConfig contract. */
+  --color-danger: #ff6b6b;
+  --color-danger-bg: color-mix(in srgb, var(--color-danger) 12%, transparent);
+  --color-success: #3fb950;
+  --color-success-bg: color-mix(in srgb, var(--color-success) 12%, transparent);
+  --color-warning: #d29922;
+  --color-warning-bg: color-mix(in srgb, var(--color-warning) 12%, transparent);
+  --color-info: #58a6ff;
+  --color-info-bg: color-mix(in srgb, var(--color-info) 12%, transparent);
+
+  /* Chrome tier — derived from --bg-primary so it auto-adapts per-theme
+     without adding a 10th ThemeConfig field. */
+  --bg-chrome: color-mix(in srgb, var(--bg-primary) 90%, black 10%);
+  /* Text/icon color on top of --accent-cyan; not safely computable from
+     theme tokens, kept as a fixed fallback like before. */
+  --color-on-accent: #0d0f14;
+
+  /* Border radius scale */
+  --radius-xs: 3px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+  --radius-2xl: 12px;
+  --radius-pill: 999px;
+
+  /* Font size scale */
+  --font-size-2xs: 9px;
+  --font-size-xs: 10px;
+  --font-size-sm: 11px;
+  --font-size-base: 12px;
+  --font-size-md: 13px;
+  --font-size-lg: 14px;
+  --font-size-xl: 20px;
+
+  /* Spacing scale (2px base unit) */
+  --space-1: 2px;
+  --space-2: 4px;
+  --space-3: 6px;
+  --space-4: 8px;
+  --space-6: 12px;
+  --space-8: 16px;
+  --space-10: 20px;
+  --space-12: 24px;
+  --space-15: 30px;
+
+  /* Layout & Sizing */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'Fira Code', monospace;
+  --transition-smooth: background 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --glass-blur: blur(0px);
+  --glass-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
+}
+
+/* Global Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: var(--radius-sm);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Premium Tooltip System */
+[data-tooltip] {
+  position: relative;
+}
+
+[data-tooltip]::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: 130%;
+  right: 0;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  box-shadow: var(--glass-shadow);
+  z-index: 9999;
+  transform: translateY(-4px);
+}
+
+[data-tooltip]:hover::before {
+  opacity: 1;
+  transform: translateY(0);
+}

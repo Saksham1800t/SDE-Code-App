@@ -1,0 +1,786 @@
+/* ============================================================
+   ExtensionMarketplace.css — Extension list, details and wizards
+   ============================================================ */
+
+/* ── Panel container ──────────────────────────────────────── */
+.sde-extension-panel {
+  padding: 20px 16px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-secondary);
+  overflow: hidden;
+}
+
+.sde-extension-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+  flex-shrink: 0;
+}
+
+.sde-extension-title {
+  font-size: 18px;
+  font-weight: 650;
+  color: var(--accent-cyan);
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+.sde-extension-create-btn {
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  transition: var(--transition-smooth);
+}
+
+.sde-extension-create-btn:hover {
+  color: var(--accent-cyan);
+  border-color: color-mix(in srgb, var(--accent-cyan) 30%, transparent);
+}
+
+.sde-extension-search-row {
+  margin-bottom: 14px;
+  flex-shrink: 0;
+}
+
+.sde-extension-tabs {
+  display: flex;
+  gap: var(--space-6);
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 14px;
+  flex-shrink: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.sde-extension-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.sde-extension-tabs .sde-tab-nav-btn {
+  flex-shrink: 0;
+}
+
+.sde-extension-list {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 2px;
+  container-type: inline-size;
+  container-name: sde-ext-list;
+}
+
+/* ── ExtensionIcon (deterministic placeholder tile) ──────────── */
+.sde-ext-icon-tile {
+  border-radius: var(--radius-lg);
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  flex-shrink: 0;
+}
+
+/* ── ExtensionCard ────────────────────────────────────────── */
+.sde-ext-card {
+  padding: 10px;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--text-primary) 1%, transparent);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.sde-ext-card:hover {
+  border-color: var(--accent-cyan);
+  background: color-mix(in srgb, var(--text-primary) 2%, transparent);
+}
+
+.sde-ext-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.sde-ext-card-title-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  /* Lets the name truncate instead of forcing the whole card (and the
+     whole panel) wider than the sidebar when the name + badges + the
+     toggle/Install button on the right don't all fit. */
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+.sde-ext-card-name {
+  font-size: var(--font-size-base);
+  font-weight: 650;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /* Guarantees a few characters + ellipsis are always visible — the name is
+     the single most important piece of info in this row, so it must never
+     be squeezed to zero width by sibling elements (the type tag, the
+     toggle/Install control) competing for the same space. */
+  min-width: 44px;
+  flex-shrink: 1;
+}
+
+.sde-ext-card-type-tag {
+  font-size: var(--font-size-2xs);
+  background: color-mix(in srgb, var(--text-primary) 3%, transparent);
+  padding: 2px 5px;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-color);
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.sde-ext-card-type-tag--core {
+  color: var(--color-info);
+}
+
+.sde-ext-card-type-tag--system {
+  color: #f472b6;
+}
+
+.sde-ext-card-type-tag--marketplace {
+  color: var(--accent-cyan);
+}
+
+/* Below this width, icon + name + toggle/Install can't all fit on one line
+   without the name losing so much space it's unreadable. Two changes: drop
+   the type tag entirely (least essential info in the row), and let the
+   header wrap so the name gets the *entire* row width to itself, pushing
+   the toggle/Install control onto its own line underneath rather than
+   squeezing everything sideways. Deliberately placed after every rule it
+   overrides (.sde-ext-card-header, .sde-ext-card-title-group, .sde-ext-card-type-tag)
+   — @container doesn't add specificity on its own, so an equal-specificity
+   rule declared later in the cascade wins regardless of whether the query
+   matches (see AssistantPanel.css's @container rule for the same lesson). */
+@container sde-ext-list (max-width: 200px) {
+  .sde-ext-card-type-tag {
+    display: none;
+  }
+  .sde-ext-card-header {
+    flex-wrap: wrap;
+  }
+  .sde-ext-card-title-group {
+    flex-basis: 100%;
+  }
+}
+
+.sde-ext-card-desc {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.4;
+  overflow-wrap: break-word;
+}
+
+.sde-ext-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-top: 2px;
+}
+
+.sde-ext-card-meta {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+/* ── ExtensionDetailsPanel ────────────────────────────────── */
+.sde-ext-details {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-secondary);
+  overflow-y: auto;
+}
+
+.sde-ext-details-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-12) var(--space-15);
+  border-bottom: 1px solid var(--border-color);
+  gap: 24px;
+}
+
+.sde-ext-details-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sde-ext-details-title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.sde-ext-details-name {
+  font-size: 22px;
+  font-weight: 650;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.sde-ext-details-publisher-row {
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+}
+
+.sde-ext-details-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.sde-ext-details-switch-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: color-mix(in srgb, var(--text-primary) 1%, transparent);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+}
+
+.sde-ext-details-columns {
+  display: flex;
+  gap: 30px;
+  flex: 1;
+}
+
+.sde-ext-details-left-col {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding: 20px 24px;
+}
+
+.sde-ext-details-section-title {
+  font-size: var(--font-size-lg);
+  font-weight: 650;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: var(--space-4);
+  margin: 0;
+}
+
+.sde-ext-details-section-title--margin {
+  margin-top: var(--space-6);
+}
+
+.sde-ext-details-description {
+  font-size: var(--font-size-md);
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.sde-ext-details-readme-box {
+  background: rgba(0,0,0,0.15);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  color: var(--text-secondary);
+  font-size: var(--font-size-md);
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.sde-ext-details-right-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-left: 1px solid var(--border-color);
+  padding: 20px 30px;
+}
+
+.sde-ext-details-meta-title {
+  font-size: var(--font-size-base);
+  font-weight: 650;
+  color: var(--text-primary);
+  margin: 0 0 8px 0;
+  letter-spacing: 0.5px;
+}
+
+.sde-ext-details-badge-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.sde-ext-details-badge {
+  font-size: var(--font-size-xs);
+  padding: 2px 8px;
+  border-radius: var(--radius-xl);
+  font-family: var(--font-mono);
+}
+
+.sde-ext-details-badge--cyan {
+  color: var(--accent-cyan);
+  background: color-mix(in srgb, var(--accent-cyan) 5%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent-cyan) 15%, transparent);
+}
+
+.sde-ext-details-badge--pink {
+  color: #f472b6;
+  background: rgba(244, 114, 182, 0.05);
+  border: 1px solid rgba(244, 114, 182, 0.15);
+}
+
+.sde-ext-details-metadata-table {
+  border-top: 1px solid var(--border-color);
+  padding-top: 16px;
+}
+
+.sde-ext-details-metadata-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  font-size: var(--font-size-sm);
+}
+
+.sde-ext-details-metadata-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ── WizardSkeleton ───────────────────────────────────────── */
+.sde-wizard {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 24px;
+  height: 100%;
+  min-height: 600px;
+}
+
+.sde-wizard-left {
+  display: flex;
+  flex-direction: column;
+  background: color-mix(in srgb, var(--text-primary) 1%, transparent);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-12);
+  overflow-y: auto;
+}
+
+.sde-wizard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+}
+
+.sde-wizard-step-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sde-wizard-step-sub {
+  font-size: var(--font-size-xs);
+  color: var(--accent-cyan);
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.sde-wizard-step-title {
+  font-size: 16px;
+  font-weight: 650;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.sde-wizard-stepper-dots {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.sde-wizard-stepper-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border-color);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.sde-wizard-stepper-dot--active {
+  background: var(--accent-cyan);
+}
+
+.sde-wizard-content {
+  flex: 1;
+  margin-bottom: 24px;
+  overflow-y: auto;
+}
+
+.sde-wizard-actions {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--border-color);
+  padding-top: 16px;
+  margin-top: auto;
+}
+
+.sde-wizard-right {
+  display: flex;
+  flex-direction: column;
+  background: color-mix(in srgb, var(--text-primary) 1%, transparent);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+}
+
+.sde-wizard-right-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.sde-wizard-right-tab-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  border-bottom: 2px solid transparent;
+  padding: 10px 0;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  transition: var(--transition-smooth);
+}
+
+.sde-wizard-right-tab-btn--active {
+  color: var(--accent-cyan);
+  border-bottom-color: var(--accent-cyan);
+}
+
+.sde-wizard-right-body {
+  flex: 1;
+  padding: var(--space-10);
+  overflow-y: auto;
+}
+
+/* ── ThemeCreator ─────────────────────────────────────────── */
+.sde-theme-creator-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+}
+
+.sde-theme-preset-card {
+  padding: var(--space-8);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--text-primary) 1%, transparent);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: var(--transition-smooth);
+}
+
+.sde-theme-preset-card--selected {
+  background: color-mix(in srgb, var(--accent-cyan) 3%, transparent);
+  border-color: var(--accent-cyan);
+}
+
+.sde-theme-preset-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sde-theme-preset-title {
+  font-size: var(--font-size-md);
+  font-weight: 650;
+  color: var(--text-primary);
+}
+
+.sde-theme-preset-colors {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.sde-theme-preset-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--text-primary) 10%, transparent);
+}
+
+.sde-theme-preset-desc {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.sde-theme-customize-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sde-theme-color-input-container {
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+}
+
+.sde-theme-color-picker {
+  width: 36px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.sde-theme-publish-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  background: color-mix(in srgb, var(--text-primary) 1%, transparent);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+
+.sde-theme-checklist-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  font-size: var(--font-size-sm);
+  color: var(--color-success);
+}
+
+.sde-theme-checklist-row--pending {
+  color: var(--text-muted);
+}
+
+/* ── SnippetsCreator ──────────────────────────────────────── */
+.sde-snippet-entry-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--text-primary) 1%, transparent);
+  border: 1px solid var(--border-color);
+}
+
+.sde-snippet-entry-name {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.sde-snippet-entry-prefix {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  margin-top: 2px;
+}
+
+.sde-snippet-entry-actions {
+  display: flex;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.sde-wizard-entry-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.sde-wizard-entry-action-btn:hover {
+  background: color-mix(in srgb, var(--text-primary) 7%, transparent);
+  color: var(--accent-cyan);
+}
+
+.sde-wizard-entry-action-btn--danger:hover {
+  color: var(--color-danger);
+  background: var(--color-danger-bg);
+}
+
+.sde-wizard-pill {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  background: color-mix(in srgb, var(--text-primary) 2%, transparent);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-2xl);
+  padding: 3px 10px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.sde-wizard-pill--active {
+  color: var(--accent-cyan);
+  border-color: var(--accent-cyan);
+  background: color-mix(in srgb, var(--accent-cyan) 5%, transparent);
+}
+
+.sde-wizard-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+}
+
+.sde-wizard-toggle-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sde-wizard-toggle-name {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.sde-wizard-toggle-desc {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.sde-wizard-code-block {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 10px;
+  font-size: var(--font-size-2xs);
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  overflow-x: auto;
+  margin: 0;
+}
+
+.sde-wizard-tab-badge {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: var(--font-size-2xs);
+  font-weight: 600;
+  color: var(--accent-cyan);
+  background: color-mix(in srgb, var(--accent-cyan) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent-cyan) 20%, transparent);
+  border-radius: var(--radius-xs);
+  padding: 1px 6px;
+}
+
+/* Simulated IDE HUD Frame */
+.sde-hud-frame {
+  flex: 1;
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  min-height: 320px;
+  box-shadow: var(--glass-shadow);
+}
+
+.sde-hud-titlebar {
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--font-size-2xs);
+}
+
+.sde-hud-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.sde-hud-main {
+  display: flex;
+  flex: 1;
+}
+
+.sde-hud-sidebar {
+  width: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 0;
+  gap: 10px;
+}
+
+.sde-hud-explorer {
+  width: 120px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.sde-hud-editor {
+  flex: 1;
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sde-hud-statusbar {
+  padding: var(--space-2) var(--space-4);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 8px;
+}
+
+.sde-hud-badge {
+  padding: 1px 6px;
+  border-radius: var(--radius-xs);
+  font-weight: 600;
+}

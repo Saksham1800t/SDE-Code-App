@@ -1,0 +1,104 @@
+.sde-repo-overview-panel {
+  height: 100%;
+  background: var(--bg-secondary);
+  overflow-y: auto;
+  padding: var(--space-12) var(--space-15);
+}
+
+.sde-repo-overview-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.sde-repo-overview-title {
+  font-size: var(--font-size-xl);
+  font-weight: 650;
+  color: var(--accent-cyan);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sde-repo-overview-loading,
+.sde-repo-overview-empty {
+  color: var(--text-muted);
+  font-size: var(--font-size-md);
+  padding: var(--space-6) 0;
+}
+
+.sde-repo-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--space-6);
+  margin-bottom: 28px;
+}
+
+.sde-repo-overview-tile {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+  text-align: center;
+}
+
+.sde-repo-overview-tile-value {
+  font-size: 28px;
+  font-weight: 650;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+}
+
+.sde-repo-overview-tile-label {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: var(--space-2);
+}
+
+.sde-repo-overview-section-label {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 20px 0 10px;
+}
+
+.sde-repo-overview-commit-card {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+}
+
+.sde-repo-overview-commit-hash {
+  font-size: var(--font-size-sm);
+  color: var(--accent-cyan);
+  font-family: var(--font-mono);
+}
+
+.sde-repo-overview-commit-message {
+  font-size: var(--font-size-lg);
+  color: var(--text-primary);
+  margin-top: 6px;
+}
+
+.sde-repo-overview-commit-meta {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.sde-repo-overview-commit-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--text-secondary);
+}

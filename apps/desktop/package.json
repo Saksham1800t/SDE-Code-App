@@ -1,0 +1,83 @@
+{
+  "name": "@sde-code/desktop",
+  "version": "1.0.0",
+  "description": "AI-First Desktop IDE",
+  "main": "dist-electron/main/index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build && electron-builder",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "build": {
+    "appId": "com.sdecode.desktop",
+    "productName": "SDE Code",
+    "npmRebuild": false,
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*"
+    ],
+    "icon": "public/sde-taskbar-icon.png",
+    "win": {
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "category": "public.app-category.developer-tools"
+    }
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.111.0",
+    "@google/genai": "^2.11.0",
+    "@monaco-editor/react": "^4.6.0",
+    "@sde-code/protocol": "workspace:*",
+    "@sde-code/sdk": "workspace:*",
+    "@xterm/addon-fit": "^0.10.0",
+    "@xterm/xterm": "^5.5.0",
+    "@xyflow/react": "^12.11.2",
+    "dompurify": "^3.4.13",
+    "emmet": "^2.4.11",
+    "jsonc-parser": "^3.3.1",
+    "localtunnel": "^2.0.2",
+    "lucide-react": "^1.25.0",
+    "marked": "^18.0.9",
+    "monaco-editor": "^0.47.0",
+    "monaco-vim": "0.4.4",
+    "node-pty": "^1.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "simple-git": "^3.22.0",
+    "sql.js": "^1.10.3",
+    "vscode-jsonrpc": "^9.0.1",
+    "vscode-languageserver-protocol": "^3.18.2",
+    "zustand": "^4.5.1"
+  },
+  "devDependencies": {
+    "@electron/rebuild": "^4.2.0",
+    "@types/dompurify": "^3.2.0",
+    "@types/localtunnel": "^2.0.4",
+    "@types/node": "^20.11.24",
+    "@types/react": "^18.2.61",
+    "@types/react-dom": "^18.2.19",
+    "@vitejs/plugin-react": "^4.2.1",
+    "electron": "^30.5.1",
+    "electron-builder": "^24.13.3",
+    "playwright-core": "^1.61.1",
+    "typescript": "^5.3.3",
+    "vite": "^5.1.4",
+    "vite-plugin-electron": "^0.28.2",
+    "vite-plugin-electron-renderer": "^0.14.5",
+    "vitest": "^2.1.4"
+  }
+}

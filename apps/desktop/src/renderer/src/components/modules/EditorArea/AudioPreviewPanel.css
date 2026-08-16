@@ -1,0 +1,19 @@
+.sde-audio-preview {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-6);
+  background: var(--bg-chrome);
+}
+
+.sde-audio-preview-name {
+  font-size: var(--font-size-lg);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+}
+
+.sde-audio-preview-player {
+  width: min(480px, 80%);
+}

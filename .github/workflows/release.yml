@@ -1,0 +1,47 @@
+name: Release
+
+# Pushing a tag like v1.2.3 builds SDE Code for Windows and macOS and publishes both
+# installers as assets on a GitHub Release for that tag — the website's download button
+# (apps/website/src/lib/releases.ts) reads that release's assets at its own build time, so a
+# new tag is the only step needed to make a new build downloadable.
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm --filter @sde-code/desktop exec tsc
+      - run: pnpm --filter @sde-code/desktop exec vite build
+
+      # No --win/--mac flag needed: electron-builder defaults to building whatever
+      # platform it's currently running on, which is exactly what this matrix wants.
+      # --publish always uploads the built installer straight to the GitHub Release
+      # matching this tag (created automatically if it doesn't exist yet).
+      - name: Build and publish installer
+        working-directory: apps/desktop
+        run: pnpm exec electron-builder --publish always
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

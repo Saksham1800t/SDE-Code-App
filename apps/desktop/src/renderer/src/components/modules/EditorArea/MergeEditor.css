@@ -1,0 +1,100 @@
+.sde-merge-editor {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-chrome);
+}
+
+.sde-merge-editor-loading {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: var(--font-size-md);
+}
+
+.sde-merge-editor-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  padding: var(--space-3) var(--space-6);
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-tertiary);
+  flex-shrink: 0;
+}
+
+.sde-merge-editor-filename {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+}
+
+.sde-merge-editor-status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+}
+
+.sde-merge-editor-status--resolved {
+  color: var(--color-success);
+}
+
+.sde-merge-editor-status--pending {
+  color: var(--color-warning);
+}
+
+.sde-merge-editor-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-left: auto;
+}
+
+.sde-merge-editor-panes {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+.sde-merge-editor-pane {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--border-color);
+}
+
+.sde-merge-editor-pane:last-child {
+  border-right: none;
+}
+
+.sde-merge-editor-pane--result {
+  flex: 1.2;
+}
+
+.sde-merge-editor-pane-label {
+  flex-shrink: 0;
+  padding: var(--space-2) var(--space-6);
+  font-size: var(--font-size-2xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  background: color-mix(in srgb, var(--text-primary) 3%, transparent);
+  border-bottom: 1px solid var(--border-color);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sde-merge-editor-pane--result .sde-merge-editor-pane-label {
+  color: var(--accent-cyan);
+}
+
+.sde-merge-editor-pane > div:last-child {
+  flex: 1;
+  min-height: 0;
+}

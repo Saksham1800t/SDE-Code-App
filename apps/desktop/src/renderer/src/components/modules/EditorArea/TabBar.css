@@ -1,0 +1,33 @@
+/* ============================================================
+   TabBar.css — Editor tab bar & context menu styles
+   ============================================================ */
+
+/* ── Tab bar file icon ────────────────────────────────────── */
+.sde-tab-icon {
+  width: 14px;
+  height: 14px;
+  margin-right: var(--space-3);
+  flex-shrink: 0;
+}
+
+/* ── Tab label ────────────────────────────────────────────── */
+.sde-tab-label {
+  margin-right: var(--space-4);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 120px;
+}
+
+/* ── Context menu animation (override shared for exact timing) */
+.sde-tabbar-context-menu {
+  position: fixed;
+  z-index: 99999;
+  background: var(--bg-secondary);
+  border: 1px solid color-mix(in srgb, var(--text-primary) 10%, transparent);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--glass-shadow);
+  min-width: 210px;
+  padding: var(--space-2) 0;
+  animation: sdeContextMenuIn 0.1s ease;
+}

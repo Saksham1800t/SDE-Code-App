@@ -1,0 +1,92 @@
+/* ============================================================
+   OutlinePanel.css — Collapsible Outline section, Explorer sidebar
+   ============================================================ */
+
+.sde-outline-panel {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--border-color);
+  /* Sized to content when collapsed (just the header); when expanded, the
+     body below claims flex:1 so it shares remaining space with .sde-file-tree
+     (see FileTree.css's own comment on the min-height:0 requirement). */
+  flex-shrink: 0;
+  min-height: 0;
+}
+
+.sde-outline-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: var(--space-3) var(--space-4);
+  cursor: pointer;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.sde-outline-header:hover {
+  color: var(--text-primary);
+}
+
+.sde-outline-header-label {
+  font-size: var(--font-size-2xs);
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  flex: 1;
+  text-align: left;
+}
+
+.sde-outline-body {
+  flex: 1;
+  min-height: 80px;
+  overflow-y: auto;
+  padding-bottom: var(--space-4);
+}
+
+.sde-outline-empty {
+  padding: var(--space-4) var(--space-6);
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+  line-height: 1.4;
+}
+
+.sde-outline-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 3px var(--space-6) 3px 10px;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+}
+
+.sde-outline-item:hover,
+.sde-outline-item.active {
+  background: color-mix(in srgb, var(--accent-cyan) 8%, transparent);
+}
+
+.sde-outline-item-name {
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sde-outline-item.active .sde-outline-item-name {
+  color: var(--text-primary);
+}
+
+.sde-outline-item-kind {
+  font-size: var(--font-size-2xs);
+  color: var(--text-muted);
+  flex-shrink: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}

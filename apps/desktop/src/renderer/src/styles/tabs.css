@@ -1,0 +1,113 @@
+/* ============================================================
+   tabs.css — Shared tab-strip styles (sde- prefix)
+   Both EditorArea tabs and TerminalArea tabs use these.
+   ============================================================ */
+
+/* ── Tab strip container ──────────────────────────────────── */
+.sde-tab-strip {
+  display: flex;
+  overflow-x: auto;
+  background: var(--bg-chrome);
+  border-bottom: 1px solid var(--border-color);
+  height: 35px;
+  scrollbar-width: none;
+  flex-shrink: 0;
+}
+
+.sde-tab-strip::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Individual tab ───────────────────────────────────────── */
+.sde-tab-item {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-8);
+  height: 100%;
+  background: transparent;
+  border-right: 1px solid var(--border-color);
+  border-top: 2px solid transparent;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: var(--font-size-base);
+  transition: var(--transition-smooth);
+  position: relative;
+  flex-shrink: 0;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.sde-tab-item:hover {
+  background: color-mix(in srgb, var(--text-primary) 3%, transparent);
+  color: var(--text-primary);
+}
+
+.sde-tab-item.active {
+  background: var(--bg-chrome);
+  border-top-color: var(--accent-cyan);
+  color: var(--text-primary);
+}
+
+.sde-tab-item--drag-over {
+  background: color-mix(in srgb, var(--accent-cyan) 10%, transparent);
+  box-shadow: inset 2px 0 0 var(--accent-cyan);
+}
+
+/* ── Split-group action buttons — only EditorArea's TabBar renders these
+   (nested inside .sde-tab-strip alongside .sde-tab-strip-tabs), so
+   TerminalArea's plain .sde-tab-strip usage is unaffected. ──────────── */
+.sde-tab-strip-tabs {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex: 1;
+  min-width: 0;
+}
+
+.sde-tab-strip-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.sde-tab-strip-actions {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: var(--space-1);
+  padding: 0 var(--space-4);
+  border-left: 1px solid var(--border-color);
+}
+
+.sde-tab-strip-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.sde-tab-strip-action-btn:hover {
+  background: color-mix(in srgb, var(--text-primary) 8%, transparent);
+  color: var(--text-primary);
+}
+
+.sde-tab-strip-action-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* ── Dirty indicator dot ──────────────────────────────────── */
+.sde-tab-dirty-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+  display: inline-block;
+  margin-right: var(--space-2);
+  flex-shrink: 0;
+}
+

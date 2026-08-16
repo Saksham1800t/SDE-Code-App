@@ -1,0 +1,87 @@
+/* ============================================================
+   InlineChatWidget.css — Ctrl+I edit-in-place popup
+   ============================================================ */
+
+.sde-inline-chat {
+  position: absolute;
+  z-index: 40;
+  width: min(420px, 90%);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--accent-cyan);
+  border-radius: var(--radius-md);
+  box-shadow: var(--glass-shadow), 0 0 0 1px color-mix(in srgb, var(--accent-cyan) 15%, transparent);
+  padding: var(--space-3);
+}
+
+.sde-inline-chat-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.sde-inline-chat-icon {
+  color: var(--accent-cyan);
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.sde-inline-chat-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  font-family: var(--font-sans);
+  line-height: 1.4;
+  max-height: 120px;
+}
+
+.sde-inline-chat-input::placeholder {
+  color: var(--text-muted);
+}
+
+.sde-inline-chat-input:disabled {
+  opacity: 0.6;
+}
+
+.sde-inline-chat-spinner {
+  color: var(--accent-cyan);
+  flex-shrink: 0;
+  margin-top: 3px;
+  animation: sde-inline-chat-spin 0.8s linear infinite;
+}
+
+@keyframes sde-inline-chat-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.sde-inline-chat-error {
+  margin-top: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-danger-bg);
+  border-radius: var(--radius-sm);
+  color: var(--color-danger);
+  font-size: var(--font-size-sm);
+}
+
+.sde-inline-chat-hint {
+  margin-top: var(--space-2);
+  display: flex;
+  gap: var(--space-3);
+  font-size: var(--font-size-2xs);
+  color: var(--text-muted);
+}
+
+.sde-inline-chat-hint kbd {
+  background: color-mix(in srgb, var(--text-primary) 7%, transparent);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xs);
+  padding: 1px 5px;
+  font-size: var(--font-size-2xs);
+  font-family: var(--font-mono);
+  margin-right: 3px;
+}

@@ -1,0 +1,42 @@
+.sde-multibuffer-panel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.sde-multibuffer-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  padding: var(--space-3) var(--space-6);
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  flex-shrink: 0;
+}
+
+.sde-multibuffer-status {
+  font-size: var(--font-size-sm);
+}
+
+.sde-multibuffer-status--error {
+  color: var(--color-danger);
+}
+
+.sde-multibuffer-status--success {
+  color: var(--color-success);
+}
+
+.sde-multibuffer-editor {
+  flex: 1;
+  min-height: 0;
+}
+
+.sde-multibuffer-header-line {
+  background: var(--bg-tertiary);
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.sde-multibuffer-excerpt-line {
+  border-left: 2px solid var(--accent-cyan);
+}

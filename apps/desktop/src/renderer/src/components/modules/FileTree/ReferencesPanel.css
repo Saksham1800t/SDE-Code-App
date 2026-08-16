@@ -1,0 +1,95 @@
+/* ============================================================
+   ReferencesPanel.css — Collapsible References section, Explorer sidebar
+   ============================================================ */
+
+.sde-references-panel {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--border-color);
+  flex-shrink: 0;
+  min-height: 0;
+}
+
+.sde-references-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: var(--space-3) var(--space-4);
+  cursor: pointer;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.sde-references-header:hover {
+  color: var(--text-primary);
+}
+
+.sde-references-header-label {
+  font-size: var(--font-size-2xs);
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sde-references-body {
+  flex: 1;
+  min-height: 80px;
+  overflow-y: auto;
+  padding-bottom: var(--space-4);
+}
+
+.sde-references-empty {
+  padding: var(--space-4) var(--space-6);
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+  line-height: 1.4;
+}
+
+.sde-references-file-header {
+  padding: var(--space-2) var(--space-6) var(--space-2) 10px;
+  font-size: var(--font-size-2xs);
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.sde-references-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 3px var(--space-6) 3px 18px;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-mono);
+}
+
+.sde-references-item:hover {
+  background: color-mix(in srgb, var(--accent-cyan) 8%, transparent);
+}
+
+.sde-references-item-line {
+  font-size: var(--font-size-2xs);
+  color: var(--text-muted);
+  flex-shrink: 0;
+  min-width: 20px;
+  text-align: right;
+}
+
+.sde-references-item-text {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

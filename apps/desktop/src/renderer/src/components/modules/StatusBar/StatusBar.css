@@ -1,0 +1,121 @@
+/* ============================================================
+   StatusBar.css — Bottom status bar styles
+   ============================================================ */
+
+.sde-status-bar {
+  height: 24px;
+  background: var(--bg-chrome);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-4);
+  position: relative;
+  z-index: 500;
+  flex-shrink: 0;
+}
+
+.sde-status-bar-group {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+/* ── StatusBarIndicator ───────────────────────────────────── */
+.sde-status-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0 10px;
+  height: 100%;
+  cursor: default;
+  user-select: none;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  background: transparent;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.sde-status-indicator--clickable {
+  cursor: pointer;
+  color: var(--text-primary);
+}
+
+.sde-status-indicator--clickable:hover {
+  background: color-mix(in srgb, var(--text-primary) 5%, transparent);
+  color: var(--accent-cyan);
+}
+
+.sde-status-indicator-icon {
+  /* Inline SVGs default to baseline alignment, which reserves a few px of
+     "descender" space below the icon even with no text nearby — that's
+     what was making icons sit visibly higher than their sibling text
+     despite the parent already being align-items: center. Flexing this
+     wrapper removes the baseline gap instead of fighting it. */
+  display: inline-flex;
+  align-items: center;
+  color: var(--accent-cyan);
+}
+
+.sde-status-indicator-text {
+  font-weight: 500;
+}
+
+/* monaco-vim writes its own markup (mode + pending keys) directly into this node. */
+.sde-status-vim-indicator {
+  font-family: var(--font-mono);
+  color: var(--accent-cyan);
+}
+
+/* ── IndicatorVisibilityMenu ──────────────────────────────── */
+.sde-indicator-menu {
+  position: fixed;
+  background: var(--bg-secondary);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--glass-shadow);
+  padding: var(--space-3) 0;
+  width: 180px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+}
+
+.sde-indicator-menu-header {
+  font-size: var(--font-size-2xs);
+  font-weight: 700;
+  color: var(--text-muted);
+  padding: 4px 12px 6px;
+  border-bottom: 1px solid var(--border-color);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: var(--space-2);
+}
+
+.sde-indicator-menu-item {
+  background: transparent;
+  border: none;
+  padding: var(--space-3) var(--space-6);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+  outline: none;
+  transition: background 0.1s ease;
+}
+
+.sde-indicator-menu-item:hover {
+  background: color-mix(in srgb, var(--text-primary) 5%, transparent);
+}
+
+.sde-indicator-checkbox {
+  accent-color: var(--accent-cyan);
+  cursor: pointer;
+  width: 12px;
+  height: 12px;
+}

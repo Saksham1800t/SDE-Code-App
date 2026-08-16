@@ -1,0 +1,121 @@
+/* ============================================================
+   EmbeddedGitGraph — sidebar lane graph (replaces the flat
+   GitLogPanel commit list). Single-line-per-commit, VS Code
+   Source Control Graph style: dot+lane, message, author.
+   ============================================================ */
+
+.sde-embedded-graph {
+  border-top: 1px solid color-mix(in srgb, var(--text-primary) 6%, transparent);
+}
+
+.sde-embedded-graph-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0 10px 0 8px;
+  height: 24px;
+  cursor: pointer;
+  border-radius: var(--radius-xs);
+  transition: background 0.1s;
+  overflow: hidden;
+}
+
+.sde-embedded-graph-row:hover,
+.sde-embedded-graph-row.active {
+  background: color-mix(in srgb, var(--text-primary) 4%, transparent);
+}
+
+.sde-embedded-graph-svg {
+  flex-shrink: 0;
+}
+
+.sde-embedded-graph-message {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 20px;
+}
+
+.sde-embedded-graph-message--tip {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.sde-embedded-graph-ref-badge {
+  font-size: var(--font-size-2xs);
+  font-weight: 600;
+  padding: 0 5px;
+  border-radius: var(--radius-xs);
+  flex-shrink: 0;
+}
+
+.sde-embedded-graph-author {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  flex-shrink: 0;
+  max-width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sde-embedded-graph-files {
+  display: flex;
+  align-items: stretch;
+  padding-left: 8px;
+  background: rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid color-mix(in srgb, var(--text-primary) 3%, transparent);
+}
+
+/* Continues whichever lanes were still running past the expanded commit,
+   so the graph line doesn't visibly break while its file list is open —
+   matches VS Code's Source Control Graph, which keeps the line unbroken. */
+.sde-embedded-graph-files-lanes {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.sde-embedded-graph-files-lane-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2.5px;
+}
+
+.sde-embedded-graph-files-list {
+  flex: 1;
+  min-width: 0;
+  padding: 4px 16px 8px 8px;
+}
+
+.sde-embedded-graph-loading {
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+  padding: var(--space-4) var(--space-8);
+}
+
+.sde-embedded-graph-load-more {
+  display: block;
+  width: 100%;
+  padding: var(--space-4);
+  background: transparent;
+  border: none;
+  border-top: 1px solid color-mix(in srgb, var(--text-primary) 3%, transparent);
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+
+.sde-embedded-graph-load-more:hover:not(:disabled) {
+  color: var(--accent-cyan);
+  background: color-mix(in srgb, var(--text-primary) 2%, transparent);
+}
+
+.sde-embedded-graph-load-more:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}

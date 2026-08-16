@@ -1,0 +1,342 @@
+/* ============================================================
+   App.css — Global SDE Code Application Shell Layout
+   ============================================================ */
+
+/* ── Top Application Bar ──────────────────────────────────── */
+.sde-app-container {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  overflow: hidden;
+  font-family: var(--font-sans);
+}
+
+.sde-titlebar {
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-6);
+  padding-right: 140px;
+  background: var(--bg-chrome);
+  border-bottom: 1px solid var(--border-color);
+  user-select: none;
+  position: relative;
+  z-index: 1000;
+  WebkitAppRegion: drag;
+}
+
+.sde-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.sde-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.sde-logo-text {
+  font-size: var(--font-size-base);
+  font-weight: 750;
+  letter-spacing: 0.5px;
+  color: var(--text-primary);
+}
+
+/* ── Custom Window/Menu Bar ───────────────────────────────── */
+.sde-menubar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  position: relative;
+  WebkitAppRegion: no-drag;
+}
+
+.sde-menu-container {
+  position: relative;
+}
+
+.sde-menu-btn {
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  transition: background 0.1s ease;
+}
+
+.sde-menu-btn:hover,
+.sde-menu-btn.active {
+  background: color-mix(in srgb, var(--text-primary) 5%, transparent);
+  color: var(--text-primary);
+}
+
+.sde-dropdown-menu {
+  position: absolute;
+  top: 24px;
+  left: 0;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--glass-shadow);
+  padding: var(--space-2) 0;
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  z-index: 9999;
+}
+
+.sde-dropdown-item {
+  padding: var(--space-3) var(--space-6);
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  outline: none;
+  transition: background 0.1s ease;
+}
+
+.sde-dropdown-item:hover {
+  background: color-mix(in srgb, var(--text-primary) 5%, transparent);
+}
+
+.sde-dropdown-shortcut {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  margin-left: var(--space-8);
+}
+
+.sde-dropdown-separator {
+  height: 1px;
+  background: var(--border-color);
+  margin: var(--space-2) 0;
+}
+
+/* ── Active Workspace Title ───────────────────────────────── */
+.sde-workspace-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: color-mix(in srgb, var(--text-primary) 2%, transparent);
+  padding: 3px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Global Controls ──────────────────────────────────────── */
+.sde-global-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  WebkitAppRegion: no-drag;
+}
+
+.sde-layout-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-right: var(--space-3);
+}
+
+.sde-layout-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-smooth);
+}
+
+.sde-layout-btn:hover {
+  background: color-mix(in srgb, var(--text-primary) 5%, transparent);
+  color: var(--text-primary);
+}
+
+.sde-layout-btn--active {
+  background: color-mix(in srgb, var(--accent-cyan) 8%, transparent);
+  color: var(--accent-cyan);
+}
+
+.sde-layout-btn--active:hover {
+  background: color-mix(in srgb, var(--accent-cyan) 12%, transparent);
+  color: var(--text-primary);
+}
+
+.sde-theme-select {
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  outline: none;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.sde-theme-select:hover {
+  border-color: var(--accent-cyan);
+  color: var(--text-primary);
+}
+
+/* ── Workspace Split Layout ───────────────────────────────── */
+.sde-main-workspace {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ── Activity Bar (Leftmost Navigation Strip) ─────────────── */
+.sde-activitybar {
+  width: 50px;
+  flex-shrink: 0;
+  background: var(--bg-chrome);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-6) 0;
+  gap: var(--space-10);
+  user-select: none;
+}
+
+.sde-activity-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid transparent;
+  box-shadow: none;
+  transition: var(--transition-smooth);
+}
+
+.sde-activity-btn.active {
+  color: var(--accent-cyan);
+  background: color-mix(in srgb, var(--accent-cyan) 5%, transparent);
+  border-color: color-mix(in srgb, var(--accent-cyan) 15%, transparent);
+  box-shadow: var(--accent-cyan-glow);
+}
+
+/* ── Left Sidebar drawer ──────────────────────────────────── */
+.sde-sidebar-left {
+  flex-shrink: 0;
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sde-sidebar-header {
+  padding: var(--space-4) var(--space-6) var(--space-4) var(--space-8);
+  border-bottom: 1px solid var(--border-color);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+}
+
+.sde-sidebar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.sde-sidebar-action-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: var(--space-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-xs);
+  transition: all 0.1s ease;
+}
+
+.sde-sidebar-action-btn:hover {
+  background: color-mix(in srgb, var(--text-primary) 5%, transparent);
+  color: var(--text-primary);
+}
+
+/* ── Right Sidebar drawer (AI Assistant) ──────────────────── */
+.sde-sidebar-right {
+  flex-shrink: 0;
+  background: var(--bg-secondary);
+  border-left: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Resizer Drag Handles ─────────────────────────────────── */
+.sde-resizer-v {
+  width: 4px;
+  cursor: col-resize;
+  background: transparent;
+  z-index: 50;
+  margin-left: -2px;
+  margin-right: -2px;
+  transition: background 0.2s;
+}
+
+.sde-resizer-v:hover {
+  background: var(--accent-cyan) !important;
+}
+
+.sde-resizer-h {
+  height: 4px;
+  cursor: row-resize;
+  background: transparent;
+  z-index: 50;
+  transition: background 0.2s;
+  border-top: 1px solid var(--border-color);
+}
+
+.sde-resizer-h:hover {
+  background: var(--accent-cyan) !important;
+}
+
+/* ── Center Editor & Terminal Area ────────────────────────── */
+.sde-center-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-chrome);
+  overflow: hidden;
+  contain: layout paint;
+}

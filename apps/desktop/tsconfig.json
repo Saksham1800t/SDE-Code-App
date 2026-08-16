@@ -1,0 +1,27 @@
+{
+  "extends": "../../packages/config/tsconfig.base.json",
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "module": "ESNext",
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* emmet@2.4.11's package.json "exports" field has no "types" condition,
+       so TS can't resolve its (real, shipped) dist/index.d.ts through
+       normal exports-map resolution even under moduleResolution:bundler —
+       a known upstream packaging gap, not something wrong on our end. This
+       path mapping points straight at the real declaration file instead of
+       hand-maintaining a duplicate ambient one. */
+    "paths": {
+      "emmet": ["./node_modules/emmet/dist/index.d.ts"]
+    }
+  },
+  "include": ["src"]
+}

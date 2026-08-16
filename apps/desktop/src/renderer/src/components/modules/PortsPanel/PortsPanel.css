@@ -1,0 +1,169 @@
+/* ============================================================
+   PortsPanel.css — Ports panel styles
+   ============================================================ */
+
+.sde-ports-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--bg-chrome);
+  color: var(--text-primary);
+}
+
+.sde-ports-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.sde-ports-panel-title {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.sde-ports-add-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.sde-ports-add-input {
+  width: 110px;
+  padding: 3px 8px;
+  font-size: var(--font-size-sm);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  outline: none;
+}
+
+.sde-ports-add-input:focus {
+  border-color: color-mix(in srgb, var(--accent-cyan) 40%, transparent);
+}
+
+.sde-ports-list {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sde-ports-empty {
+  padding: 24px 16px;
+  font-size: var(--font-size-base);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.sde-ports-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid color-mix(in srgb, var(--text-primary) 3%, transparent);
+}
+
+.sde-ports-row-main {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.sde-ports-port-num {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--accent-cyan);
+  flex-shrink: 0;
+  min-width: 42px;
+}
+
+.sde-ports-label {
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1;
+  cursor: text;
+}
+
+.sde-ports-label-input {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--font-size-base);
+  padding: var(--space-1) var(--space-3);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xs);
+  color: var(--text-primary);
+  outline: none;
+}
+
+.sde-ports-source-badge {
+  font-size: var(--font-size-2xs);
+  padding: 2px 5px;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-color);
+  text-transform: uppercase;
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+
+.sde-ports-source-badge--terminal {
+  color: var(--accent-cyan);
+  border-color: color-mix(in srgb, var(--accent-cyan) 35%, transparent);
+}
+
+.sde-ports-public-badge {
+  font-size: var(--font-size-2xs);
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: var(--radius-xs);
+  background: var(--color-success-bg);
+  border: 1px solid color-mix(in srgb, var(--color-success) 40%, transparent);
+  color: var(--color-success);
+  flex-shrink: 0;
+}
+
+.sde-ports-public-url {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  color: var(--color-success);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sde-ports-confirm {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: 6px 8px;
+  background: rgba(210, 153, 34, 0.08);
+  border: 1px solid rgba(210, 153, 34, 0.3);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.sde-ports-confirm button {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.sde-ports-row-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}

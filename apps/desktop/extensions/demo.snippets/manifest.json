@@ -1,0 +1,12 @@
+{
+  "id": "demo.snippets",
+  "name": "Demo Snippets",
+  "version": "1.0.0",
+  "description": "Example extension demonstrating declarative contributes.snippets.",
+  "publisher": "sde-code",
+  "contributes": {
+    "snippets": [
+      { "language": "javascript", "path": "snippets/javascript.json" }
+    ]
+  }
+}

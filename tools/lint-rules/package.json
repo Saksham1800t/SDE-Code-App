@@ -1,0 +1,7 @@
+{
+  "name": "@sde-code/eslint-plugin-layers",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Custom ESLint rule that enforces the one-directional layer dependency order (kernel < platform < editor < extension-host < workbench < host) inside apps/desktop/src, the way VS Code's own local/code-import-patterns rule enforces its base/platform/editor/workbench stack. Original implementation, not copied from VS Code's eslint plugin.",
+  "main": "index.js"
+}

@@ -1,0 +1,33 @@
+/* Positioned via raw viewport pixel coordinates (getBoundingClientRect-based,
+   see TerminalArea.tsx's computeDropdownPosition) — position: fixed, not
+   absolute, since those coordinates are already viewport-relative. */
+.sde-terminal-autocomplete {
+  position: fixed;
+  z-index: 20;
+  min-width: 140px;
+  max-width: 360px;
+  max-height: 220px;
+  overflow-y: auto;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--glass-shadow);
+  padding: var(--space-1);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+}
+
+.sde-terminal-autocomplete-item {
+  padding: 3px var(--space-4);
+  border-radius: var(--radius-xs);
+  color: var(--text-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sde-terminal-autocomplete-item.active {
+  background: color-mix(in srgb, var(--accent-cyan) 15%, transparent);
+  color: var(--text-primary);
+}

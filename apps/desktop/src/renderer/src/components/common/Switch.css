@@ -1,0 +1,74 @@
+/* ============================================================
+   Switch.css — Common Switch component styles
+   Design adapted from a Uiverse.io toggle (by vinodjangid07): a ring-style
+   knob (hollow outline while off, solid white once on) sliding inside a
+   flat pill track. Colors are intentionally fixed across every theme
+   (like --color-danger/--color-success) rather than theme-token-driven,
+   to match the reference design exactly regardless of the active theme.
+   ============================================================ */
+
+.sde-switch {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: var(--transition-smooth);
+  box-sizing: border-box;
+}
+
+.sde-switch--checked {
+  background: var(--accent-purple);
+}
+
+.sde-switch--unchecked {
+  background: rgb(82, 82, 82);
+}
+
+.sde-switch--disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* ── Sizes ────────────────────────────────────────────────── */
+/* Track/knob geometry follows the reference design's own proportions
+   (50x30 track, 20px knob, 5px margin on every side): knob = width -
+   height, margin = height - width/2. Solved here for each existing size
+   so the ring-knob keeps the same visual proportions at every scale. */
+.sde-switch--sm {
+  width: 32px;
+  height: 18px;
+  border-radius: var(--radius-lg);
+  padding: var(--space-1);
+}
+
+.sde-switch--md {
+  width: 40px;
+  height: 22px;
+  border-radius: 11px;
+  padding: var(--space-1);
+}
+
+/* ── Switch circle knob ───────────────────────────────────── */
+.sde-switch-knob {
+  border-radius: 50%;
+  background: transparent;
+  border: solid #ffffff;
+  box-sizing: border-box;
+  box-shadow: 5px 2px 7px rgba(8, 8, 8, 0.26);
+  transition: var(--transition-smooth);
+}
+
+.sde-switch--checked .sde-switch-knob {
+  background: #ffffff;
+}
+
+.sde-switch-knob--sm {
+  width: 14px;
+  height: 14px;
+  border-width: 4px;
+}
+
+.sde-switch-knob--md {
+  width: 18px;
+  height: 18px;
+  border-width: 5px;
+}

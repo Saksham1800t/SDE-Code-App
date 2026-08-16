@@ -1,0 +1,218 @@
+/* ============================================================
+   EditorArea.css — Editor panel, diff editor, AI suggest styles
+   ============================================================ */
+
+/* ── Main layout ──────────────────────────────────────────── */
+/* One or more panes side by side — split editor groups. Equal-width by
+   default; drag-to-resize between panes isn't implemented (deferred, see
+   project notes), so widths only change as groups are added/removed. */
+.sde-editor-groups-row {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  background: var(--bg-chrome);
+  min-width: 0;
+}
+
+.sde-editor-group-pane {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  flex: 1 1 0;
+  min-width: 0;
+  background: var(--bg-chrome);
+}
+
+.sde-editor-group-pane+.sde-editor-group-pane {
+  border-left: 1px solid var(--border-color);
+}
+
+.sde-editor-group-pane--active .sde-tab-strip {
+  box-shadow: inset 0 2px 0 var(--accent-cyan);
+}
+
+/* ── Editor Area empty state ──────────────────────────────── */
+.sde-editor-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: var(--bg-chrome);
+  color: var(--text-muted);
+}
+
+.sde-editor-empty-icon {
+  margin-bottom: var(--space-8);
+  opacity: 0.6;
+}
+
+.sde-editor-empty-text {
+  font-size: var(--font-size-lg);
+}
+
+/* ── Diff editor toolbar & legend ──────────────────────────── */
+.sde-diff-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.sde-diff-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 16px;
+  background: var(--bg-chrome);
+  border-bottom: 1px solid color-mix(in srgb, var(--text-primary) 6%, transparent);
+  flex-shrink: 0;
+}
+
+.sde-diff-info-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.sde-diff-filename {
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.sde-diff-badge {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  padding: 1px 6px;
+  background: color-mix(in srgb, var(--text-primary) 5%, transparent);
+  border-radius: var(--radius-sm);
+}
+
+.sde-diff-actions {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.sde-diff-legend {
+  display: flex;
+  gap: var(--space-8);
+  padding: 5px 16px;
+  background: var(--bg-chrome);
+  border-bottom: 1px solid color-mix(in srgb, var(--text-primary) 4%, transparent);
+  flex-shrink: 0;
+}
+
+.sde-diff-legend-item {
+  font-size: var(--font-size-xs);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.sde-diff-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.sde-diff-legend-dot--added {
+  background: rgba(63, 185, 80, 0.4);
+}
+
+.sde-diff-legend-dot--removed {
+  background: rgba(248, 81, 73, 0.4);
+}
+
+.sde-diff-legend-note {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  margin-left: auto;
+}
+
+/* ── AI Suggest banner overlay ────────────────────────────── */
+.sde-ai-suggest-banner {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-8);
+  background: rgba(13, 17, 24, 0.95);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--glass-shadow), var(--accent-cyan-glow);
+  border-radius: var(--radius-lg);
+  user-select: none;
+}
+
+.sde-ai-suggest-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.sde-ai-suggest-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.sde-ai-suggest-actions {
+  display: flex;
+  gap: var(--space-4);
+}
+
+/* ── AI Suggest banner: Code Map impact summary line (Phase 39) ──────── */
+.sde-ai-suggest-impact {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-color);
+}
+
+.sde-ai-suggest-impact-summary {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+}
+
+.sde-ai-suggest-impact-summary:hover {
+  color: var(--text-primary);
+  text-decoration: underline;
+}
+
+/* ── Create New Extension Panel ───────────────────────────── */
+.sde-create-ext-panel {
+  height: 100%;
+  background: var(--bg-secondary);
+  overflow-y: auto;
+  padding: var(--space-12) var(--space-15);
+}
+
+.sde-create-ext-container {
+  width: 100%;
+  margin: 0;
+}
+
+.sde-create-ext-title {
+  font-size: var(--font-size-xl);
+  font-weight: 650;
+  color: var(--accent-cyan);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}

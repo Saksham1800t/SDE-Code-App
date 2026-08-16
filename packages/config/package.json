@@ -1,0 +1,9 @@
+{
+  "name": "@sde-code/config",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Shared TypeScript compiler config inherited by every app and package in the workspace.",
+  "files": [
+    "tsconfig.base.json"
+  ]
+}

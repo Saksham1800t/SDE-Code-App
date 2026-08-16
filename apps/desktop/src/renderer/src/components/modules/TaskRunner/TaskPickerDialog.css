@@ -1,0 +1,136 @@
+/* ============================================================
+   TaskPickerDialog.css — Run Task quick-pick
+   ============================================================ */
+
+.sde-taskpicker-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.sde-taskpicker-dialog {
+  position: fixed;
+  top: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(620px, 90vw);
+  z-index: 9999;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--glass-shadow), 0 0 0 1px color-mix(in srgb, var(--accent-cyan) 5%, transparent);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 60vh;
+}
+
+.sde-taskpicker-search-row {
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sde-taskpicker-search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: var(--font-size-lg);
+  padding: 13px 10px;
+  font-family: var(--font-sans);
+}
+
+.sde-taskpicker-list {
+  overflow-y: auto;
+  flex: 1;
+}
+
+.sde-taskpicker-empty {
+  padding: var(--space-10);
+  text-align: center;
+  color: var(--text-muted);
+  font-size: var(--font-size-md);
+}
+
+.sde-taskpicker-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 14px;
+  background: transparent;
+  border-left: 2px solid transparent;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.sde-taskpicker-item.active {
+  background: color-mix(in srgb, var(--accent-cyan) 8%, transparent);
+  border-left-color: var(--accent-cyan);
+}
+
+.sde-taskpicker-item-icon {
+  color: var(--accent-cyan);
+  flex-shrink: 0;
+}
+
+.sde-taskpicker-item-name {
+  font-size: var(--font-size-md);
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sde-taskpicker-item.active .sde-taskpicker-item-name {
+  color: var(--text-primary);
+}
+
+.sde-taskpicker-item-command {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sde-taskpicker-item-source {
+  flex-shrink: 0;
+  font-size: var(--font-size-2xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--text-muted);
+  background: color-mix(in srgb, var(--text-primary) 6%, transparent);
+  border-radius: var(--radius-xs);
+  padding: 2px 6px;
+}
+
+.sde-taskpicker-footer {
+  display: flex;
+  gap: var(--space-8);
+  padding: 6px 14px;
+  border-top: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.sde-taskpicker-footer-item {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.sde-taskpicker-kbd {
+  background: color-mix(in srgb, var(--text-primary) 7%, transparent);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xs);
+  padding: 1px 5px;
+  font-size: var(--font-size-2xs);
+  font-family: var(--font-mono);
+}

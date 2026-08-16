@@ -1,0 +1,189 @@
+/* ============================================================
+   SearchPanel.css — Find-in-files search panel styles
+   ============================================================ */
+
+/* ── Panel container ──────────────────────────────────────── */
+.sde-search-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ── Input zone ───────────────────────────────────────────── */
+.sde-search-inputs {
+  padding: 8px 10px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* ── Relative-positioned input row (with icon & toggle btns) */
+.sde-search-input-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.sde-search-input-icon {
+  position: absolute;
+  left: 8px;
+  pointer-events: none;
+}
+
+/* ── Base search / replace input ─────────────────────────── */
+.sde-search-input {
+  width: 100%;
+  padding: 5px 8px 5px 28px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+
+.sde-search-input:focus {
+  border-color: color-mix(in srgb, var(--accent-cyan) 50%, transparent);
+}
+
+/* ── Glob filter inputs (no icon) ─────────────────────────── */
+.sde-search-filter-input {
+  flex: 1;
+  min-width: 0;
+  padding: 4px 6px;
+  font-size: var(--font-size-xs);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.sde-search-filter-input:focus {
+  border-color: color-mix(in srgb, var(--accent-cyan) 40%, transparent);
+}
+
+/* ── Filter input row ─────────────────────────────────────── */
+.sde-search-filter-row {
+  display: flex;
+  gap: var(--space-2);
+}
+
+/* ── Toggle button group (Aa / ab / .*) ───────────────────── */
+.sde-search-toggles {
+  position: absolute;
+  right: 6px;
+  display: flex;
+  gap: var(--space-1);
+}
+
+/* ── Results summary line ─────────────────────────────────── */
+.sde-search-summary {
+  padding: 2px 16px 6px;
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+/* ── Results scroll list ──────────────────────────────────── */
+.sde-search-results {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: var(--space-4);
+}
+
+/* ── File group header ────────────────────────────────────── */
+.sde-search-file-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 4px 12px;
+  cursor: pointer;
+  background: color-mix(in srgb, var(--text-primary) 2%, transparent);
+  user-select: none;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  transition: background 0.1s;
+}
+
+.sde-search-file-header:hover {
+  background: color-mix(in srgb, var(--text-primary) 5%, transparent);
+}
+
+.sde-search-file-name {
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.sde-search-file-dir {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* ── Match line row ───────────────────────────────────────── */
+.sde-search-match-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: 3px 12px 3px 26px;
+  cursor: pointer;
+  border-bottom: 1px solid color-mix(in srgb, var(--text-primary) 2%, transparent);
+  transition: background 0.08s;
+}
+
+.sde-search-match-row:hover {
+  background: color-mix(in srgb, var(--text-primary) 4%, transparent);
+}
+
+.sde-search-line-num {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  min-width: 28px;
+  text-align: right;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.sde-search-match-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Highlighted match inside code ───────────────────────── */
+.sde-search-mark {
+  background: rgba(255, 196, 0, 0.35);
+  color: #ffd700;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+/* ── Replace row (no left padding icon offset) ────────────── */
+.sde-search-replace-input {
+  width: 100%;
+  padding: 5px 8px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+
+.sde-search-replace-input:focus {
+  border-color: color-mix(in srgb, var(--accent-cyan) 40%, transparent);
+}

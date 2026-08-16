@@ -1,0 +1,33 @@
+.sde-debug-breakpoint-glyph {
+  position: relative;
+}
+.sde-debug-breakpoint-glyph::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--status-error, #e51400);
+}
+
+.sde-debug-current-line {
+  background: color-mix(in srgb, var(--status-warning, #d29922) 15%, transparent);
+}
+.sde-debug-current-line-glyph {
+  position: relative;
+}
+.sde-debug-current-line-glyph::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 3px;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left: 8px solid var(--status-warning, #d29922);
+}

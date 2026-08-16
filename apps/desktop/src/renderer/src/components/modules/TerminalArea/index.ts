@@ -1,0 +1,1 @@
+export { TerminalArea } from './TerminalArea';

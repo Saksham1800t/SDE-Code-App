@@ -1,0 +1,24 @@
+{
+  "id": "theme.custom-white",
+  "name": "My Custom white",
+  "version": "1.0.0",
+  "description": "A premium custom dark theme for SDE Code.",
+  "publisher": "testdev",
+  "main": "dist/index.js",
+  "activationEvents": ["onStartupFinished"],
+  "provides": {
+    "theme": {
+      "name": "My Custom white",
+      "colors": {
+        "--bg-primary": "#ffffff",
+        "--bg-secondary": "#f6f8fa",
+        "--text-primary": "#24292f",
+        "--text-secondary": "#57606a",
+        "--accent-cyan": "#0969da",
+        "--accent-cyan-glow": "rgba(9, 105, 218, 0.15)",
+        "--border-color": "#d0d7de"
+      }
+    }
+  },
+  "dependsOn": []
+}

@@ -1,0 +1,432 @@
+.sde-github-panel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.sde-github-empty {
+  color: var(--text-muted);
+  font-size: var(--font-size-md);
+  padding: var(--space-6);
+}
+
+/* ── Auth gate ────────────────────────────────────────────── */
+
+.sde-github-auth-gate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  text-align: center;
+  padding: var(--space-15) var(--space-6);
+}
+
+.sde-github-auth-icon {
+  color: var(--text-muted);
+}
+
+.sde-github-auth-copy {
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.sde-github-device-code {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xl);
+  font-weight: 650;
+  letter-spacing: 2px;
+  color: var(--accent-cyan);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-6);
+}
+
+.sde-github-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px;
+}
+
+.sde-github-copy-btn:hover {
+  color: var(--text-primary);
+}
+
+.sde-github-cancel-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  padding: var(--space-2);
+}
+
+.sde-github-cancel-btn:hover {
+  color: var(--text-primary);
+}
+
+.sde-github-auth-error {
+  color: var(--color-danger);
+  font-size: var(--font-size-sm);
+}
+
+/* ── Repo header + tabs ───────────────────────────────────── */
+
+.sde-github-repo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sde-github-repo-name {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sde-github-signout-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.sde-github-signout-btn:hover {
+  color: var(--text-primary);
+}
+
+.sde-github-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sde-github-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  padding: var(--space-4) var(--space-2);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.sde-github-tab:hover {
+  color: var(--text-primary);
+}
+
+.sde-github-tab.active {
+  color: var(--accent-cyan);
+  border-bottom-color: var(--accent-cyan);
+}
+
+/* ── List ─────────────────────────────────────────────────── */
+
+.sde-github-list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.sde-github-list-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-6);
+  cursor: pointer;
+  border-bottom: 1px solid var(--border-color);
+  transition: background 0.1s;
+}
+
+.sde-github-list-row:hover {
+  background: color-mix(in srgb, var(--text-primary) 3%, transparent);
+}
+
+.sde-github-list-icon {
+  margin-top: 2px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.sde-github-list-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.sde-github-list-title {
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sde-github-list-meta {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Item detail tab ──────────────────────────────────────── */
+
+.sde-github-item-panel {
+  height: 100%;
+  background: var(--bg-secondary);
+  overflow-y: auto;
+  padding: var(--space-12) var(--space-15);
+}
+
+.sde-github-item-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.sde-github-item-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--text-muted);
+}
+
+.sde-github-item-title {
+  font-size: var(--font-size-xl);
+  font-weight: 650;
+  color: var(--text-primary);
+}
+
+.sde-github-item-external {
+  cursor: pointer;
+  color: var(--text-muted);
+  display: inline-flex;
+  margin-left: auto;
+}
+
+.sde-github-item-external:hover {
+  color: var(--accent-cyan);
+}
+
+.sde-github-item-meta {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  margin: 6px 0 20px;
+}
+
+.sde-github-item-body {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  font-size: var(--font-size-md);
+  color: var(--text-primary);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  margin-bottom: var(--space-4);
+}
+
+.sde-github-comments {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.sde-github-comment {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.sde-github-comment-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-6);
+  background: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sde-github-comment-author {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.sde-github-comment-date {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
+.sde-github-comment-body {
+  padding: var(--space-4) var(--space-6);
+  font-size: var(--font-size-md);
+  color: var(--text-primary);
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.sde-github-comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  align-items: flex-start;
+}
+
+.sde-github-comment-input {
+  width: 100%;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-md);
+  padding: var(--space-4) var(--space-6);
+  resize: vertical;
+}
+
+.sde-github-comment-input:focus {
+  outline: none;
+  border-color: var(--accent-cyan);
+}
+
+/* ── Inline PR review comments (GitHubPRFilesView) ───────────── */
+
+.sde-github-review-annotations {
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.sde-github-review-comment {
+  padding: var(--space-3) var(--space-6);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sde-github-review-comment:last-child {
+  border-bottom: none;
+}
+
+.sde-github-review-comment--draft {
+  background: color-mix(in srgb, var(--color-warning) 6%, transparent);
+}
+
+.sde-github-review-comment-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  margin-bottom: var(--space-2);
+}
+
+.sde-github-review-comment-meta strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.sde-github-review-comment-body {
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+  white-space: pre-wrap;
+}
+
+.sde-github-pending-badge {
+  background: color-mix(in srgb, var(--color-warning) 20%, transparent);
+  color: var(--color-warning);
+  font-size: var(--font-size-2xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  padding: 1px var(--space-3);
+  border-radius: var(--radius-sm);
+}
+
+.sde-github-review-comment-remove {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  padding: 2px;
+}
+
+.sde-github-review-comment-remove:hover {
+  color: var(--color-danger);
+}
+
+.sde-github-review-composer {
+  padding: var(--space-4) var(--space-6);
+}
+
+.sde-github-review-composer .sde-github-comment-input {
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-3);
+}
+
+.sde-github-review-composer-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
+
+/* ── Submit-review toolbar (GitHubItemDetailPanel) ───────────── */
+
+.sde-github-review-toolbar {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  margin-bottom: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sde-github-review-toolbar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.sde-github-review-toolbar-actions {
+  display: flex;
+  gap: var(--space-3);
+  justify-content: flex-end;
+}
