@@ -27,6 +27,12 @@
       "dist-electron/**/*"
     ],
     "icon": "public/sde-taskbar-icon.png",
+    "publish": {
+      "provider": "github",
+      "owner": "Saksham1800t",
+      "repo": "SDE-Code-App",
+      "releaseType": "release"
+    },
     "win": {
       "target": "nsis"
     },
