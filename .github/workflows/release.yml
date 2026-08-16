@@ -16,6 +16,12 @@ jobs:
   build:
     strategy:
       fail-fast: false
+      # Both jobs publish to the SAME GitHub Release (one per tag) — running them in
+      # parallel let both try to create/attach to it at once, and the loser of that race
+      # lost its uploaded assets even though its own step reported success. Serializing
+      # avoids that at the cost of a slower pipeline (~2x wall time instead of running
+      # both platforms at once).
+      max-parallel: 1
       matrix:
         os: [windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
