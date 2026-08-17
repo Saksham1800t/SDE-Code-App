@@ -478,7 +478,7 @@ export function registerIPCHandlers() {
   });
 
   // Auto-update — updater:status is a push event via setUpdaterBroadcastWindow, same pattern as ports:detected/closed above.
-  ipcMain.handle('updater:check', () => checkForUpdates());
+  ipcMain.handle('updater:check', (_event, manual?: boolean) => checkForUpdates(manual));
   ipcMain.on('updater:quitAndInstall', () => quitAndInstall());
 }
 

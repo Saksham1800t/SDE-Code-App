@@ -4,4 +4,8 @@ export interface UpdaterStatus {
   version?: string;
   percent?: number;
   message?: string;
+  /** True when this status came from a user-triggered "Check for Updates", not the silent
+   * startup check — the renderer uses this to decide whether 'checking'/'not-available' are
+   * worth a toast (annoying on every launch) or only worth surfacing when the user asked. */
+  manual?: boolean;
 }

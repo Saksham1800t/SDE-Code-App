@@ -138,6 +138,7 @@ const DEFAULT_COMMANDS = [
   { id: 'edit.renameSymbolPreview', name: 'Rename Symbol (Preview)', category: 'Edit', description: 'Preview a cross-file rename in an editable diff before applying it', source: 'core' },
   { id: 'edit.formatDocument', name: 'Format Document', category: 'Edit', description: 'Reformat the active file using its language service', source: 'core' },
   { id: 'view.toggleZenMode', name: 'Toggle Zen Mode', category: 'View', description: 'Hide the sidebar, activity bar, status bar, and panel, leaving just the editor', source: 'core' },
+  { id: 'app.checkForUpdates', name: 'Check for Updates', category: 'Help', description: 'Manually check for a new version (Windows only) and show the result as a notification', source: 'core' },
   { id: 'view.splitEditorRight', name: 'Split Editor Right', category: 'View', description: 'Open a second editor pane to the right, showing the active file', source: 'core' },
   { id: 'view.closeEditorGroup', name: 'Close Editor Group', category: 'View', description: 'Close every tab in the focused editor pane', source: 'core' },
   { id: 'view.explorer', name: 'Toggle Explorer', category: 'View', description: 'Open the sidebar file tree', source: 'core' },

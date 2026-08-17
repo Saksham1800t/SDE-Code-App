@@ -367,7 +367,7 @@ const api = {
   },
 
   // Auto-update — updater:status is a push event, same pattern as onPortDetected above.
-  checkForUpdates: () => ipcRenderer.invoke('updater:check'),
+  checkForUpdates: (manual?: boolean) => ipcRenderer.invoke('updater:check', manual),
   quitAndInstallUpdate: () => ipcRenderer.send('updater:quitAndInstall'),
   onUpdaterStatus: (callback: (status: UpdaterStatus) => void) => {
     const listener = (_event: any, status: UpdaterStatus) => callback(status);

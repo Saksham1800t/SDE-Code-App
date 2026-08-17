@@ -394,6 +394,9 @@ export const App: React.FC = () => {
       registerCommandCallback('view.toggleZenMode', () => {
         usePanelLayoutStore.getState().toggleZenMode();
       }),
+      registerCommandCallback('app.checkForUpdates', () => {
+        useUpdaterStore.getState().checkForUpdates();
+      }),
       registerCommandCallback('view.splitEditorRight', () => {
         useWorkspaceStore.getState().splitEditorGroup();
       }),
