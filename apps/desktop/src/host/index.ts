@@ -2,7 +2,7 @@ import { app, BrowserWindow, Menu } from 'electron';
 import { join } from 'path';
 import fs from 'fs';
 import { ConsoleLogService } from '../platform';
-import { databaseService, extensionHostService, logService, snippetsService, mcpService, lspService, dapService, externalAgentService, notebookKernelService } from './services';
+import { databaseService, extensionHostService, logService, snippetsService, extensionMarketplaceService, mcpService, lspService, dapService, externalAgentService, notebookKernelService } from './services';
 import { registerIPCHandlers } from './ipc';
 import { setPortsBroadcastWindow, startPortPolling } from '../main/services/ports';
 import { closeAllTerminalSessions } from '../main/services/terminal';
@@ -22,6 +22,12 @@ async function createWindow() {
     fs.mkdirSync(snippetsDirPath, { recursive: true });
   }
   await snippetsService.initialize(snippetsDirPath);
+
+  const marketplaceExtensionsDir = join(userDataPath, 'extensions');
+  if (!fs.existsSync(marketplaceExtensionsDir)) {
+    fs.mkdirSync(marketplaceExtensionsDir, { recursive: true });
+  }
+  extensionMarketplaceService.initialize(marketplaceExtensionsDir);
 
   mcpService.initialize().catch((err) => logService.error('Failed to initialize MCP servers:', err));
 

@@ -12,7 +12,10 @@ import { ILogService } from '../log';
 import { resolveServerBaseUrl } from '../../shared/serverConfig';
 
 export interface IExtensionMarketplaceService {
-  /** Optional — overrides the default `<app>/extensions` directory; not called in production, exists so tests can point this at a temp directory, same shape as SnippetsService.initialize(). */
+  /** Must be called with a writable directory (userData/extensions in production — host/index.ts does this)
+   * before use. Without it, extensionsDir() falls back to a path derived from __dirname, which in the
+   * packaged app resolves inside the read-only app.asar and throws ENOTDIR on any write. Same shape as
+   * SnippetsService.initialize(); tests point this at a temp directory. */
   initialize(extensionsDirPath?: string): void;
   scaffoldAndPublish(payload: ExtensionScaffoldPublishPayload): Promise<ExtensionScaffoldPublishResult>;
   downloadAndInstall(downloadUrl: string, extensionId: string, version: string): Promise<ExtensionManifest>;
