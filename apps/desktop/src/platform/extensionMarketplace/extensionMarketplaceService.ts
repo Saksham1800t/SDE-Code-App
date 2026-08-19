@@ -107,8 +107,27 @@ export class ExtensionMarketplaceService implements IExtensionMarketplaceService
       fs.writeFileSync(fullPath, f.content);
     }
 
-    // 3. Generate mock compiled index.js
-    const script = `console.log("Loaded extension: ${name}");`;
+    // 3. Generate compiled index.js. Themes must actually call registerTheme() — this used to
+    // be a bare console.log stub, so a published theme's colors sat in the manifest as inert
+    // metadata and the theme never appeared as a selectable option anywhere. The registration
+    // id is the theme's own display name (not the extension's manifest id) so it also shows up
+    // correctly labeled in the theme picker, which reads a registration's id as its label.
+    let script: string;
+    if (templateConfig && templateConfig.templateType === 'theme') {
+      const colors = templateConfig.themeColors;
+      const variables = {
+        bgPrimary: colors.bgPrimary,
+        bgSecondary: colors.bgSecondary,
+        textPrimary: colors.textPrimary,
+        textSecondary: colors.textSecondary,
+        accentCyan: colors.accentCyan,
+        accentCyanGlow: colors.accentGlow,
+        borderColor: colors.borderColor,
+      };
+      script = `const { registerTheme } = require('@sde-code/sdk');\nregisterTheme(${JSON.stringify(name)}, ${JSON.stringify(variables)});\nconsole.log("Loaded extension: ${name}");`;
+    } else {
+      script = `console.log("Loaded extension: ${name}");`;
+    }
     fs.mkdirSync(path.join(tempDir, 'dist'), { recursive: true });
     fs.writeFileSync(path.join(tempDir, 'dist/index.js'), script);
 

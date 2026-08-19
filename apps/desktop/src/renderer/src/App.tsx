@@ -208,7 +208,9 @@ export const App: React.FC = () => {
     'maximize': 'window.maximize',
     'reload': 'window.reload',
     'devtools': 'help.devtools',
-    'about': 'help.about'
+    'about': 'help.about',
+    'check-updates': 'app.checkForUpdates',
+    'command-palette': 'workbench.action.showCommands'
   };
 
 
@@ -629,11 +631,16 @@ export const App: React.FC = () => {
   }, [executeCommand]);
 
   const getMenuShortcutText = useCallback((action: string) => {
+    // Command Palette has no keybindings-table row — it's handled as a hardcoded fallback
+    // in the keydown handler above, not through the generic keybinding lookup.
+    if (action === 'command-palette') {
+      return platform === 'darwin' ? 'Cmd+Shift+P' : 'Ctrl+Shift+P';
+    }
     const commandId = actionToCommandMap[action];
     if (!commandId) return '';
     const kb = keybindings.find((k) => k.command_id === commandId);
     return kb ? kb.key_combination : '';
-  }, [keybindings]);
+  }, [keybindings, platform]);
 
   const menus: Record<string, Array<{ label?: string; action?: string; type?: 'separator' }>> = {
     File: [
@@ -681,7 +688,9 @@ export const App: React.FC = () => {
     ],
     Help: [
       { label: 'About SDE Code', action: 'about' },
-      { label: 'Toggle Developer Tools', action: 'devtools' }
+      { label: 'Check for Updates', action: 'check-updates' },
+      { type: 'separator' },
+      { label: 'Command Palette', action: 'command-palette' }
     ]
   };
 
