@@ -63,5 +63,9 @@ export async function checkForUpdates(manual = false): Promise<void> {
 }
 
 export function quitAndInstall(): void {
-  autoUpdater.quitAndInstall();
+  // isSilent, isForceRunAfter — without these this ran the interactive NSIS wizard (the
+  // installer's own "please close it manually" dialog could even race with our own app not
+  // having fully exited yet). Silent mode quits, installs with the /S flag, and relaunches
+  // automatically — no wizard, matching the update UX of VS Code/Antigravity.
+  autoUpdater.quitAndInstall(true, true);
 }
