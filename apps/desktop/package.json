@@ -1,6 +1,6 @@
 {
   "name": "@sde-code/desktop",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "AI-First Desktop IDE",
   "main": "dist-electron/main/index.js",
   "repository": {

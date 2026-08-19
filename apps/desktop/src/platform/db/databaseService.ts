@@ -189,6 +189,7 @@ const DEFAULT_KEYBINDINGS = [
   { command_id: 'view.splitEditorRight', key_combination: 'Ctrl+\\', platform: 'win32' },
   { command_id: 'view.toggleZenMode', key_combination: 'F11', platform: 'win32' },
   { command_id: 'markdown.openPreview', key_combination: 'Ctrl+Shift+V', platform: 'win32' },
+  { command_id: 'app.checkForUpdates', key_combination: 'Ctrl+Shift+U', platform: 'win32' },
   { command_id: 'file.newFile', key_combination: 'Ctrl+N', platform: 'linux' },
   { command_id: 'file.newFolder', key_combination: 'Ctrl+Shift+N', platform: 'linux' },
   { command_id: 'file.openFolder', key_combination: 'Ctrl+O', platform: 'linux' },
@@ -216,6 +217,7 @@ const DEFAULT_KEYBINDINGS = [
   { command_id: 'view.splitEditorRight', key_combination: 'Ctrl+\\', platform: 'linux' },
   { command_id: 'view.toggleZenMode', key_combination: 'F11', platform: 'linux' },
   { command_id: 'markdown.openPreview', key_combination: 'Ctrl+Shift+V', platform: 'linux' },
+  { command_id: 'app.checkForUpdates', key_combination: 'Ctrl+Shift+U', platform: 'linux' },
   { command_id: 'file.newFile', key_combination: 'Cmd+N', platform: 'darwin' },
   { command_id: 'file.newFolder', key_combination: 'Cmd+Shift+N', platform: 'darwin' },
   { command_id: 'file.openFolder', key_combination: 'Cmd+O', platform: 'darwin' },
@@ -243,6 +245,7 @@ const DEFAULT_KEYBINDINGS = [
   { command_id: 'view.splitEditorRight', key_combination: 'Cmd+\\', platform: 'darwin' },
   { command_id: 'view.toggleZenMode', key_combination: 'F11', platform: 'darwin' },
   { command_id: 'markdown.openPreview', key_combination: 'Cmd+Shift+V', platform: 'darwin' },
+  { command_id: 'app.checkForUpdates', key_combination: 'Cmd+Shift+U', platform: 'darwin' },
 ];
 
 export class DatabaseService implements IDatabaseService {
